@@ -9,7 +9,9 @@ verify_ssl = true
 ipykernel = "*"
 epdlib = "*"
 requests = "*"
-websockets = "*"
+lmsquery-fork = "*"
+pillow = "*"
+dictor = "*"
 
 [requires]
 python_version = "3.7"
