@@ -6,12 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ipykernel = "*"
-epdlib = "*"
-requests = "*"
-lmsquery-fork = "*"
-pillow = "*"
-dictor = "*"
 pyinstaller = "*"
 
 [requires]

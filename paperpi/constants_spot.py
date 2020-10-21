@@ -16,12 +16,13 @@ libre_token_endpoint = 'token'
 libre_token_url = '/'.join((libre_base_url+':'+str(libre_port), 
                             libre_token_endpoint, spot_scope))
 
-# spotify JSON mapping:
+# spotify JSON mapping using dictor dotted formatting:
 spot_map = {
   'title': 'item.name',
   'artist': 'item.album.artists.0.name',
   'album': 'item.album.name',
   'artwork_url': 'item.album.images.0.url',
   'duration': 'item.duration_ms',
-  'player': 'device.name'
+  'player': 'device.name',
+  'id': 'item.id',
 }
