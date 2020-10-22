@@ -1,3 +1,2 @@
 from .CacheFiles import CacheFiles
-from .Plugin import Plugin
-
+from .Plugin import Plugin, SelfDummy

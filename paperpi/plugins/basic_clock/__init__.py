@@ -1,1 +1,1 @@
-from .basic_clock import foo
+from .basic_clock import update_function

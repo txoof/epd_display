@@ -23,13 +23,6 @@ logger = logging.getLogger(__name__)
 
 
 
-
-
-
-
-
-
-
 def strict_enforce(*types):
     """strictly enforce type compliance within classes
     
@@ -58,7 +51,10 @@ def strict_enforce(*types):
 class SelfDummy:
     '''dummy class for testing plugins'''
     def __init__(self):
-        pass
+        self.layout = {}
+        self.max_priority = 1
+        self.min_display_time = 20
+        self.refresh_rate = 2
 
 
 
