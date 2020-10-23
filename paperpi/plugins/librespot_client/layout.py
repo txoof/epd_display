@@ -1,5 +1,7 @@
-from pathlib import Path
-# rebuild with multiple options
+# librespot layouts
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 twoColumn = {
     'coverart': { # coverart image
                 'image': True, # has an image that may need to be resized
@@ -11,7 +13,7 @@ twoColumn = {
                 'hcenter': True, # horizontal center-align the contents
                 'vcenter': True, # vertically center-align the contents
                 'relative': False, # False if position is absolute
-                'font': Path('../../fonts/Open_Sans/OpenSans-Regular.ttf').absolute(),
+                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
                 'font_size': None # font size to use for text
     },
     'title': { # track title
@@ -29,7 +31,7 @@ twoColumn = {
                 'vcenter': True, # vertically center-align the contents
                 'relative': ['coverart', 'title'], # [X Section: abs_coordinates+dimension
                                                    #, Y section abs_coordinates+dimension]
-                'font': Path('../../fonts/Open_Sans/OpenSans-Regular.ttf').absolute(),
+                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
                 'font_size': None # font size to use for text
 
     },
@@ -43,7 +45,7 @@ twoColumn = {
                 'hcenter': False,
                 'vcenter': True,
                 'relative': ['coverart', 'title'],
-                'font': Path('../../fonts/Open_Sans/OpenSans-Regular.ttf').absolute(),
+                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
                 'font_size': None
     },
     'album': { #album name
@@ -56,7 +58,7 @@ twoColumn = {
                 'hcenter': False,
                 'vcenter': True,
                 'relative': ['coverart', 'artist'],
-                'font': Path('../../fonts/Open_Sans/OpenSans-Regular.ttf').absolute(),
+                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
                 'font_size': None
     }
 }
@@ -72,7 +74,7 @@ threeRowLarge = {
              'hcenter': True,
              'vcenter': True,
              'relative': False,
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
     'coverart':
             {'image': True,
@@ -84,7 +86,7 @@ threeRowLarge = {
              'hcenter': True,
              'vcenter': True,
              'relative': ['coverart', 'title'],
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
 
     'artist':
@@ -97,7 +99,7 @@ threeRowLarge = {
              'hcenter': False,
              'vcenter': True,
              'relative': ['coverart', 'title'],
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
     'album':
             {'image': None,
@@ -109,7 +111,7 @@ threeRowLarge = {
              'hcenter': False,
              'vcenter': True,
              'relative': ['coverart', 'artist'],
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
     'mode':
             {'image': False,
@@ -121,7 +123,7 @@ threeRowLarge = {
              'vcenter': True,
              'rand': True,
              'relative': ['coverart', 'album'],
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None}
 }
 
@@ -136,7 +138,7 @@ twoRowSmall = {
              'hcenter': True,
              'vcenter': True,
              'relative': False,
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
 
     'artist':
@@ -149,6 +151,6 @@ twoRowSmall = {
              'hcenter': True,
              'vcenter': True,
              'relative': ['artist', 'title'],
-             'font': Path('../../fonts/Anton/Anton-Regular.ttf').absolute(),
+             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
 }

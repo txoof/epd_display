@@ -12,6 +12,8 @@ import logging
 
 
 import requests
+from epdlib.Screen import Update
+from dictor import dictor
 
 
 
@@ -20,8 +22,10 @@ import requests
 
 try:
     from . import layout
+    from . import constants_spot
 except ImportError:
     import layout
+    import constants_spot
 
 
 
@@ -54,8 +58,8 @@ def update_function(self):
         logging.debug(f'adding idle_timer of class `Update()`')
         self.idle_timer = Update()    
     
-    if not self.cache:
-        self.cache = CacheFiles(path_prefix=self.config['player_name'])
+#     if not self.cache:
+#         self.cache = CacheFiles(path_prefix=self.config['player_name'])
         
         
     try:
@@ -127,6 +131,21 @@ def update_function(self):
             self.play_state = 'None'
     
     return (is_updated, data, priority)
+
+
+
+
+
+
+# from library import CacheFiles
+# from library.Plugin import SelfDummy
+
+# self = SelfDummy()
+
+# self.cache = CacheFiles()
+
+# self.max_priority = 0
+# self.config = {'player_name': 'SpoCon-Spotify', 'idle_timeout': 10}
 
 
 
