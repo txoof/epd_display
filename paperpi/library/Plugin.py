@@ -167,9 +167,9 @@ class Plugin:
             logging.debug(f'throttling in effect -- wait for {self.refresh_rate - (time.monotonic() - self._last_ask)} seconds before requesting update')
             return False
         
-    def update(self):
+    def update(self, *args, **kwargs):
         if self._is_ready():
-            is_updated, data, priority = self.update_function()
+            is_updated, data, priority = self.update_function(*args, **kwargs)
             if data != self.data:
                 self.data = data
                 self.layout_obj.update_contents(data)
