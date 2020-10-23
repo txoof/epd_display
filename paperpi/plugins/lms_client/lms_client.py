@@ -13,6 +13,7 @@ import logging
 
 import lmsquery
 import requests
+from epdlib.Screen import Update
 
 
 
@@ -36,6 +37,13 @@ try:
     from . import layout
 except ImportError:
     import layout
+
+
+
+
+
+
+
 
 
 
@@ -70,6 +78,7 @@ def update_function(self):
         'genre': 'Err: No Player',
         'album': 'Err: No Player',
         'artwork_url': 'Err: No Player',
+        'coverart': 'None',
         'mode': 'None'
     }
 
@@ -110,6 +119,11 @@ def update_function(self):
     
     if now_playing:
         data = now_playing
+        try:
+            data['coverart'] = self.cache.cache_file(now_playing['artwork_url'], 
+                                                     now_playing['album_id'])
+        except KeyError as e:
+            logging.warning(f'failed to cache file -- now_playing data did not contain complete data: {e}')
     
     # set the priority based on play state
     logging.debug(f'play_state before checking now_playing: {self.play_state}')
@@ -135,6 +149,35 @@ def update_function(self):
     
     logging.debug(f'current priority: {priority}, current play state: {self.play_state}')
     return (is_updated, data, priority)
+
+
+
+
+
+
+# from library import CacheFiles
+# from library.Plugin import SelfDummy
+
+# self = SelfDummy()
+
+# self.cache = CacheFiles()
+
+# self.max_priority = 0
+# self.config = {'player_name': 'MacPlay', 'idle_timeout': 10}
+
+
+
+
+
+
+# update_function(self)
+
+
+
+
+
+
+
 
 
 
