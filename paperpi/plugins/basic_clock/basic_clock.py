@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 from datetime import datetime
 def update_function(self):
-    data = {'digit_time': datetime.now().strftime("%H:%M:%S")}
+    data = {'digit_time': datetime.now().strftime("%H:%M")}
     priority = self.max_priority
     is_updated = True
     
