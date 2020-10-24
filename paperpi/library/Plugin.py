@@ -62,11 +62,30 @@ class SelfDummy:
 
 
 class Plugin:
+    '''Plugin class for creating and managing plugins'''
     def __init__(self, resolution, name=None, layout={}, 
                  update_function=None, max_priority=-1,
                  refresh_rate=60, min_display_time=30, config={},
                  cache=None,
                  **kwargs):
+        '''Create a plugin object that provides consistent methods for providing an image and querying
+        various services
+        
+        Args:
+            resolution(`tuple` of `int`): resolution of the epd or similar screen: (Length, Width)
+            name(`str`): human readable name of the function for logging and reference
+            layout(`dict`): epdlib.Layout.layout dictionary that describes screen layout
+            update_function(func): function that returns plugin status, data and priority a
+                update_function must accept (self, *args, **kwargs) and must return
+                a tuple of (is_updated(bool), data(dict), priority(int))
+            max_priority(`int`): maximum priority for this module values approaching 0 have highest
+                priority, values < 0 are inactive
+            refresh_rate(`int`): minimum time in seconds between requests for pulling an update
+            min_display_time(`int`): minimum time in seconds plugin should be allowed to display in the loop
+            config(`dict`): any kwargs that update function requires
+            cache(`CacheFiles` obj): object that can be used for downloading remote files and caching
+            kwargs(): any additional kwargs will be ignored
+            '''
         self.name = name
         if resolution:
             self.resolution = resolution
@@ -106,6 +125,8 @@ class Plugin:
         
     @property
     def resolution(self):
+        '''resolution of attached screen that will be used for output
+            resolution(`tuple` of `int`)'''
         return self._resolution
         
     @resolution.setter
@@ -115,6 +136,8 @@ class Plugin:
     
     @property
     def layout(self):
+        '''epdlib.Layout.layout dictionary used for configuring text and image blocks
+            layout(`dict`)'''
         return self.layout_obj.layout
     
     @layout.setter
@@ -125,6 +148,8 @@ class Plugin:
     
     @property
     def cache(self):
+        '''CacheFiles object used for caching remote files used by plugins
+        cache(`CacheFiles` obj)'''
         return self._cache
     
     @cache.setter
@@ -146,9 +171,13 @@ class Plugin:
         
     
     def _add_update_function(self, function):
+        '''private function for adding update_functions properly to class'''
         self.update_function = function.__get__(self)
         
     def _generate_hash(self):
+        '''generate a hash based on the self.name and the current time
+            This is updated whenever self.data is updated and can be checked as a 
+            proxy for "new data"'''
         my_hash = hashlib.sha1()
         my_hash.update(str(time.time()).encode('utf-8')+str(self.name).encode('utf-8'))
         return my_hash.hexdigest()[:10]        
@@ -168,6 +197,25 @@ class Plugin:
             return False
         
     def update(self, *args, **kwargs):
+        '''request an update of the plugin data
+            requests are throttled if they occur sooner than the cool-down period
+            defined by self.refresh_rate
+            
+            Returns:
+                self.hash(hash of time and self.name)
+            
+            calls self.update_function(*args, **kwargs):
+                self.update_function returns: (`tuple` of `bool`, `dict`, `int`): 
+                    bool(true when plugin is updated) 
+                    dict(data returned from plugin update_function to be passed into a layout)
+                    int(priority of this module; values approaching 0 are highest, negative
+                        values indicate plugin is inactive)
+
+            
+            Set here:
+                self.data
+                self.layout_obj.update_contents(self.data)
+                self.hash'''
         if self._is_ready():
             is_updated, data, priority = self.update_function(*args, **kwargs)
             if data != self.data:

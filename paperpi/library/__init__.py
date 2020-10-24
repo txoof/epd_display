@@ -1,4 +1,4 @@
 from .CacheFiles import CacheFiles
-from .Plugin import Plugin, SelfDummy
+from .Plugin import Plugin
 from .InterruptHandler import InterruptHandler
-#from .SignalHandler import SignalHandler
+from .SelfDummy import SelfDummy

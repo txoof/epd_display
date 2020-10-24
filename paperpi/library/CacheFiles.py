@@ -17,6 +17,13 @@ import requests
 
 
 
+logger = logging.getLogger(__name__)
+
+
+
+
+
+
 class CacheFiles:
     '''file caching object
         Download remote files using requests.get and cache locally
@@ -110,8 +117,16 @@ class CacheFiles:
             try:
                 with open(local_file, 'wb') as file:
                     shutil.copyfileobj(r.raw, file)
+            except FileNotFoundError as e:
+                logging.warning(f'cache directory "{self.path}" is missing; recreating')
+                try:
+                    self.path.mkdir()
+                    return self.cache_file(url, file_id)
+                except Exception as e:
+                    logging.error(f'could not create "{self.path}"')
             except (OSError, ValueError) as e:
                 logging.error(f'failed to write {local_file}: {e}')
+                logging.error(f'{type(e)}')
                 return None
             except (FileExistsError) as e:
                 logging.warning(f'file "{local_file}" appears to exist already; no action taken')
@@ -128,6 +143,7 @@ class CacheFiles:
 
 
 def main():
+    '''demo'''
     logging.basicConfig(level=logging.DEBUG)
     cache = CacheFiles(path_prefix='demo_')
     print(f'created a cache directory: {cache}')
