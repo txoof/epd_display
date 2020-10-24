@@ -12,7 +12,7 @@ ws_local="$project/waveshare_epd"
 # create temporary directory
 ws_tmp=$(mktemp -d -t waveshare_XXXXX)
 pushd $ws_tmp
-#git clone $ws_epd_git
+git clone $ws_epd_git
 if [ $? -ne 0 ]; then
   echo "failed to clone $ws_epd_git"
   echo "see $wk_tmp"

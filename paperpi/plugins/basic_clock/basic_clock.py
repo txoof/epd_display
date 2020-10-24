@@ -42,3 +42,16 @@ def update_function(self):
 
 
 
+
+
+
+
+
+
+# import SelfDummy
+# s = SelfDummy.SelfDummy()
+# update_function(s)
+
+
+
+

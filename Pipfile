@@ -13,6 +13,7 @@ lmsquery-fork = "*"
 pillow = "*"
 dictor = "*"
 pyinstaller = "*"
+argconfigparse = "*"
 
 [requires]
 python_version = "3.7"
