@@ -14,10 +14,12 @@ import logging
 # two different import modes for development or distribution
 try:
     # import from other modules above this level
-    from .layout import layout
+    from . import layout
+    from . import my_help
 except ImportError:
     # development in jupyter notebook
-    from layout import layout
+    import layout
+    import my_help
 
 
 

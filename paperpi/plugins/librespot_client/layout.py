@@ -24,11 +24,11 @@ twoColumnThreeRows = {
             'relative': ['coverart', 'title'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
+            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
       },
       'artist': {
             'image': None,
-            'max_lines': 2,
+            'max_lines': 1,
             'padding': 4,
             'width': 1,
             'height': 1/5,
@@ -36,11 +36,12 @@ twoColumnThreeRows = {
             'relative': ['artist', 'title'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
+            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+            #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
       },
       'album': {
             'image': None,
-            'max_lines': 2,
+            'max_lines': 1,
             'padding': 4,
             'width': 1,
             'height': 1/5,
@@ -48,7 +49,8 @@ twoColumnThreeRows = {
             'relative': ['album', 'artist'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
+            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+            #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
       },
 
 

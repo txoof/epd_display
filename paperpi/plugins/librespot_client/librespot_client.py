@@ -22,10 +22,19 @@ from dictor import dictor
 
 try:
     from . import layout
-    from . import constants_spot
+    from . import constants
+    from . import my_help
 except ImportError:
     import layout
-    import constants_spot
+    import constants
+    import my_help
+
+
+
+
+
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -33,21 +42,22 @@ except ImportError:
 
 
 def update_function(self):
-    data = {
-        'title': 'Err: no data',
-        'artist': 'Err: no data',
-        'album': 'Err: no data',
-        'artwork_url': 'Err: no data',
-        'duration': 0,
-        'player': 'Err: no data',
-        'mode': 'None'}
+    data = constants.data
+#     data = {
+#         'title': 'Err: no data',
+#         'artist': 'Err: no data',
+#         'album': 'Err: no data',
+#         'artwork_url': 'Err: no data',
+#         'duration': 0,
+#         'player': 'Err: no data',
+#         'mode': 'None'}
     priority = -1
     is_updated = False
     
     failure = (is_updated, data, priority)
 #     logging.info('creating libre-spot spotify plugin (Spocon)')
     logging.debug(f'fetching access token from librespot player {self.config["player_name"]}')
-    logging.debug(f'requesting access scope: {constants_spot.spot_scope}')
+    logging.debug(f'requesting access scope: {constants.spot_scope}')
     
     # add the property play_state for recording current play state 
     if not hasattr(self, 'play_state'):
@@ -63,9 +73,9 @@ def update_function(self):
         
         
     try:
-        token = requests.post(constants_spot.libre_token_url)
+        token = requests.post(constants.libre_token_url)
     except requests.ConnectionError as e:
-        logging.error(f'Failed to pull Spotify token from librespot at url: {constants_spot.libre_token_url}')
+        logging.error(f'Failed to pull Spotify token from librespot at url: {constants.libre_token_url}')
         logging.error(f'{e}')
         return failure
     
@@ -82,7 +92,7 @@ def update_function(self):
     
     # use the token to fetch player information from spotify
     if 'Authorization' in headers:
-        player_status = requests.get(constants_spot.spot_player_url, headers=headers)
+        player_status = requests.get(constants.spot_player_url, headers=headers)
     else:
         logging.warning(f'no valid Authroization token found in response from librespot: {headers}')
         return failure
@@ -101,8 +111,8 @@ def update_function(self):
         
         # map json data to dictionary format that Layout() objects can use
         # probably should wrap this in a try:
-        for key in constants_spot.spot_map:
-            data[key] = dictor(player_json, constants_spot.spot_map[key])
+        for key in constants.spot_map:
+            data[key] = dictor(player_json, constants.spot_map[key])
             
         if 'artwork_url' in data and 'id' in data:
             data['coverart'] = self.cache.cache_file(url=data['artwork_url'], file_id=data['id'])
@@ -146,6 +156,13 @@ def update_function(self):
 
 # self.max_priority = 0
 # self.config = {'player_name': 'SpoCon-Spotify', 'idle_timeout': 10}
+
+
+
+
+
+
+
 
 
 

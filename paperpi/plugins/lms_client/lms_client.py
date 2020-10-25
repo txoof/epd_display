@@ -4,6 +4,8 @@
 
 
 
+
+
 import logging
 
 
@@ -14,6 +16,14 @@ import logging
 import lmsquery
 import requests
 from epdlib.Screen import Update
+
+
+
+
+
+
+import sys
+from pathlib import Path
 
 
 
@@ -35,15 +45,12 @@ from epdlib.Screen import Update
 
 try:
     from . import layout
+    from . import constants
+    from . import my_help
 except ImportError:
     import layout
-
-
-
-
-
-
-
+    import constants
+    import my_help
 
 
 
@@ -66,21 +73,14 @@ def update_function(self):
         self.config(`dict`): {
             'player_name': 'LMS Player Name',   # name of player to track
             'idle_timeout': 10,                 # timeout for showing 'pause' screen 
+            
+    Args:
+        self(namespace): namespace from plugin object
+        
         }'''
+    logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
-    data = {
-        'id': 0,
-        'title': 'Err: No Player',
-        'artist': 'Err: No Player',
-        'coverid': 'Err: No Player',
-        'duration': 0,
-        'album_id': 'Err: No Player',
-        'genre': 'Err: No Player',
-        'album': 'Err: No Player',
-        'artwork_url': 'Err: No Player',
-        'coverart': 'None',
-        'mode': 'None'
-    }
+    data = constants.data
 
     is_updated = False
     priority = -1
@@ -155,15 +155,79 @@ def update_function(self):
 
 
 
-# from library import CacheFiles
-# from library.Plugin import SelfDummy
+def scan_servers():
+    """scan for and list all available LMS Servers and players on the local network
+    
+        to use, run: $ paperpi -m lms_client.scan_servers"""
+    print(f'Scanning for available LMS Server and players')
+    servers = lmsquery.LMSQuery().scanLMS()
+    if not servers:
+        print('Error: no LMS servers were found on the network. Is there one running?')
+        do_exit(1)
+    print('servers found:')
+    print(servers)
+    players = lmsquery.LMSQuery().get_players()
+    # print selected keys for each player
+    keys = ['name', 'playerid', 'modelname']
+    for p in players:
+        print('players found:')
+        try:
+            for key in keys:
+                print(f'{key}: {p[key]}')
+            print('\n')
+        except KeyError as e:
+            pass 
 
-# self = SelfDummy()
 
-# self.cache = CacheFiles()
 
-# self.max_priority = 0
-# self.config = {'player_name': 'MacPlay', 'idle_timeout': 10}
+
+
+
+# def my_help(func=None):
+#     '''Print help for this plugin
+    
+#     Args:
+#         func(`string`): name of function '''
+#     import types
+#     if not func:
+#         l = [f for f in globals().values() if type(f) == types.FunctionType]
+#         print('*'*50)        
+#         print('Available functions in this plugin:')
+#         for i in l:
+#             print(f'##### {i.__name__} #####')
+#             print(f'{i.__doc__}\n\n')
+        
+#         print('*'*50)
+#         print('Available Layouts:')
+#         for name in vars(layout).keys():
+#             if not name.startswith('__') and not name in ('os', 'dir_path'):
+#                 print(f'  {name}')
+        
+#         print('*'*50)
+#         print('data dictionary keys available for layouts:')
+#         for k in constants.data:
+#             print(f'   {k}')
+            
+#     else:
+#         print(f'{func.__doc__}')
+    
+
+
+
+
+
+
+# def my_help(func=None):
+#     '''Print docstrings for all available functions within this module'''
+#     import types
+#     if not func:
+#         l = [f for f in globals().values() if type(f) == types.FunctionType]
+#         print('Available functions in this plugin:')
+#         for i in l:
+#             print(f'{i.__doc__}')
+#     else:
+#         print(f'{func.__doc__}')
+        
 
 
 

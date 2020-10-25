@@ -17,6 +17,28 @@ import requests
 
 
 
+import sys
+sys.path.append(Path('../').resolve())
+
+
+
+
+
+
+sys.path
+
+
+
+
+
+
+
+
+
+
+
+
+
 logger = logging.getLogger(__name__)
 
 
