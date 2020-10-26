@@ -46,11 +46,9 @@ from pathlib import Path
 try:
     from . import layout
     from . import constants
-    from . import my_help
 except ImportError:
     import layout
     import constants
-    import my_help
 
 
 
@@ -211,30 +209,6 @@ def scan_servers():
 #     else:
 #         print(f'{func.__doc__}')
     
-
-
-
-
-
-
-# def my_help(func=None):
-#     '''Print docstrings for all available functions within this module'''
-#     import types
-#     if not func:
-#         l = [f for f in globals().values() if type(f) == types.FunctionType]
-#         print('Available functions in this plugin:')
-#         for i in l:
-#             print(f'{i.__doc__}')
-#     else:
-#         print(f'{func.__doc__}')
-        
-
-
-
-
-
-
-# update_function(self)
 
 
 

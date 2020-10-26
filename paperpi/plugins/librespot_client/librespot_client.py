@@ -23,11 +23,9 @@ from dictor import dictor
 try:
     from . import layout
     from . import constants
-    from . import my_help
 except ImportError:
     import layout
     import constants
-    import my_help
 
 
 

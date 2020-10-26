@@ -15,11 +15,9 @@ import logging
 try:
     # import from other modules above this level
     from . import layout
-    from . import my_help
 except ImportError:
     # development in jupyter notebook
     import layout
-    import my_help
 
 
 
