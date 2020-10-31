@@ -67,6 +67,7 @@ def map_val(a, b, s):
 
 
 def update_function(self, time=None):    
+    logging.info(f'update_function for {self.name}')
     hours = constants_words.hours
     minutes = constants_words.minutes
     stems = constants_words.stems
@@ -150,7 +151,14 @@ def update_function(self, time=None):
     myTime = {'wordtime': f'{choice(stems)} {time_str}',
               'time': now}
     
-    return (True, myTime, 1)
+    return (True, myTime, self.max_priority)
+
+
+
+
+
+
+
 
 
 

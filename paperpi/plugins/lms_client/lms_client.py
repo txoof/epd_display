@@ -16,6 +16,7 @@ import logging
 import lmsquery
 import requests
 from epdlib.Screen import Update
+from copy import copy
 
 
 
@@ -76,12 +77,13 @@ def update_function(self):
         self(namespace): namespace from plugin object
         
         }'''
-    logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
+    logging.info(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
-    data = constants.data
-
+    # make a shallow copy to make updates possible without impacting origonal obj.
+    data = copy(constants.data)
     is_updated = False
-    priority = -1
+    priority = 2**15    
+ 
     
     failure = (is_updated, data, priority)
     
@@ -115,6 +117,9 @@ def update_function(self):
         logging.warning('this error is typical of newly added player or player that has no "now playing" data')
         return failure
     
+    
+    
+    # process the now_playing state and set priority, update and data
     if now_playing:
         data = now_playing
         try:
@@ -122,31 +127,67 @@ def update_function(self):
                                                      now_playing['album_id'])
         except KeyError as e:
             logging.warning(f'failed to cache file -- now_playing data did not contain complete data: {e}')
-    
-    # set the priority based on play state
-    logging.debug(f'play_state before checking now_playing: {self.play_state}')
+    logging.debug(f'now_playing: {now_playing["mode"]}')
     if now_playing['mode'] == 'play':
-        priority = self.max_priority
+        if self.data == data:
+            priority = self.max_priority
+        else:
+            priority = self.max_priority - 1
+        self.play_state = 'play'
         is_updated = True
-        self.play_state = now_playing['mode']
+        
     elif now_playing['mode'] == 'pause':
-        # if switching from play to pause, refresh the idle timer
+        # moving from play to pause, decrease priority and refresh idle_timer
         if self.play_state == 'play':
-            logging.debug('resetting idle_timer')
             self.idle_timer.update()
+            priority = self.max_priority + 1
+            self.play_state = 'pause'
+        
+        # if the idle timer has expired, decrease priority
         if self.idle_timer.last_updated > self.config['idle_timeout']:
-            priority = self.max_priority + 2
+            priority = self.max_priority + 3
+            self.play_state = 'pause'
         else:
             priority = self.max_priority + 1
+
         is_updated = True
-        self.play_state = now_playing['mode']
-    else:
-        priority = -1
-        is_updated = False
-        play_state = now_playing['mode']
     
-    logging.debug(f'current priority: {priority}, current play state: {self.play_state}')
+    else: 
+        self.play_state = now_playing['mode'] 
+        priority = 2**15
+        is_updated = False
+    logging.info(f'priority set to: {priority}')
     return (is_updated, data, priority)
+
+
+
+
+
+
+# from SelfDummy import SelfDummy
+# from CacheFiles import CacheFiles
+
+
+# logger.root.setLevel('DEBUG')
+# logging.debug('foo')
+
+# self = SelfDummy()
+# self.max_priority = 0
+# self.config = {'player_name': 'MacPlay',
+#                'idle_timeout': 5}
+# self.cache = CacheFiles()
+
+
+
+
+
+
+# u, d, p = update_function(self)
+# if u != self.data:
+#     self.data = d
+# print(f'idle timer: {self.idle_timer.last_updated}, idle_timeout {self.config["idle_timeout"]}')
+# print(p)
+# print(d)
 
 
 
@@ -179,36 +220,6 @@ def scan_servers():
 
 
 
-
-
-# def my_help(func=None):
-#     '''Print help for this plugin
-    
-#     Args:
-#         func(`string`): name of function '''
-#     import types
-#     if not func:
-#         l = [f for f in globals().values() if type(f) == types.FunctionType]
-#         print('*'*50)        
-#         print('Available functions in this plugin:')
-#         for i in l:
-#             print(f'##### {i.__name__} #####')
-#             print(f'{i.__doc__}\n\n')
-        
-#         print('*'*50)
-#         print('Available Layouts:')
-#         for name in vars(layout).keys():
-#             if not name.startswith('__') and not name in ('os', 'dir_path'):
-#                 print(f'  {name}')
-        
-#         print('*'*50)
-#         print('data dictionary keys available for layouts:')
-#         for k in constants.data:
-#             print(f'   {k}')
-            
-#     else:
-#         print(f'{func.__doc__}')
-    
 
 
 
