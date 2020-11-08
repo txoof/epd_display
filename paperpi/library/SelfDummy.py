@@ -16,5 +16,6 @@ class SelfDummy:
         self.min_display_time = 20
         self.refresh_rate = 2
         self.data = {}
+        self.cache = None
 
 
