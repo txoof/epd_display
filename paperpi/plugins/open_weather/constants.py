@@ -20,3 +20,14 @@ abreviations = {'celsius': 'C',
                 'mm': ' mm',
                 }
 
+text = {'t_precipitation': 'Precipitation',
+        't_max': 'Max',
+        't_min': 'Min',
+        't_temperature': 'Temperature',
+        't_wind': 'Wind',
+        't_presure': 'Presure',
+        't_humidity': 'Humidity',
+        't_wind_direction': 'Wind Direction',
+        't_uv_index': 'UV Index',
+        }
+
