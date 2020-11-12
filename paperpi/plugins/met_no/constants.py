@@ -1,5 +1,5 @@
 version = "0.1.0"
-name = "YR Weather"
+name = "Met No Weather"
 
 osm_endpoint = 'https://nominatim.openstreetmap.org/search/'
 osm_query = "?format=json&addressdetails=0&limit=0"

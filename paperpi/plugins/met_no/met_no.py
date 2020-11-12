@@ -20,6 +20,18 @@ import datetime
 
 
 
+try:
+    from . import layout
+    from . import constants
+except ImportError:
+    import layout
+    import constants
+
+
+
+
+
+
 
 
 logger = logging.getLogger(__name__)
@@ -456,5 +468,7 @@ def update_function(self):
 #                'windspeed': 'knot'
 #               }
 # self.cache = CacheFiles()
+
+
 
 
