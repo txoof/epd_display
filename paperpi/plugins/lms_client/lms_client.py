@@ -72,11 +72,12 @@ def update_function(self):
         self.config(`dict`): {
             'player_name': 'LMS Player Name',   # name of player to track
             'idle_timeout': 10,                 # timeout for showing 'pause' screen 
+        }
+        self.cache(`CacheFiles` object)
             
     Args:
         self(namespace): namespace from plugin object
-        
-        }'''
+        '''
     logging.info(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
     # make a shallow copy to make updates possible without impacting origonal obj.
