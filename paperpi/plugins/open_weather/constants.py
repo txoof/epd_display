@@ -9,9 +9,10 @@ yr_endpoint = "https://api.met.no/weatherapi/locationforecast/2.0/complete.json?
 symbol_codes_path = "./images/symbol_codes/"
 wind_barbs_path = "./images/wind_barbs/"
 
-abreviations = {'celsius': 'C',
-                'fahrenheit': 'F',
+abreviations = {'celsius': '°C',
+                'fahrenheit': '°F',
                 'degrees': '',
+                'kelvin': 'K',
                 '1': ' of 1',
                 'inch': ' in',
                 'knot': ' kt',
