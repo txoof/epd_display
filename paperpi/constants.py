@@ -8,17 +8,21 @@ url = 'https://github.com/txoof/epd_display'
 
 ## configuration
 
-
+# default name for configuration file
 config_filename = f'{app_name.lower()}.ini'
 config_base = Path(config_filename).resolve()
+# path for user config file
 config_user = Path(f'~/.config/{devel_name}/{config_filename}').expanduser().resolve()
+# path for system configurationf ile
 config_system = Path(f'/etc/default/{config_filename}').resolve()
 
+# path to logging configuration file
 logging_config = Path('./logging.cfg').resolve()
 
 
 
 # Plugins Information
+# plugin base directory
 plugins = 'plugins'
 
 ## WaveShare Information
