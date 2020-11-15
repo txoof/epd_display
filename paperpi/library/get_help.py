@@ -22,23 +22,25 @@ from pathlib import Path
 
 def get_help(module=None):
     '''display information for a plugin module including:
-        Functions available
-        Layouts defined
-        data keys returned by update_function()
+        * Functions available
+        * Layouts defined
+        * data keys returned by update_function()
         
     Args:
         module(`str`): "plugin_name" or "plugin_name.function" or None for a list of plugins
         when a function is provided, the function is executed'''
    
-
+    plugin_list = []
     if not module:
         p = Path("./plugins/").resolve()
-        print('Usage: $ paperpi -m PLUGIN_NAME|PLUGIN_NAME.FUNCTION')
+        print('get plugin information and user-facing functions:')
+        print('Usage: --plugin_info PLUGIN_NAME|PLUGIN_NAME.FUNCTION')
         print('PLUGINS AVAILABLE:')
         for i in p.glob('*'):
             if i.is_dir() and i.name[0] not in ('_', '.'):
                 print(f'  {i.name}')
-        return
+                plugin_list.append(i.name)
+        return plugin_list
     
     my_module = module.split('.')
     layout_ignore = ['os', 'dir_path']
@@ -64,23 +66,32 @@ def get_help(module=None):
     
     
     if len(my_module) == 1:
+        plugin_list.append(my_module)
         print(f'PLUGIN: {my_module[0]} v:{version}\n')
         members = inspect.getmembers(i)
         for member in members:
             if inspect.isfunction(member[1]):
-                print(f'FUNCTION: {my_module[0]}.{member[0]}')
-                print(member[1].__doc__,'\n')
+                # skip entries that don't have a docstring
+                if not member[1].__doc__:
+                    continue
+                # skip docstrings functions not tagged with '%U' as last characters
+                if member[1].__doc__.endswith('%U'):
+                    print(f'FUNCTION: {my_module[0]}.{member[0]}')
+                    print(member[1].__doc__.replace('%U', ''))
+                    print('_'*75)
+                else:
+                    continue
         try:
             my_dir = dir(getattr(i, 'layout'))
         except AttributeError:
             my_dir =[f'NO LAYOUTS FOUND IN "{my_module[0]}"']
         
-        print('\nLAYOUTS AVAILABLE:')
+        print('LAYOUTS AVAILABLE:')
         for item in my_dir:
             if not item.startswith('__') and not item in layout_ignore:
                 print(f'  {item}')
         
-        print(f'\nDATA KEYS AVAILABLE FOR LAYOUTS IN {my_module[0]}:')
+        print(f'\nDATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY {my_module[0]}:')
         for k in data.keys():
             print(f'   {k}')
         
@@ -101,14 +112,7 @@ def get_help(module=None):
             print(e)
     else:
         pass
-    
-
-
-
-
-
-
-
+    return plugin_list
 
 
 
