@@ -3,7 +3,7 @@ import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-layout = {
+basic_clock = {
     'digit_time': {
         'image': None,
         'max_lines': 2,

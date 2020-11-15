@@ -16,8 +16,10 @@ import logging
 
 try:
     from . import layout
+    from . import constants
 except ImportError:
     import layout 
+    import constants
 
 
 
@@ -112,6 +114,23 @@ def separator(dim, padding, fill=60):
 
 
 def update_function(self=None, time=None):
+    '''update function for dec_binary_clock 
+    provides time as an image in four, four-bit numbers in little-endian format:
+    
+    EXAMPLE:
+    Time 14:49
+    o o | o x
+    o x | x o
+    o o | o o
+    x o | o x 
+    
+    Requirements:
+        None
+        
+    Args:
+        self(`object namespace`)
+        time(`str`): HH:MM formatted string to display (this is primarily for testing)
+    %U'''
     r = 80
     border = 10
     padding = 10
@@ -121,6 +140,8 @@ def update_function(self=None, time=None):
     img_array = []
     return_time = None
 
+    logging.debug(f'TIME = {time}')
+    
     # break the time string into digits if provided
     if time:
         return_time = str(time)
@@ -174,7 +195,7 @@ def update_function(self=None, time=None):
         img.paste(j, [x_pos, y_pos])
         x_pos = x_pos + j.width
     
-    return (True, {'bin_img': img, 'time': return_time, 'mode': None}, 1)
+    return (True, {'bin_img': img, 'time': return_time}, self.max_priority)
 
 
 

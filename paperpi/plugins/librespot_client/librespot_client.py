@@ -41,7 +41,14 @@ logger = logging.getLogger(__name__)
 
 
 def update_function(self):
-    logging.info(f'update_function for plugin {self.name}, version {constants.version}')    
+    '''update function for librespot_client provides now-playing information
+    from a librespot-java service running locally
+    
+    See: 
+      * https://github.com/librespot-org/librespot-java
+      * https://github.com/spocon/spocon -- Raspbian package of librespot
+    %U'''
+    logging.debug(f'update_function for plugin {self.name}, version {constants.version}')    
     is_updated = False
     # make a shallow copy so the data object can be updated through the procedure
     data = copy(constants.data)

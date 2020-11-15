@@ -28,6 +28,15 @@ logging.getLogger(__name__)
 
 
 def update_function(self):
+    '''update function for pi_dash
+    display system information for this raspberry pi
+    
+    Requirements:
+        None
+        
+    Args:
+        self(`namespace`)
+    %U'''
     data = constants.data
     try:
         pi_temp = gpiozero.CPUTemperature()
@@ -48,6 +57,8 @@ def update_function(self):
             'hostname': socket.gethostname()}
     
     return data
+
+
 
 
 

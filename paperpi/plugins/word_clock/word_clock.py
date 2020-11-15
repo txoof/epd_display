@@ -15,10 +15,10 @@ from random import choice
 
 try:
     from . import layout
-    from . import constants_words
+    from . import constants
 except ImportError:
     import layout 
-    import constants_words
+    import constants
 
 
 
@@ -66,54 +66,23 @@ def map_val(a, b, s):
 
 
 
-def update_function(self, time=None):    
+def update_function(self, time=None):
+    '''update function for word_time plugin
+    provides aproximate time in words
+    
+    Example:
+        The time is around ten twenty
+        It is about twenty after eight
+    
+    Args:
+        self(`namespace`)
+        time(`str`): time as a string in format HH:MM (primarily used for testing)
+    %U'''
     logging.info(f'update_function for {self.name}')
-    hours = constants_words.hours
-    minutes = constants_words.minutes
-    stems = constants_words.stems
-# hours = {'1':  ['one', 'late'],
-#          '2':  ['two', 'really late', 'go to bed'],
-#          '3':  ['three', 'too late', "why aren't you in bed"],
-#          '4':  ['four', 'early morning', 'stupid early'],
-#          '5':  ['five', 'crack of dark'],
-#          '6':  ['six', 'crack of dawn'],
-#          '7':  ['seven'],
-#          '8':  ['eight'],
-#          '9':  ['nine'],
-#          '10': ['ten'],
-#          '11': ['eleven'],
-#          '12': ['noon', 'twelve', 'lunch'],
-#          '13': ['one'],
-#          '14': ['two'],
-#          '15': ['three'],
-#          '16': ['four'],
-#          '17': ['five'],
-#          '18': ['six'],
-#          '19': ['seven'],
-#          '20': ['eight'],
-#          '21': ['nine'],
-#          '22': ['ten'],
-#          '23': ['eleven'],
-#          '0' : ['midnight', 'twelve', 'dark']}
-
-# minutes = {'0': ["'o clock", "on the dot"],
-#            '6': ["'o clock", "on the dot"],
-#            '1': ['ten after'],
-#            '2': ['twenty after'],
-#            '3': ['half past', 'thirty after', 'thirty past', ],
-#            '4': ["twenty 'til"],
-#            '5': ["ten 'til"]}
-
-# stems = ['The time is nearly', 
-#          "It is about", 
-#          "It is around", 
-#          "It is almost",
-#          "It is close to",
-#          "It's round about",
-#          "It's nearly",
-#         ]
-
-
+    hours = constants.hours
+    minutes = constants.minutes
+    stems = constants.stems
+    
     if time:
         now = time
         logging.debug(f'using {time}')

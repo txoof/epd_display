@@ -4,6 +4,8 @@
 
 
 
+
+
 from copy import deepcopy
 import requests
 import logging
@@ -32,8 +34,6 @@ except ImportError:
 
 
 
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 
 
 
-def get_coord(place=None):
+def get_coord(*args, **kwargs):
     '''lookup the lat, lon of a place given as a string:
     
     Args:
@@ -52,12 +52,21 @@ def get_coord(place=None):
     Example:
         get_coord("Denver, Colorado, USA")
         get_coord("Bamako, Mali")
-        '''
+        %U'''
+    if args:
+        place = args[0]
+    elif 'place' in kwargs:
+        place = kwargs['place']
+    else:
+        place = None
+    
+    
+    
     lat, lon = None, None
     if not place:
         print('lookup the lat/lon of city, town or geographic area')
-        print('usage: paperpi -m met_no.get_coord "City, Area, Country"')
-        print('paperpi -m met_no.get_coord "Golden Colorado, USA"')
+        print('usage: met_no.get_coord "City, Area, Country"')
+        print('met_no.get_coord "Golden Colorado, USA"')
         return (lat, lon)
     osm_endpoint = constants.osm_endpoint
     osm_query = constants.osm_query
@@ -72,7 +81,7 @@ def get_coord(place=None):
             lat = dictor(result.json()[0], 'lat')
             lon = dictor(result.json()[0], 'lon')
             display_name = dictor(result.json()[0], 'display_name')
-            print(f'{display_name}\n{place}: {float(lat):.3f}, {float(lon):.3f}')
+            print(f'{display_name}\n{place}:\nlat: {float(lat):.3f}\nlon: {float(lon):.3f}')
         else:
             print(f'no data was returned for place: {place}')
             print(f'check the spelling or try a more general query')
@@ -108,11 +117,13 @@ def wind_barb(cache=None, windspeed_ms=None, direction=None):
     
     barb_imgs = [ i for i in Path(constants.wind_barbs_path).glob('*.png')]
     barb_imgs.sort()
+#     logging.debug(f'barb_imgs: {barb_imgs}')
     # wind barbs are graded in knots -- convert from m/s to knot
     windspeed_kt = convert_units(windspeed_ms, 'm/s', 'knot')
     # round direction to the nearest 5 degrees
     direction = 5 * round(direction/5)
     # windspeed under 1 knot use the null image
+    logging.debug(f'ws: {windspeed_kt}, dir: {direction}')
     if windspeed_kt < 1:
         img = barb_imgs[0]
     # windspeeds greater than 105 use the warning symbol
@@ -180,8 +191,15 @@ def process_data(data, meta_data_flat, cache_path):
     # work through each time series
     for index, each_time in enumerate(out): 
         # convert zulu timedate string into human readable time
-        time = dateutil.parser.isoparse(each_time['time'])
+#         time = dateutil.parser.isoparse(each_time['time'])
+        logging.debug(f'converting zulu timestring to local time: {each_time["time"]}')
+        try:
+            time = datetime.datetime.fromisoformat(each_time['time'].replace('Z', '+00:00'))
+        except ValueError as e:
+            time = datetime.datetime.utcnow()
+        
         time_string = time.replace(tzinfo=datetime.timezone.utc).astimezone(tz=None).strftime("%d %h %H:%M")
+        logging.debug(f'local timestring: {time_string}')
         out[index]['forecast_time_local'] = time_string
    
         # pull the details dict for processing
@@ -375,22 +393,28 @@ def post_process(data, self):
 
 
 def update_function(self):
-    '''update_function for met_no Plugin() object to fetch forecast data for a given lat, lon
-        multiple met_no plugins can be active with different locations
+    '''update_function for met_no Plugin() object to fetch forecast data for a lat, lon
     
-    Requirements:
+    multiple met_no plugins can be active each with different locations 
+    
+    all "local" time strings are converted to the system time
+    
+    Configuration Requirements:
         self.config(`dict`): {
             'lat': latitude of forecast location (`float`),
             'lon': longitude of forecast location (`float`),
-            'temp_units': 'celsius' or 'fahrenheit' (`str`),
-            'rain_units': 'mm' or 'inch' (`str`),
-            'windspeed': 'm/s', 'm/h', 'knot', 'k/h'
+            'location_name': name of location (`str`)
+            'email': user contact email address -- required by met.no (`str`)
+            'temp_units': 'celsius' or 'fahrenheit' (`str`), #optional
+            'rain_units': 'mm' or 'inch' (`str`), #optional
+            'windspeed': 'm/s', 'm/h', 'knot', 'k/h' (`str)#optional
         }
         self.cache(`CacheFiles` object)
         
     Args:
-        self(namespace): namespace from plugin object        
-    '''
+        self(namespace): namespace from plugin object
+    
+    %U'''
     is_updated = False
     # build out some sample data in the constants file
     data = {}
@@ -403,17 +427,62 @@ def update_function(self):
                                'location_name': 'Ulaanbaatar, Mongolia',
                                'temp_units': 'celsius',
                                'rain_units': 'mm', 
-                               'windspeed': 'm/s'
+                               'windspeed': 'm/s',
+                               'email': None,
+                               'user_agent': None,
                               }
     
-    for k, v in required_config_options.items():
-        if not k in self.config:
-            logging.info(f'missing configuration value: {k}')
-            logging.info(f'using default value: {v}')
-            self.config[k] = v
+
+    if hasattr(self, 'configured'):
+        pass
+    else:
+        for k, v in required_config_options.items():
+            if not k in self.config:
+                logging.debug(f'missing config value: {k}')
+                logging.debug(f'using config value: {v}')
+                self.config[k] = v
+        if self.config['email']:
+            self.config['user_agent'] = f'{constants.name}, v{constants.version} -- {self.config["email"]}'
+        else:
+            logging.warning('missing email address in configuration file -- cannot create user agent string')
+            self.config['user_agent'] = None
+            
+        self.configured = True
+        
     
+    
+#     if not self.config:
+#         for k, v in required_config_options.items():
+#             if not k in self.config:
+#                 logging.debug(f'missing configuration value: {k}')
+#                 logging.debug(f'using default value: {v}')
+#                 self.config[k] = v
+
+#     if hasattr(self, 'config'):
+#         try:
+#             self.config['user_agent'] = f'{constants.name}, v{constants.version} -- {self.config["email"]}'
+#         except KeyError:
+#             logging.
+#             self.config['email'] = None
+#     else:
+#         logging.warning(f'no email address is set for this plugin -- cannot create user_agent string')
+#         self.config = {}
+#         self.config['user_agent'] = None
+    
+    # build a header see: https://api.met.no/weatherapi/locationforecast/2.0/documentation#AUTHENTICATION
+    if self.config['user_agent']:
+        user_agent = self.config['user_agent']
+        logging.debug(f'user_agent string: {user_agent}')
+    else:
+        logging.warning('no user-agent string available -- cannot complete request')
+        return failure
+        
+    headers = {'User-Agent': user_agent, 
+              'From': self.config['email']}
+        
+                
     try:
-        forecast = requests.get(f"{constants.yr_endpoint}lat={self.config['lat']}&lon={self.config['lon']}")
+        forecast = requests.get(f"{constants.yr_endpoint}lat={self.config['lat']}&lon={self.config['lon']}", headers=headers)
     except RequestException as e:
         logging.warning(e)
         return failure
@@ -427,7 +496,9 @@ def update_function(self):
             logging.warning(f'incomplete data returned; no forecast available')
     else:
         logging.warning(f'failed to fetch data from {constants.yr_endpoint}: status_code: {forecast.status_code}')
-        
+    
+#     return data
+    
     meta_data = dictor(data, 'properties.meta.units')
     timeseries_data = dictor(data, 'properties.timeseries')
 
@@ -450,14 +521,10 @@ def update_function(self):
 
 
 
-# get_coord('Ulaanbaatar, mongolia')
+# from CacheFiles import CacheFiles
+# from SelfDummy import SelfDummy
 
-
-
-
-
-
-# # coord = get_coord('Den Haag, Netherlands')
+# logging.root.setLevel('DEBUG')
 # coord = get_coord('Den Haag, Netherlands')
 # self = SelfDummy()
 # self.config = {'lat': coord[0], 
@@ -465,9 +532,48 @@ def update_function(self):
 #                'location_name': 'Den Haag',
 # #                'temp_units': 'knot',
 # #                'rain_units': 'inch', 
-#                'windspeed': 'knot'
+#                'windspeed': 'knot',
+#                'email': 'aaron.ciuffo@gmail.com'
 #               }
 # self.cache = CacheFiles()
+
+
+
+
+
+
+# i, d, p = update_function(self)
+
+# print(i, p)
+
+
+
+
+
+
+# s = Screen(resolution=(800, 600))
+# l = Layout(resolution=(800, 600))
+# l.layout = layout.three_column_icon_wind_temp_precip
+
+
+
+
+
+
+
+# l.update_contents(d)
+
+# l.concat()
+
+
+
+
+
+
+# from epdlib import Screen
+# from epdlib import Layout
+
+
 
 
 

@@ -65,8 +65,8 @@ logger = logging.getLogger(__name__)
 
 def update_function(self):
     '''update_function for Plugin() object to read data from a 
-        Logitech Media Server and show now-playing information for a single player
-        multiple players can be tracked by adding multiple plugins
+    Logitech Media Server and show now-playing information for a single player
+    multiple players can be tracked by adding multiple plugins
     
     Requirements:
         self.config(`dict`): {
@@ -77,8 +77,12 @@ def update_function(self):
             
     Args:
         self(namespace): namespace from plugin object
-        '''
-    logging.info(f'update_function for plugin {self.name}, version {constants.version}')
+    %U'''
+    def build_lms():
+        logging.debug(f'building LMS Query object for player: {player_name}')
+        self.my_lms = lmsquery.LMSQuery(player_name=player_name)
+    
+    logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
     # make a shallow copy to make updates possible without impacting origonal obj.
     data = copy(constants.data)
@@ -101,8 +105,9 @@ def update_function(self):
     # check if LMS Query object is initiated
     if not hasattr(self, 'my_lms'):
         # add LMSQuery object to self
-        logging.debug(f'building LMS Query object for player: {player_name}')
-        self.my_lms = lmsquery.LMSQuery(player_name=player_name)
+#         logging.debug(f'building LMS Query object for player: {player_name}')
+#         self.my_lms = lmsquery.LMSQuery(player_name=player_name)
+        build_lms()
     try:
         # fetch the now playing data for the player
         now_playing = self.my_lms.now_playing()
@@ -112,6 +117,8 @@ def update_function(self):
             
     except requests.exceptions.ConnectionError as e:
         logging.error(f'could not find player "{player_name}": {e}')
+        logging.info(f'rebuilding LMS Query object for {player_name}')
+        build_lms()
         return failure
     except KeyError as e:
         logging.warning(f'error getting now plyaing information for "{player_name}": KeyError {e}')
@@ -195,10 +202,17 @@ def update_function(self):
 
 
 
-def scan_servers():
+def scan_servers(*args, **kwargs):
     """scan for and list all available LMS Servers and players on the local network
     
-        to use, run: $ paperpi -m lms_client.scan_servers"""
+    usage:
+        lms_client.scan_servers
+        
+    Args:
+        None
+    Returns:
+        None
+    %U"""
     print(f'Scanning for available LMS Server and players')
     servers = lmsquery.LMSQuery().scanLMS()
     if not servers:
