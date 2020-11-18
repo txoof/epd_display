@@ -1,4 +1,3 @@
 config = {
-        'layout': 'basic_clock'
+        'layout': 'layout'
 }
-

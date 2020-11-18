@@ -1,3 +1,8 @@
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# set default layout 
+
 layout = {
     'hostname': {
         'image': None,
@@ -7,7 +12,7 @@ layout = {
         'abs_coordinates': (0, 0),
         'hcenter': True,
         'vcenter': True,
-        'font': '../../fonts/Sarabun/Sarabun-Regular.ttf'
+        'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf'
     },
     'temp_icon': {
         'image': True,
@@ -25,7 +30,7 @@ layout = {
         'height': 2/6,
         'abs_coordinates': (None, None),
         'relative': ('temp_icon', 'hostname'),
-        'font': '../../fonts/Sarabun/Sarabun-Regular.ttf',
+        'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf',
         'hcenter': False,
         'vcenter': True
     },
@@ -45,7 +50,7 @@ layout = {
         'height': 2/6,
         'abs_coordinates': (None, None),
         'relative': ('cpu_icon', 'hostname'),
-        'font': '../../fonts/Sarabun/Sarabun-Regular.ttf',
+        'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf',
         'hcenter': False,
         'vcenter': True
     },   
@@ -65,7 +70,7 @@ layout = {
         'height': 2/6,
         'abs_coordinates': (None, None),
         'relative': ('disk_icon', 'temp'),
-        'font': '../../fonts/Sarabun/Sarabun-Regular.ttf',
+        'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf',
         'hcenter': True,
         'vcenter': True
     },
@@ -78,6 +83,6 @@ layout = {
         'hcenter': True,
         'vcenter': True,
         'relative': ('pi_model', 'disk_icon'),
-        'font': '../../fonts/Sarabun/Sarabun-Regular.ttf'
+        'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf'
     },    
 }

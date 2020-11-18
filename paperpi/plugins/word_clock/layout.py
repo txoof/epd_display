@@ -1,7 +1,6 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
 word_clock_lg = {
   'wordtime':
          {'image': None,
@@ -61,3 +60,6 @@ word_clock = {
           'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
           'font_size': None},
 }
+
+# set default layout here
+layout = word_clock_lg

@@ -209,3 +209,5 @@ twoRowSmall = {
              'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None},
 }
+
+layout = twoColumnThreeRows

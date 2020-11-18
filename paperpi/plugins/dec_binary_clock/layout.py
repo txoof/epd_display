@@ -31,3 +31,6 @@ dec_binary_clock = {
            'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
            'font_size': None},
 }
+
+# default layout
+layout = dec_binary_clock

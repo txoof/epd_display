@@ -14,3 +14,6 @@ basic_clock = {
         'font': dir_path+'/../../fonts/Kanit/Kanit-Medium.ttf',
     },
 }
+
+# set the default layout here
+layout = basic_clock

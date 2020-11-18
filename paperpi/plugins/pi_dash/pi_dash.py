@@ -38,13 +38,14 @@ def update_function(self):
         self(`namespace`)
     %U'''
     data = constants.data
+    failure = False, data, self.max_priority
     try:
         pi_temp = gpiozero.CPUTemperature()
         pi_load = gpiozero.LoadAverage()
         pi_disk = gpiozero.DiskUsage()
         pi_info = gpiozero.pi_info()
     except gpiozero.GPIOZeroError:
-        return data
+        return failure
 
     
     data = {'temp': f'{int(pi_temp.temperature)}C', 
@@ -56,7 +57,7 @@ def update_function(self):
             'pi_model': f'Pi {pi_info.model} rev {pi_info.revision}',
             'hostname': socket.gethostname()}
     
-    return data
+    return True, data, self.max_priority
 
 
 
