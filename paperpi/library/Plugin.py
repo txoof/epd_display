@@ -48,24 +48,15 @@ def strict_enforce(*types):
 
 
 
-class SelfDummy:
-    '''dummy class for testing plugins'''
-    def __init__(self):
-        self.layout = {}
-        self.max_priority = 1
-        self.min_display_time = 20
-        self.refresh_rate = 2
-
-
-
-
-
-
 class Plugin:
     '''Plugin class for creating and managing plugins'''
-    def __init__(self, resolution, name=None, layout={}, 
-                 update_function=None, max_priority=-1,
-                 refresh_rate=60, min_display_time=30, config={},
+    def __init__(self, resolution, name=None, 
+                 layout={}, 
+                 update_function=None, 
+                 max_priority=-1,
+                 refresh_rate=60, 
+                 min_display_time=30, 
+                 config={},
                  cache=None,
                  **kwargs):
         '''Create a plugin object that provides consistent methods for providing an image and querying
