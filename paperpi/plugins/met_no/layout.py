@@ -380,3 +380,6 @@ two_column_icon_wind_temp_precip = {
         'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf'
     },
 }
+
+# default layout
+layout = three_column_icon_wind_temp_precip

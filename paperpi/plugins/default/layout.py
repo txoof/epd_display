@@ -23,3 +23,6 @@ default = {
         'font': dir_path+'/../../fonts/Kanit/Kanit-Medium.ttf',
     },
 }
+
+# default layout
+layout = default
