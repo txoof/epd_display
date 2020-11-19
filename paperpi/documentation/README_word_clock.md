@@ -1,5 +1,5 @@
 # word_clock
-![sample image for plugin word_clock](../documentation/images/word_clock_sample.png)
+![sample image for plugin word_clock](documentation/images/word_clock_sample.png)
 ```
 
 PLUGIN: word_clock v:0.1.0
@@ -19,6 +19,17 @@ update function for word_time plugin
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.word_clock.word_clock
+
+[Plugin: Word Clock]
+layout = layout
+plugin = word_clock
+refresh_rate = 100
+min_display_time = 30
+max_priority = 2
+
 
 LAYOUTS AVAILABLE:
   layout

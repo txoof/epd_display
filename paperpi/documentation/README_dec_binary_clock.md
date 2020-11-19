@@ -1,5 +1,5 @@
 # dec_binary_clock
-![sample image for plugin dec_binary_clock](../documentation/images/dec_binary_clock_sample.png)
+![sample image for plugin dec_binary_clock](documentation/images/dec_binary_clock_sample.png)
 ```
 
 PLUGIN: dec_binary_clock v:0.1.0
@@ -25,6 +25,17 @@ update function for dec_binary_clock
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.dec_binary_clock.dec_binary_clock
+
+[Plugin: decimal binary clock]
+layout = layout
+plugin = dec_bin_clock
+refresh_rate = 55
+min_display_time = 60
+max_priority = 2
+
 
 LAYOUTS AVAILABLE:
   dec_binary_clock

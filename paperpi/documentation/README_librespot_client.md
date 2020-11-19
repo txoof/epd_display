@@ -1,5 +1,5 @@
 # librespot_client
-![sample image for plugin librespot_client](../documentation/images/librespot_client_sample.png)
+![sample image for plugin librespot_client](documentation/images/librespot_client_sample.png)
 ```
 
 PLUGIN: librespot_client v:0.1.0
@@ -15,6 +15,20 @@ update function for librespot_client provides now-playing information
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.librespot_client.librespot_client
+
+[Plugin: Librespot]
+layout = layout
+plugin = librespot_client
+max_priority = 0
+min_display_time = 15
+# name of librespot player
+player_name = SpoCon-Spotify
+# time in seconds before plugin is removed from the display loop
+idle_timeout = 10
+
 
 LAYOUTS AVAILABLE:
   layout

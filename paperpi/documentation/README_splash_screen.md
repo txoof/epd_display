@@ -1,5 +1,5 @@
 # splash_screen
-![sample image for plugin splash_screen](../documentation/images/splash_screen_sample.png)
+![sample image for plugin splash_screen](documentation/images/splash_screen_sample.png)
 ```
 
 PLUGIN: splash_screen v:0.1.0
@@ -20,6 +20,10 @@ update function for splash_screen
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.splash_screen.splash_screen
+no sample configuration provided in plugins.splash_screen.splash_screen.constants
 
 LAYOUTS AVAILABLE:
   layout

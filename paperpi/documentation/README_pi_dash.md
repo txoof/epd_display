@@ -1,5 +1,5 @@
 # pi_dash
-![sample image for plugin pi_dash](../documentation/images/pi_dash_sample.png)
+![sample image for plugin pi_dash](documentation/images/pi_dash_sample.png)
 ```
 
 PLUGIN: pi_dash v:0.1.0
@@ -17,6 +17,17 @@ update function for pi_dash
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.pi_dash.pi_dash
+
+[Plugin: Pi Dashboard]
+layout = layout
+plugin = pi_dash
+refresh_rate = 25
+min_display_time = 30
+max_priority = 2
+
 
 LAYOUTS AVAILABLE:
   layout

@@ -1,18 +1,22 @@
 # met_no
-![sample image for plugin met_no](../documentation/images/met_no_sample.png)
+![sample image for plugin met_no](documentation/images/met_no_sample.png)
 ```
 
 PLUGIN: met_no v:0.1.0
 
 
 FUNCTION: get_coord
-lookup the lat, lon of a place given as a string:
+USER FACING HELPER FUNCTION:
+    lookup and print the latitude, longitude of a place given as a string:
+    
+    usage: --run_plugin_func met_no.get_coord "Horsetooth Reservoir, Fort Collins CO, USA"
     
     Args:
         place(`str`): "City, Provence, Country
     
     Returns:
         `tuple`: lat, lon
+        
     Example:
         get_coord("Denver, Colorado, USA")
         get_coord("Bamako, Mali")
@@ -44,6 +48,21 @@ update_function for met_no Plugin() object to fetch forecast data for a lat, lon
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.met_no.met_no
+
+[Plugin: Weather Adis Ababa]
+layout = layout
+plugin = met_no
+refresh_rate = 300
+min_display_time = 40
+location_name = Adis Ababa
+lat = 9.000
+lon = 38.750
+# this is required by Met.no -- please use a real value
+email = you@host.diamond
+
 
 LAYOUTS AVAILABLE:
   layout

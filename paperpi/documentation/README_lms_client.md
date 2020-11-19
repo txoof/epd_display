@@ -1,15 +1,16 @@
 # lms_client
-![sample image for plugin lms_client](../documentation/images/lms_client_sample.png)
+![sample image for plugin lms_client](documentation/images/lms_client_sample.png)
 ```
 
 PLUGIN: lms_client v:0.1.0
 
 
 FUNCTION: scan_servers
-scan for and list all available LMS Servers and players on the local network
+USER FACING HELPER FUNCTION:
+    scan local network for LMS servers; print list of servers players for first server
     
     usage:
-        lms_client.scan_servers
+        --run_plugin_func lms_client.scan_servers
         
     Args:
         None
@@ -35,6 +36,18 @@ update_function for Plugin() object to read data from a
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.lms_client.lms_client
+
+[Plugin: LMS - Your Player Name]
+layout = layout
+plugin = lms_client
+player_name = Your Player Name
+min_display_time = 30
+max_priority = 0
+idle_timeout = 15
+
 
 LAYOUTS AVAILABLE:
   layout

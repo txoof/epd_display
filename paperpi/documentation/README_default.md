@@ -1,5 +1,5 @@
 # default
-![sample image for plugin default](../documentation/images/default_sample.png)
+![sample image for plugin default](documentation/images/default_sample.png)
 ```
 
 PLUGIN: default v:0.1.0
@@ -16,6 +16,10 @@ Plugin() update function providing time string in the format HH:MM:SS and messag
     
 ___________________________________________________________________________
  
+
+
+SAMPLE CONFIGURATION FOR plugins.default.default
+no sample configuration provided in plugins.default.default.constants
 
 LAYOUTS AVAILABLE:
   default
