@@ -218,7 +218,8 @@ def update_function(self):
 
 
 def scan_servers(*args, **kwargs):
-    """scan local network for LMS servers; print list of servers players for first server
+    """USER FACING HELPER FUNCTION:
+    scan local network for LMS servers; print list of servers players for first server
     
     usage:
         --run_plugin_func lms_client.scan_servers

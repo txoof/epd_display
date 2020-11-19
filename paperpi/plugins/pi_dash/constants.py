@@ -8,3 +8,12 @@ data  = {'temp': '0',
          'disk_icon': './images/SSD_icon.png',
          'pi_model': 'Unknown',
          'hostname': 'Unknown'}
+
+sample_config = '''
+[Plugin: Pi Dashboard]
+layout = layout
+plugin = pi_dash
+refresh_rate = 25
+min_display_time = 30
+max_priority = 2
+'''

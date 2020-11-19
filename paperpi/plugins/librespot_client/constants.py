@@ -38,3 +38,15 @@ spot_map = {
   'player': 'device.name',
   'id': 'item.id',
 }
+
+sample_config = '''
+[Plugin: Librespot]
+layout = layout
+plugin = librespot_client
+max_priority = 0
+min_display_time = 15
+# name of librespot player
+player_name = SpoCon-Spotify
+# time in seconds before plugin is removed from the display loop
+idle_timeout = 10
+'''

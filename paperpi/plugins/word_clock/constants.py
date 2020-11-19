@@ -49,4 +49,11 @@ stems = ['The time is nearly',
          "It's nearly",
         ]
 
-
+sample_config = '''
+[Plugin: Word Clock]
+layout = layout
+plugin = word_clock
+refresh_rate = 100
+min_display_time = 30
+max_priority = 2
+'''

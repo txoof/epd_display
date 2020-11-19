@@ -13,3 +13,12 @@ data = {
         'coverart': 'None',
         'mode': 'None'
     }
+sample_config = '''
+[Plugin: LMS - Your Player Name]
+layout = layout
+plugin = lms_client
+player_name = Your Player Name
+min_display_time = 30
+max_priority = 0
+idle_timeout = 15
+'''

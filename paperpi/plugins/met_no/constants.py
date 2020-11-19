@@ -38,3 +38,15 @@ text = {'t_precipitation': 'Precipitation',
         't_uv_index': 'UV Index',
         }
 
+sample_config = '''
+[Plugin: Weather Adis Ababa]
+layout = layout
+plugin = met_no
+refresh_rate = 300
+min_display_time = 40
+location_name = Adis Ababa
+lat = 9.000
+lon = 38.750
+# this is required by Met.no -- please use a real value
+email = you@host.diamond
+'''
