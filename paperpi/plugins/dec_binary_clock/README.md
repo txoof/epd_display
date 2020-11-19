@@ -1,5 +1,5 @@
 # mod_name
-![sample image for plugin <module 'plugins.dec_binary_clock' from '/home/pi/src/epd_display/paperpi/plugins/dec_binary_clock/__init__.py'>](../documentation/images/dec_binary_clock_sample.png)
+![sample image for plugin dec_binary_clock](../documentation/images/dec_binary_clock_sample.png)
 ```
 
 FUNCTION: update_function

@@ -1,5 +1,5 @@
 # mod_name
-![sample image for plugin <module 'plugins.met_no' from '/home/pi/src/epd_display/paperpi/plugins/met_no/__init__.py'>](../documentation/images/met_no_sample.png)
+![sample image for plugin met_no](../documentation/images/met_no_sample.png)
 ```
 
 FUNCTION: update_function

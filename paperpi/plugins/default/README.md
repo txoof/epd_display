@@ -1,5 +1,5 @@
 # mod_name
-![sample image for plugin <module 'plugins.default' from '/home/pi/src/epd_display/paperpi/plugins/default/__init__.py'>](../documentation/images/default_sample.png)
+![sample image for plugin default](../documentation/images/default_sample.png)
 ```
 
 FUNCTION: update_function
