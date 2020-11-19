@@ -147,6 +147,33 @@ def get_data_keys(module):
 
 
 
+def get_sample_config(module):
+    '''return sample configuration
+    
+    Args:
+        module: python module
+        
+    Returns:
+        string containing sample configuration if it exists'''
+    
+    mls = multi_line_string()
+    sample_config = None
+    try:
+        sample_config = module.constants.sample_config
+    except AttributeError:
+        sample_config = f'no sample configuration provided in {module.__name__}.constants'
+        
+    mls.string = f'\nSAMPLE CONFIGURATION FOR {module.__name__}'
+    mls.string = sample_config
+    
+    return mls.string
+    
+
+
+
+
+
+
 def get_doc_string(module, function):
     '''return a docstring for a function from within a module
         
@@ -185,7 +212,7 @@ def get_help(module=None, print_help=True):
         mls.string = 'PLUGINS AVAILABLE:'
         for i in get_modules():
             mls.string = f'  {i}'
-        return
+        return mls.string
     
     my_module = module.split('.')
     
@@ -205,7 +232,7 @@ def get_help(module=None, print_help=True):
         plugin_list.append(my_module)
         mls.string = f'PLUGIN: {my_module[0]} v:{version}\n'
         mls.string = get_module_docs(i)
-
+        mls.string = get_sample_config(i)
         mls.string = get_layouts(i)
         mls.string = get_data_keys(i)
                
