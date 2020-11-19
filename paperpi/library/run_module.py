@@ -16,8 +16,8 @@ from pathlib import Path
 def run_module(module_args=[]):
     def print_usage():
         print('Usage:')
-        print('-r plugin.function [ARG1] [ARG2]')
-        print('\nor for more information:\n-m plugin')
+        print('--run_plugin_func plugin.function [ARG1] [ARG2]')
+        print('\nor for more information:\n--plugin_info plugin')
         
     if not module_args:
         print_usage()
