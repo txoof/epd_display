@@ -1,5 +1,5 @@
 # mod_name
-![sample image for plugin <module 'plugins.lms_client' from '/home/pi/src/epd_display/paperpi/plugins/lms_client/__init__.py'>](../documentation/images/lms_client_sample.png)
+![sample image for plugin lms_client](../documentation/images/lms_client_sample.png)
 ```
 
 FUNCTION: update_function

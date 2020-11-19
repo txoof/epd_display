@@ -1,5 +1,5 @@
 # mod_name
-![sample image for plugin <module 'plugins.word_clock' from '/home/pi/src/epd_display/paperpi/plugins/word_clock/__init__.py'>](../documentation/images/word_clock_sample.png)
+![sample image for plugin word_clock](../documentation/images/word_clock_sample.png)
 ```
 
 FUNCTION: update_function
