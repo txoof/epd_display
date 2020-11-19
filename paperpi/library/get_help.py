@@ -167,7 +167,7 @@ def get_doc_string(module, function):
 
 
 
-def get_help(module=None):
+def get_help(module=None, print_help=True):
     '''display information for a plugin module including:
         * Functions available
         * Layouts defined
@@ -176,15 +176,15 @@ def get_help(module=None):
     Args:
         module(`str`): "plugin_name" or "plugin_name.function" or None for a list of plugins
         when a function is provided, the function is executed'''
-   
+    mls = multi_line_string()
     plugin_list = []
     if not module:
         p = Path("./plugins/").resolve()
-        print('get plugin information and user-facing functions:')
-        print('Usage: --plugin_info PLUGIN_NAME|PLUGIN_NAME.FUNCTION')
-        print('PLUGINS AVAILABLE:')
+        mls.string = 'get plugin information and user-facing functions:'
+        mls.string = 'Usage: --plugin_info PLUGIN_NAME|PLUGIN_NAME.FUNCTION'
+        mls.string = 'PLUGINS AVAILABLE:'
         for i in get_modules():
-            print(f'  {i}')
+            mls.string = f'  {i}'
         return
     
     my_module = module.split('.')
@@ -193,7 +193,7 @@ def get_help(module=None):
     try:
         i = importlib.import_module(f'plugins.{my_module[0]}.{my_module[0]}')
     except Exception as e:
-        print(f'error gathering information for module {e}')
+        mls.string = f'error gathering information for module {e}'
         return 
         
     try:
@@ -203,16 +203,20 @@ def get_help(module=None):
     
     if len(my_module) == 1:
         plugin_list.append(my_module)
-        print(f'PLUGIN: {my_module[0]} v:{version}\n')
-        print(get_module_docs(i))
+        mls.string = f'PLUGIN: {my_module[0]} v:{version}\n'
+        mls.string = get_module_docs(i)
 
-        print(get_layouts(i))
-        print(get_data_keys(i))
+        mls.string = get_layouts(i)
+        mls.string = get_data_keys(i)
                
     elif len(my_module) > 1:
-        print(get_doc_string(i, my_module[1]))
+        mls.string = get_doc_string(i, my_module[1])
     else:
         pass
+    
+    if print_help:
+        print(mls.string)
+    return mls.string
 
 
 

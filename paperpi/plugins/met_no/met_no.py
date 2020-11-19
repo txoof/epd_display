@@ -6,6 +6,7 @@
 
 
 
+
 from copy import deepcopy
 import requests
 import logging
@@ -42,13 +43,17 @@ logger = logging.getLogger(__name__)
 
 
 def get_coord(*args, **kwargs):
-    '''lookup the lat, lon of a place given as a string:
+    '''USER FACING HELPER FUNCTION:
+    lookup and print the latitude, longitude of a place given as a string:
+    
+    usage: --run_plugin_func met_no.get_coord "Horsetooth Reservoir, Fort Collins CO, USA"
     
     Args:
         place(`str`): "City, Provence, Country
     
     Returns:
         `tuple`: lat, lon
+        
     Example:
         get_coord("Denver, Colorado, USA")
         get_coord("Bamako, Mali")

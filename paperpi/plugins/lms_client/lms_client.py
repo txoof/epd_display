@@ -23,6 +23,13 @@ from copy import copy
 
 
 
+import QueryLMS
+
+
+
+
+
+
 import sys
 from pathlib import Path
 
@@ -80,7 +87,8 @@ def update_function(self):
     %U'''
     def build_lms():
         logging.debug(f'building LMS Query object for player: {player_name}')
-        self.my_lms = lmsquery.LMSQuery(player_name=player_name)
+#         self.my_lms = lmsquery.LMSQuery(player_name=player_name)
+        self.my_lms = QueryLMS.QueryLMS(player_name=player_name)
     
     logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
@@ -110,19 +118,26 @@ def update_function(self):
         build_lms()
     try:
         # fetch the now playing data for the player
-        now_playing = self.my_lms.now_playing()
+        now_playing = self.my_lms.get_now_playing()
         # remove the time key to make comparisions now_playing data updates easier in the Plugin class
         if 'time' in now_playing:
             now_playing.pop('time')
-            
+    
+    # this should cover most network related errors
     except requests.exceptions.ConnectionError as e:
-        logging.error(f'could not find player "{player_name}": {e}')
+        logging.error(f'network error finding player "{player_name}": {e}')
         logging.info(f'rebuilding LMS Query object for {player_name}')
         build_lms()
         return failure
+    # if no data is returned, pulling 'time' key throws key error
     except KeyError as e:
         logging.warning(f'error getting now plyaing information for "{player_name}": KeyError {e}')
         logging.warning('this error is typical of newly added player or player that has no "now playing" data')
+        return failure
+    # QueryLMS throws ValueError if player_id is not set 
+    except ValueError as e:
+        logging.warning(f'could not get now playing information for "{player_name}": ValueError {e}')
+        logging.warning(f'check player_name in config file. Is "{player_name}" connected to the LMS server?')
         return failure
     
     
@@ -181,7 +196,7 @@ def update_function(self):
 
 # self = SelfDummy()
 # self.max_priority = 0
-# self.config = {'player_name': 'MacPlay',
+# self.config = {'player_name': 'slimpi',
 #                'idle_timeout': 5}
 # self.cache = CacheFiles()
 
@@ -203,10 +218,10 @@ def update_function(self):
 
 
 def scan_servers(*args, **kwargs):
-    """scan for and list all available LMS Servers and players on the local network
+    """scan local network for LMS servers; print list of servers players for first server
     
     usage:
-        lms_client.scan_servers
+        --run_plugin_func lms_client.scan_servers
         
     Args:
         None
@@ -214,13 +229,13 @@ def scan_servers(*args, **kwargs):
         None
     %U"""
     print(f'Scanning for available LMS Server and players')
-    servers = lmsquery.LMSQuery().scanLMS()
+    servers = QueryLMS.QueryLMS().scan_lms()
     if not servers:
         print('Error: no LMS servers were found on the network. Is there one running?')
         do_exit(1)
     print('servers found:')
     print(servers)
-    players = lmsquery.LMSQuery().get_players()
+    players = QueryLMS.QueryLMS().get_players()
     # print selected keys for each player
     keys = ['name', 'playerid', 'modelname']
     for p in players:
@@ -231,6 +246,7 @@ def scan_servers(*args, **kwargs):
             print('\n')
         except KeyError as e:
             pass 
+
 
 
 
