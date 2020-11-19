@@ -1,6 +1,9 @@
-# mod_name
+# default
 ![sample image for plugin default](../documentation/images/default_sample.png)
 ```
+
+PLUGIN: default v:0.1.0
+
 
 FUNCTION: update_function
 Plugin() update function providing time string in the format HH:MM:SS and message
@@ -13,4 +16,13 @@ Plugin() update function providing time string in the format HH:MM:SS and messag
     
 ___________________________________________________________________________
  
+
+LAYOUTS AVAILABLE:
+  default
+  layout
+
+
+DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.default.default:
+   digit_time
+   msg
 ```

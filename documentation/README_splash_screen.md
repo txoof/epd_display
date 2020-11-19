@@ -1,6 +1,9 @@
-# mod_name
+# splash_screen
 ![sample image for plugin splash_screen](../documentation/images/splash_screen_sample.png)
 ```
+
+PLUGIN: splash_screen v:0.1.0
+
 
 FUNCTION: update_function
 update function for splash_screen
@@ -17,4 +20,13 @@ update function for splash_screen
     
 ___________________________________________________________________________
  
+
+LAYOUTS AVAILABLE:
+  layout
+
+
+DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.splash_screen.splash_screen:
+   app_name
+   version
+   url
 ```

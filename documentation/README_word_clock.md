@@ -1,6 +1,9 @@
-# mod_name
+# word_clock
 ![sample image for plugin word_clock](../documentation/images/word_clock_sample.png)
 ```
+
+PLUGIN: word_clock v:0.1.0
+
 
 FUNCTION: update_function
 update function for word_time plugin
@@ -16,4 +19,14 @@ update function for word_time plugin
     
 ___________________________________________________________________________
  
+
+LAYOUTS AVAILABLE:
+  layout
+  word_clock
+  word_clock_lg
+
+
+DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.word_clock.word_clock:
+   word_time
+   time
 ```
