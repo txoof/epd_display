@@ -6,9 +6,9 @@ PLUGIN: default v:0.1.0
 
 
 FUNCTION: update_function
-Plugin() update function providing time string in the format HH:MM:SS and message
+update function for default provides time string and message
     
-    This plugin will display if all other plugins fail to load
+    This plugin is designed to display if all other plugins fail to load
     
     Args:
         self(`namespace`)

@@ -115,7 +115,11 @@ def separator(dim, padding, fill=60):
 
 def update_function(self=None, time=None):
     '''update function for dec_binary_clock 
-    provides time as an image in four, four-bit numbers in little-endian format:
+    
+    This plugin provides time as an image and string in 
+    four, four-bit numbers in little-endian format (see EXAMPLE).
+    
+    
     
     EXAMPLE:
     Time 14:49
@@ -130,6 +134,10 @@ def update_function(self=None, time=None):
     Args:
         self(`object namespace`)
         time(`str`): HH:MM formatted string to display (this is primarily for testing)
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
+        
     %U'''
     r = 80
     border = 10

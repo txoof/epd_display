@@ -38,19 +38,6 @@ from pathlib import Path
 
 
 
-# # two different import modes for development or distribution
-# try:
-#     # import from other modules above this level
-#     from .layout import layout
-# except ImportError:
-#     # development in jupyter notebook
-#     from layout import layout
-
-
-
-
-
-
 try:
     from . import layout
     from . import constants
@@ -71,10 +58,30 @@ logger = logging.getLogger(__name__)
 
 
 def update_function(self):
-    '''update_function for Plugin() object to read data from a 
-    Logitech Media Server and show now-playing information for a single player
-    multiple players can be tracked by adding multiple plugins
+    '''update_function for lms_client provides now-playing LMS information
     
+    
+    This plugin provides now playing information pulled from a Logitech Media Server 
+    and shows now-playing information for a single player multiple players 
+    can be tracked by adding multiple plugins sections in the config file
+    
+    This plugin pulls and displays information from a Logitech Media Server
+    instance running on the local network. 
+    
+    See: 
+      * https://mysqueezebox.com/download
+    
+    This plugin dynamically changes the priority depending on the status of the librespot
+    player. Remember, lower priority values are considered **more** important
+    Condition         Priority
+    ------------------------------
+    playing           max_priority
+    track change      max_priority -1
+    paused            max_priority +1
+    stopped           max_priority +3
+    non-functional    32,768 (2^15)
+
+
     Requirements:
         self.config(`dict`): {
             'player_name': 'LMS Player Name',   # name of player to track
@@ -84,6 +91,9 @@ def update_function(self):
             
     Args:
         self(namespace): namespace from plugin object
+        
+    Returns:
+        tuple: is_updated(bool), data(dict), 
     %U'''
     def build_lms():
         logging.debug(f'building LMS Query object for player: {player_name}')
@@ -247,14 +257,6 @@ def scan_servers(*args, **kwargs):
             print('\n')
         except KeyError as e:
             pass 
-
-
-
-
-
-
-
-
 
 
 

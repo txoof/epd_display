@@ -6,16 +6,18 @@ PLUGIN: word_clock v:0.1.0
 
 
 FUNCTION: update_function
-update function for word_time plugin
-    provides aproximate time in words
+update function for word_clock provides time as text
     
-    Example:
-        The time is around ten twenty
-        It is about twenty after eight
+    This plugin provides the time as a string such as:
+        * The time is around ten twenty
+        * It is about twenty after eight
     
     Args:
         self(`namespace`)
         time(`str`): time as a string in format HH:MM (primarily used for testing)
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))    
     
 ___________________________________________________________________________
  

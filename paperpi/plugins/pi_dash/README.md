@@ -6,14 +6,18 @@ PLUGIN: pi_dash v:0.1.0
 
 
 FUNCTION: update_function
-update function for pi_dash
-    display system information for this raspberry pi
+update function for pi_dash providing basic system information
     
-    Requirements:
-        None
+    This plugin displays system information for this raspberry pi and 
+    requires that the user running this plugin has access to the GPIO
+    group.
         
     Args:
         self(`namespace`)
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
+        
     
 ___________________________________________________________________________
  

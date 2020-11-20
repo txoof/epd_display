@@ -6,8 +6,10 @@ PLUGIN: splash_screen v:0.1.0
 
 
 FUNCTION: update_function
-update function for splash_screen
-    provides a basic splash screen with application name, version and url
+update function for splash_screen provides program name, version, url
+    
+    This plugin provides a basic splash screen with application 
+    name, version and url
     
     Requirements:
         None
@@ -17,6 +19,9 @@ update function for splash_screen
         app_name(`str`): application name
         version(`str`): version number
         url(`str`) url
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))        
     
 ___________________________________________________________________________
  

@@ -71,7 +71,7 @@ layout = {
         'abs_coordinates': (None, None),
         'relative': ('disk_icon', 'temp'),
         'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf',
-        'hcenter': True,
+        'hcenter': False,
         'vcenter': True
     },
     'pi_model': {
@@ -84,5 +84,14 @@ layout = {
         'vcenter': True,
         'relative': ('pi_model', 'disk_icon'),
         'font': dir_path+'/../../fonts/Sarabun/Sarabun-Regular.ttf'
-    },    
+    },
+    'pi_logo': {
+        'image': True,
+        'width': 1/4,
+        'height': 2/6,
+        'abs_coordinates': (None, None),
+        'relative': ('disk_use', 'cpu_icon'),
+        'hcenter': True,
+        'vcenter': True,
+    },
 }

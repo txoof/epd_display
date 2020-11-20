@@ -41,12 +41,40 @@ logger = logging.getLogger(__name__)
 
 
 def update_function(self):
-    '''update function for librespot_client provides now-playing information
-    from a librespot-java service running locally
+    '''update function for librespot_client provides now-playing Spotify information
+    
+    This plugin pulls and displays information from a Librespot-Java instance running
+    on the same host. SpoCon is a debian package that installs and configures
+    the Librespot service easily.
     
     See: 
       * https://github.com/librespot-org/librespot-java
       * https://github.com/spocon/spocon -- Raspbian package of librespot
+
+    
+    This plugin dynamically changes the priority depending on the status of the librespot
+    player. Remember, lower priority values are considered **more** important
+    Condition         Priority
+    ------------------------------
+    playing           max_priority
+    track change      max_priority -1
+    paused            max_priority +1
+    stopped           max_priority +3
+    non-functional    32,768 (2^15)
+
+      
+    Requirements:
+        self.config(`dict`): {
+        'player_name': 'SpoCon-Player',   # name of player to track
+        'idle_timeout': 10,               # timeout for disabling plugin
+    }
+    self.cache(`CacheFiles` object)
+
+    Args:
+        self(namespace): namespace from plugin object
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))        
     %U'''
     logging.debug(f'update_function for plugin {self.name}, version {constants.version}')    
     is_updated = False
@@ -122,7 +150,7 @@ def update_function(self):
     if playing is True:
         logging.debug(f'{self.config["player_name"]} is playing')
         data['mode'] = 'play'
-        # if the data has changed, bump the priority 
+        # if the data has not changed, keep priority; else, bump the priority 
         if self.data == data:
             logging.debug('data matches')
             priority = self.max_priority

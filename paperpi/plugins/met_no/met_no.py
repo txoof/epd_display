@@ -398,11 +398,15 @@ def post_process(data, self):
 
 
 def update_function(self):
-    '''update_function for met_no Plugin() object to fetch forecast data for a lat, lon
+    '''update function for met_no plugin provides extensive forecast data
     
-    multiple met_no plugins can be active each with different locations 
+    This plugin provides hourly forecast data for a given location. 
+    Data is pulled from the Norwegian Meterological Institute (met.no)
+    Multiple met_no plugins can be active each with different locations 
     
-    all "local" time strings are converted to the system time
+    Forecast images are provided courtesy of Met.no
+    
+    All "local" time strings are converted to the system time
     
     Configuration Requirements:
         self.config(`dict`): {
@@ -419,6 +423,8 @@ def update_function(self):
     Args:
         self(namespace): namespace from plugin object
     
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
     %U'''
     is_updated = False
     # build out some sample data in the constants file

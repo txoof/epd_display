@@ -7,7 +7,11 @@ PLUGIN: dec_binary_clock v:0.1.0
 
 FUNCTION: update_function
 update function for dec_binary_clock 
-    provides time as an image in four, four-bit numbers in little-endian format:
+    
+    This plugin provides time as an image and string in 
+    four, four-bit numbers in little-endian format (see EXAMPLE).
+    
+    
     
     EXAMPLE:
     Time 14:49
@@ -22,6 +26,10 @@ update function for dec_binary_clock
     Args:
         self(`object namespace`)
         time(`str`): HH:MM formatted string to display (this is primarily for testing)
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
+        
     
 ___________________________________________________________________________
  

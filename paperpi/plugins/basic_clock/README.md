@@ -11,8 +11,9 @@ provides system time string in the format HH:MM
     Args:
         None
     
+
     Returns:
-        dict: {'digit_time': HH:MM string}
+        tuple: (is_updated(bool), data(dict), priority(int))
     
 ___________________________________________________________________________
  

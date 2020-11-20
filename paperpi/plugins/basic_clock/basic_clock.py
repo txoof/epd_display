@@ -40,8 +40,9 @@ def update_function(self):
     Args:
         None
     
+
     Returns:
-        dict: {'digit_time': HH:MM string}
+        tuple: (is_updated(bool), data(dict), priority(int))
     %U'''
     data = {'digit_time': datetime.now().strftime("%H:%M")}
     priority = self.max_priority

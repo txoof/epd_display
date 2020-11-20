@@ -19,8 +19,10 @@ except ImportError:
 
 
 def update_function(self, app_name, version, url):
-    '''update function for splash_screen
-    provides a basic splash screen with application name, version and url
+    '''update function for splash_screen provides program name, version, url
+    
+    This plugin provides a basic splash screen with application 
+    name, version and url
     
     Requirements:
         None
@@ -30,6 +32,9 @@ def update_function(self, app_name, version, url):
         app_name(`str`): application name
         version(`str`): version number
         url(`str`) url
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))        
     %U'''
     return(True, {'app_name': app_name, 'version': version, 'url': url}, -1)
 

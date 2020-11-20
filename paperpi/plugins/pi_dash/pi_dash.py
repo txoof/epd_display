@@ -7,6 +7,7 @@
 import gpiozero
 import socket
 import logging
+from pathlib import Path
 
 try:
     from . import layout
@@ -20,7 +21,7 @@ except ImportError:
 
 
 
-logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 
@@ -28,15 +29,20 @@ logging.getLogger(__name__)
 
 
 def update_function(self):
-    '''update function for pi_dash
-    display system information for this raspberry pi
+    '''update function for pi_dash providing basic system information
     
-    Requirements:
-        None
+    This plugin displays system information for this raspberry pi and 
+    requires that the user running this plugin has access to the GPIO
+    group.
         
     Args:
         self(`namespace`)
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
+        
     %U'''
+    
     data = constants.data
     failure = False, data, self.max_priority
     try:
@@ -47,15 +53,20 @@ def update_function(self):
     except gpiozero.GPIOZeroError:
         return failure
 
-    
-    data = {'temp': f'{int(pi_temp.temperature)}C', 
-            'temp_icon': './images/Thermometer_icon.png',
-            'load': f'{pi_load.load_average}', 
-            'cpu_icon': './images/CPU_icon.png',
-            'disk_use': f'{int(pi_disk.usage)}%',  
-            'disk_icon': './images/SSD_icon.png',
-            'pi_model': f'Pi {pi_info.model} rev {pi_info.revision}',
-            'hostname': socket.gethostname()}
+    img_path = Path(constants.img_path)
+    try:   
+        data = {'temp': f'{int(pi_temp.temperature)}C', 
+                'temp_icon': img_path/'Thermometer_icon.png',
+                'load': f'{pi_load.load_average}', 
+                'cpu_icon': img_path/'CPU_icon.png',
+                'disk_use': f'{int(pi_disk.usage)}%',  
+                'disk_icon': img_path/'SSD_icon.png',
+                'pi_model': f'Pi {pi_info.model} rev {pi_info.revision}',
+                'pi_logo': img_path/'pi_logo.png',
+                'hostname': socket.gethostname()}
+    except Exception as e:
+        logging.warning({e})
+        
     
     return True, data, self.max_priority
 
