@@ -1,5 +1,5 @@
 # splash_screen
-![sample image for plugin splash_screen](plugins/splash_screen/splash_screen_sample.png)
+![sample image for plugin splash_screen](splash_screen_sample.png)
 ```
 
 PLUGIN: splash_screen v:0.1.0

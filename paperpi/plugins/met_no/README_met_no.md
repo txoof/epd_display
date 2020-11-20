@@ -1,5 +1,5 @@
 # met_no
-![sample image for plugin met_no](plugins/met_no/met_no_sample.png)
+![sample image for plugin met_no](met_no_sample.png)
 ```
 
 PLUGIN: met_no v:0.1.0

@@ -1,5 +1,5 @@
 # lms_client
-![sample image for plugin lms_client](plugins/lms_client/lms_client_sample.png)
+![sample image for plugin lms_client](lms_client_sample.png)
 ```
 
 PLUGIN: lms_client v:0.1.0

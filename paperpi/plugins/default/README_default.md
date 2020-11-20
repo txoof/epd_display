@@ -1,5 +1,5 @@
 # default
-![sample image for plugin default](plugins/default/default_sample.png)
+![sample image for plugin default](default_sample.png)
 ```
 
 PLUGIN: default v:0.1.0
