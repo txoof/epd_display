@@ -57,8 +57,15 @@ logger = logging.getLogger(__name__)
 
 
 
+help(QueryLMS.QueryLMS)
+
+
+
+
+
+
 def update_function(self):
-    '''update_function for lms_client provides now-playing LMS information
+    '''update function for lms_client provides now-playing LMS information
     
     
     This plugin provides now playing information pulled from a Logitech Media Server 
@@ -93,7 +100,7 @@ def update_function(self):
         self(namespace): namespace from plugin object
         
     Returns:
-        tuple: is_updated(bool), data(dict), 
+        tuple: (is_updated(bool), data(dict), priority(int))
     %U'''
     def build_lms():
         logging.debug(f'building LMS Query object for player: {player_name}')
@@ -119,6 +126,10 @@ def update_function(self):
     if not hasattr(self, 'idle_timer'):
         logging.debug(f'adding idle_timer of class `Update()`')
         self.idle_timer = Update()
+    else:
+        if not self.my_lms.player_id:
+            self.my_lms.set_server()
+    
     
     # check if LMS Query object is initiated
     if not hasattr(self, 'my_lms'):
@@ -132,6 +143,8 @@ def update_function(self):
         # remove the time key to make comparisions now_playing data updates easier in the Plugin class
         if 'time' in now_playing:
             now_playing.pop('time')
+            
+    
     
     # this should cover most network related errors
     except requests.exceptions.ConnectionError as e:
@@ -206,7 +219,7 @@ def update_function(self):
 
 # self = SelfDummy()
 # self.max_priority = 0
-# self.config = {'player_name': 'slimpi',
+# self.config = {'player_name': 'MacPlay',
 #                'idle_timeout': 5}
 # self.cache = CacheFiles()
 
