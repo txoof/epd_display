@@ -57,13 +57,6 @@ logger = logging.getLogger(__name__)
 
 
 
-help(QueryLMS.QueryLMS)
-
-
-
-
-
-
 def update_function(self):
     '''update function for lms_client provides now-playing LMS information
     
