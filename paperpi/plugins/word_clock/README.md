@@ -1,5 +1,5 @@
 # word_clock
-![sample image for plugin word_clock](plugins/word_clock/word_clock_sample.png)
+![sample image for plugin word_clock](./word_clock_sample.png)
 ```
 
 PLUGIN: word_clock v:0.1.0

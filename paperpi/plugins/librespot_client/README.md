@@ -1,5 +1,5 @@
 # librespot_client
-![sample image for plugin librespot_client](plugins/librespot_client/librespot_client_sample.png)
+![sample image for plugin librespot_client](./librespot_client_sample.png)
 ```
 
 PLUGIN: librespot_client v:0.1.0
