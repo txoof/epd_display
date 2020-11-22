@@ -25,6 +25,8 @@ def run_module(module_args=[]):
     
     my_module = module_args[0].split('.')
     my_args = module_args[1:]
+    if len(my_args) < 1:
+        my_args.append(None)
         
     if len(my_module) < 2:
         print_usage()
