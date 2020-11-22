@@ -48,29 +48,29 @@ Some plugins require additonal configuration such as API keys, location informat
 
 ## Plugins Currently Avialable
 ### [dec_binary_clock](../paperpi/plugins/dec_binary_clock/README.md)
-![word_clock sample image](../paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png)
+![dec_binary_clock sample Image](../paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png)
 
 ### [met_no](../paperpi/plugins/met_no/README.md)
-![word_clock sample image](../paperpi/plugins/met_no/met_no_sample.png)
+![met_no sample Image](../paperpi/plugins/met_no/met_no_sample.png)
 
 ### [default](../paperpi/plugins/default/README.md)
-![word_clock sample image](../paperpi/plugins/default/default_sample.png)
+![default sample Image](../paperpi/plugins/default/default_sample.png)
 
 ### [splash_screen](../paperpi/plugins/splash_screen/README.md)
-![word_clock sample image](../paperpi/plugins/splash_screen/splash_screen_sample.png)
+![splash_screen sample Image](../paperpi/plugins/splash_screen/splash_screen_sample.png)
 
 ### [basic_clock](../paperpi/plugins/basic_clock/README.md)
-![word_clock sample image](../paperpi/plugins/basic_clock/basic_clock_sample.png)
+![basic_clock sample Image](../paperpi/plugins/basic_clock/basic_clock_sample.png)
 
 ### [pi_dash](../paperpi/plugins/pi_dash/README.md)
-![word_clock sample image](../paperpi/plugins/pi_dash/pi_dash_sample.png)
+![pi_dash sample Image](../paperpi/plugins/pi_dash/pi_dash_sample.png)
 
 ### [librespot_client](../paperpi/plugins/librespot_client/README.md)
-![word_clock sample image](../paperpi/plugins/librespot_client/librespot_client_sample.png)
+![librespot_client sample Image](../paperpi/plugins/librespot_client/librespot_client_sample.png)
 
 ### [lms_client](../paperpi/plugins/lms_client/README.md)
-![word_clock sample image](../paperpi/plugins/lms_client/lms_client_sample.png)
+![lms_client sample Image](../paperpi/plugins/lms_client/lms_client_sample.png)
 
 ### [word_clock](../paperpi/plugins/word_clock/README.md)
-![word_clock sample image](../paperpi/plugins/word_clock/word_clock_sample.png)
+![word_clock sample Image](../paperpi/plugins/word_clock/word_clock_sample.png)
 
