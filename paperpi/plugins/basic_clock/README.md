@@ -1,5 +1,5 @@
 # basic_clock
-![sample image for plugin basic_clock](basic_clock_sample.png)
+![sample image for plugin basic_clock](plugins/basic_clock/basic_clock_sample.png)
 ```
 
 PLUGIN: basic_clock v:0.1.0
@@ -37,3 +37,4 @@ LAYOUTS AVAILABLE:
 DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.basic_clock.basic_clock:
    digit_time
 ```
+

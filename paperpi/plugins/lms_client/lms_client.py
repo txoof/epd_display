@@ -65,11 +65,23 @@ def update_function(self):
     and shows now-playing information for a single player multiple players 
     can be tracked by adding multiple plugins sections in the config file
     
-    This plugin pulls and displays information from a Logitech Media Server
-    instance running on the local network. 
+    This plugin pulls and displays information from a Logitech Media Server (LMS)
+    instance running on the local network and displays information for a single player.
     
-    See: 
-      * https://mysqueezebox.com/download
+    It is possible to specify this plugin multiple times in the configuration file
+    to track different players.
+    
+    
+    For more information on running an Server and Player instance See:
+      * General Logitech Media Server information
+          - https://mysqueezebox.com/download
+      * Slim Devices LMS page
+          - http://wiki.slimdevices.com/index.php/Logitech_Media_Server
+      * Creating an LMS server on a Raspberry PI
+          - https://homehack.nl/creating-a-raspberry-pi-squeezebox-server/
+      * SqueezeLite - headless LMS player (this works great with a HiFi Berry DAC+)
+          - http://wiki.slimdevices.com/index.php/Squeezelite
+      
     
     This plugin dynamically changes the priority depending on the status of the librespot
     player. Remember, lower priority values are considered **more** important

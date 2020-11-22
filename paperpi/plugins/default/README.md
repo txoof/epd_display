@@ -1,5 +1,5 @@
 # default
-![sample image for plugin default](default_sample.png)
+![sample image for plugin default](plugins/default/default_sample.png)
 ```
 
 PLUGIN: default v:0.1.0
@@ -30,3 +30,4 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.default.default:
    digit_time
    msg
 ```
+

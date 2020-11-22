@@ -1,5 +1,5 @@
 # pi_dash
-![sample image for plugin pi_dash](pi_dash_sample.png)
+![sample image for plugin pi_dash](plugins/pi_dash/pi_dash_sample.png)
 ```
 
 PLUGIN: pi_dash v:0.1.0
@@ -47,3 +47,4 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.pi_dash.pi_dash:
    pi_model
    hostname
 ```
+

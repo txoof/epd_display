@@ -1,5 +1,5 @@
 # dec_binary_clock
-![sample image for plugin dec_binary_clock](dec_binary_clock_sample.png)
+![sample image for plugin dec_binary_clock](plugins/dec_binary_clock/dec_binary_clock_sample.png)
 ```
 
 PLUGIN: dec_binary_clock v:0.1.0
@@ -54,3 +54,4 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY plugins.dec_binary_clock.dec_
    bin_img
    time
 ```
+
