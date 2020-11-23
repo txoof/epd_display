@@ -1,3 +1,4 @@
+# relative paths are difficult to sort out -- this makes it easier
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -9,7 +10,7 @@ data = {
     'extra': 'extra text under "special" conditions',
     'image': 'a static image',
 }
-sample_config = '''
+sample_config = '''`
 # this is a sample config users can use to help setup the plugin
 [Plugin: A Demo Plugin]
 # default layout

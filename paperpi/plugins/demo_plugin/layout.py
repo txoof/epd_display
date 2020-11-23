@@ -43,7 +43,7 @@ my_layout_one = {
       },
       'extra': {
           'image': False,
-          'max_lines': 2,
+          'max_lines': 3,
           'width': 1/2,
           'height': 1/4,
           'random': True,

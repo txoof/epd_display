@@ -88,7 +88,7 @@ def update_function(self, *args, **kwargs):
     strings = [
         f'Hi {name}! I hear your color is {color}',
         f'{name}, did you know your color has {len(color)} characters in it?',
-        f'Your name spelled backards is "{name[::-1]}"',
+        f'Your name spelled backwards is "{name[::-1]}"',
         f'If you sort your favorite color alphabetically, you get: {("").join(sorted(color))}',
         f'If you sort your name alphabetically, you get: {("").join(sorted(name))}',
     ]
@@ -129,18 +129,29 @@ def update_function(self, *args, **kwargs):
 
 
 
-# update_function(self)
+
+
+# def test_plugin():
+#     '''This code snip is useful for testing a plugin from within Jupyter Notebook'''
+#     from library import Plugin
+#     from IPython.display import display
+
+#     test_plugin = Plugin(resolution=(640, 448))
+#     # customize this to the configuration for your plugin
+#     test_plugin.config = {'your_name': 'Aaron', 'favorite_color': 'pink'}
+#     test_plugin.layout = layout.layout
+#     test_plugin.update_function = update_function
+#     test_plugin.update()
+#     display(test_plugin.image)
+#     return test_plugin
+# my_plugin = test_plugin
 
 
 
 
 
 
-
-
-# from library import SelfDummy
-
-# self = SelfDummy()
-# self.config = {'your_name': 'Aaron', 'favorite_color': 'pink'}
+# This cell will produce the output from your plugin
+# my_plugin()
 
 
