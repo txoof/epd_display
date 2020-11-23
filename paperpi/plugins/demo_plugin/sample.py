@@ -1,5 +1,5 @@
 config = {
-        'layout': 'layout',
-        'player_name': 'MacPlay',
-        'idle_timeout': 10 
+          'layout':'layout',
+          'your_name': 'Slartibartfast',
+          'favorite_color': 'Chartruce',
 }

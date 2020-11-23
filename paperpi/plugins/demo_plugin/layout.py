@@ -1,213 +1,70 @@
 # lms_client layouts
+# handling file locations with relative paths is hard
+# this simplifies locating the fonts needed for this layout
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-twoColumnThreeRows = {
-      'coverart': {
-            'image': True,
-            'max_lines': None,
-            'padding': 5,
-            'width': 1/3,
-            'height': 3/5,
-            'abs_coordinates': (0, 0),
-            'hcenter': True,
-            'vcenter': True,
-            'relative': False,
+# this is the layout that the Screen() module will use
+# to format the output of your plugin
+my_layout_one = {
+      # each "block" of the screen is defined as a keyword 
+      # that matches a keyword from the data returned by the plugin
+      'string': {
+          # this block does not contain an image
+          'image': False,
+          # number of lines of text to display before word-wrapping
+          'max_lines': 3,
+          # width of text block as fraction of entire display
+          'width': 1,
+          # height of text block as fraction of entire display
+          'height': 1/2,
+          # randomize the placement of the text within the block
+          'random': True,
+          # font to use -- append dir_path to the font to make the
+          # relative path work properly 
+          'font': dir_path+'/../../fonts/BenchNine/BenchNine-Regular.ttf',
+          # absolute coordinates of the text block (top left is 0,0)
+          'abs_coordinates': (0, 0),
+          # coordinates are not calculated relative to another block
+          'relative': False
       },
-      'title': {
-            'image': None,
-            'max_lines': 3,
-            'padding': 4,
-            'width': 2/3,
-            'height': 3/5,
-            'abs_coordinates': (None, 0),
-            'relative': ['coverart', 'title'],
-            'hcenter': True,
-            'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+      # this block will contain the string provided by  data['time']
+      'time': {
+          'image': False,
+          'max_lines': 1,
+          'width': 1/2,
+          'height': 1/4,
+          'random': True,
+          'font': dir_path+'/../../fonts/BenchNine/BenchNine-Regular.ttf',
+          # X coordinate is absolute, Y is calculated
+          'abs_coordinates': (0, None),
+          # Use X from 'time', Y from the bottom of 'string'
+          'relative': ['time', 'string'],
       },
-      'artist': {
-            'image': None,
-            'max_lines': 1,
-            'padding': 4,
-            'width': 1,
-            'height': 1/5,
-            'abs_coordinates': (0, None),
-            'relative': ['artist', 'title'],
-            'hcenter': True,
-            'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
-            #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
+      'extra': {
+          'image': False,
+          'max_lines': 2,
+          'width': 1/2,
+          'height': 1/4,
+          'random': True,
+          'font': dir_path+'/../../fonts/BenchNine/BenchNine-Regular.ttf',
+          # X coordinate is absolute, Y is calculated
+          'abs_coordinates': (0, None),
+          'relative': ['extra', 'time']
       },
-      'album': {
-            'image': None,
-            'max_lines': 1,
-            'padding': 4,
-            'width': 1,
-            'height': 1/5,
-            'abs_coordinates': (0, None),
-            'relative': ['album', 'artist'],
-            'hcenter': True,
-            'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
-            #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-      },
-
-
+      'image': {
+          'image': True,
+          'width': 1/2,
+          'height': 1/2,
+          'random': True,
+          # X and Y are calculated
+          'abs_coordinates': (None, None),
+          # calculate relative to the right side of 'time' (X) and 
+          # bottom of 'string' (Y)
+          'relative': ['time', 'string']
+      }
 }
 
+# set the default layout here
+layout = my_layout_one
 
-twoColumn = {
-    'coverart': { # coverart image
-                'image': True, # has an image that may need to be resized
-                'max_lines': None, # number of lines of text associated with this section
-                'padding': 10, # amount of padding at edge
-                'width': 1/3, # fraction of total width of display
-                'height': 1, # fraction of total height
-                'abs_coordinates': (0, 0), # X, Y for top left position of section
-                'hcenter': True, # horizontal center-align the contents
-                'vcenter': True, # vertically center-align the contents
-                'relative': False, # False if position is absolute
-                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-                'font_size': None # font size to use for text
-    },
-    'title': { # track title
-                'image': None, # none if no image is needed
-                'max_lines': 3, # number of lines of text associated with this section
-                'padding': 10,  # padding at edge
-                'width': 2/3, # fraction of total width of display
-                'height': 3/5, # fraction of total height of display
-                'abs_coordinates': (None, 0), # X, Y for top left position of section
-                                          # None indicates that the position is not
-                                          # known and will be calculated
-                                          # relative to another section
-                                          # integer indicates an absolute position to use
-                'hcenter': False, # horizontal center-align the contents
-                'vcenter': True, # vertically center-align the contents
-                'relative': ['coverart', 'title'], # [X Section: abs_coordinates+dimension
-                                                   #, Y section abs_coordinates+dimension]
-                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-                'font_size': None # font size to use for text
-
-    },
-    'artist': { # track artist
-                'image': None,
-                'max_lines': 2,
-                'padding': 10,
-                'width': 2/3,
-                'height': 1/5,
-                'abs_coordinates': (None, None),
-                'hcenter': False,
-                'vcenter': True,
-                'relative': ['coverart', 'title'],
-                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-                'font_size': None
-    },
-    'album': { #album name
-                'image': None,
-                'max_lines': 2,
-                'padding': 10,
-                'width': 2/3,
-                'height': 1/5,
-                'abs_coordinates': (None, None),
-                'hcenter': False,
-                'vcenter': True,
-                'relative': ['coverart', 'artist'],
-                'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-                'font_size': None
-    }
-}
-
-threeRowLarge = {
-    'title':
-            {'image': None,
-             'max_lines': 2,
-             'padding': 10,
-             'width': 1,
-             'height': 6/9,
-             'abs_coordinates': (0, 0),
-             'hcenter': True,
-             'vcenter': True,
-             'relative': False,
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-    'coverart':
-            {'image': True,
-             'max_lines': None,
-             'padding': 2,
-             'width': 2/5,
-             'height': 3/9,
-             'abs_coordinates': (0, None),
-             'hcenter': True,
-             'vcenter': True,
-             'relative': ['coverart', 'title'],
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-
-    'artist':
-            {'image': None,
-             'max_lines': 2,
-             'padding': 10,
-             'width': 3/5,
-             'height': 3/18,
-             'abs_coordinates': (None, None),
-             'hcenter': False,
-             'vcenter': True,
-             'relative': ['coverart', 'title'],
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-    'album':
-            {'image': None,
-             'max_lines': 2,
-             'padding': 10,
-             'width': 3/5,
-             'height': 2/18,
-             'abs_coordinates': (None, None),
-             'hcenter': False,
-             'vcenter': True,
-             'relative': ['coverart', 'artist'],
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-    'mode':
-            {'image': False,
-             'max_lines': 1,
-             'width': 3/5,
-             'height': 1/18,
-             'abs_coordinates': (None, None),
-             'hcenter': False,
-             'vcenter': True,
-             'rand': True,
-             'relative': ['coverart', 'album'],
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None}
-}
-
-twoRowSmall = {
-    'title':
-            {'image': None,
-             'max_lines': 2,
-             'padding': 10,
-             'width': 1,
-             'height': 2/3,
-             'abs_coordinates': (0, 0),
-             'hcenter': True,
-             'vcenter': True,
-             'relative': False,
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-
-    'artist':
-            {'image': None,
-             'max_lines': 1,
-             'padding': 10,
-             'width': 1,
-             'height': 1/3,
-             'abs_coordinates': (0, None),
-             'hcenter': True,
-             'vcenter': True,
-             'relative': ['artist', 'title'],
-             'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
-}
-
-layout = twoColumnThreeRows
