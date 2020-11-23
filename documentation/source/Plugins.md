@@ -104,20 +104,26 @@ The update_function is added to a `library.Plugin()` object as a method. The upd
     '''
     update function for my_plugin_name provides foo information
     
+    # longer description of what this plugin does
     This plugin provides...
     
+    # required configuration elements that must be passed to this plugin
     Requirements:
         self.config(dict): {
             key1: value1
             key2: value2
         }
         self.cache(CacheFiles object): location to store downloaded images
-        
+    
+    # arguments the update_function accepts
     Args:
        self(namespace): namespace from plugin object
      
+    # return values
     Returns:
         tuple: (is_updated(bool), data(dict), priority(int))
+    # marker '%U' that indicates this is a user-facing function that should be included when producing 
+    # documentation
     %U'''
     ```
 

@@ -46,6 +46,97 @@ max_priority = int
 ### Additional Configuration Elements
 Some plugins require additonal configuration such as API keys, location information or other configuration details. Use `--plugin_info plugin_name` to find a sample configuration. Check the plugin README for additional information.
 
+## Writing Plugins
+PaperPi is designed to support additional plugins. See the included `demo_plugin` for a simple, well documented plugin that can be used as a template for building a plugin.
+
+Plugins are written in python 3 and should follow the following guidelines to function properly:
+* Plugin modules must be added to the `plugins` directory
+* Plugin modules must be named with exactly the same name as their module directory:
+    - `plugins/my_new_plugin/my_new_plugin.py
+* Include a `__init__.py` file that contains:
+    - `from .my_new_plugin import update_function`
+* Plugin modules must contain at minimum one function called `update_function()`
+    - see below for a complete spec for the `update_function`
+* Plugin modules will receive any configuration options specified in it's configuration section in the  `paperpi.ini` file at startup
+    - Any values your plugin requires such as API keys, email addresses, URLs can be accessed from the `self.config` property 
+* Plugin modules must at minimum contain a `layout.py` file that contains a layout file. 
+    - The default layout should be named `layout`
+        - it is acceptable to set `layout = my_complex_name` for the default playout
+    - See the [epdlib Layout module](https://github.com/txoof/epdlib#layout-module)
+    - See the `basic_clock` plugin for a simple layout template
+* Plugin modules may have user-facing helper functions that can help the user setup or configure the plugin
+    - See the `lms_client` plugin and the `met_no` plugins for examples
+* At minimum the `update_function` should contain a docstring that completely documents the plugin's use and behavior
+    - See the example below
+    - End all user-facing docstrings with `%U`; to ensure they are included in the auto-documenting build scripts
+* Plugin modules should contain a `constants.py` file that contains:
+    - `version='version string'
+    - `name='name of plugin'`
+    - `data = {
+            'key1': 'description of value',
+            'key2': 'description of value',
+            'keyN': 'description of value',
+    }
+    - `sample_config = '''
+    [Plugin: My New Plugin]
+    layout = layout
+    plugin = my_new_plugin
+    config_opt1 = some_value
+    config_optN = 123456
+    max_display_time = 45
+    max_priority = 1
+    '''
+* Plugin modules should contain a `sample.py` file that contains sample data for creating documentation
+    - See the specificaiton below
+    
+**`update_function` specifications**
+The update_function is added to a `library.Plugin()` object as a method. The update_function will have access to the `self` namespace of the Plugin object including the `max_priority` and `cache`. The `Plugin()` API is well documented.
+
+* `update_function` must accept `*args, **kwargs` even if they are not used
+* `update_function` must return a tuple of: (is_updated(bool), data(dict), priority(int))
+    - `is_updated` indicates if the module is up-to-date and functioning; return `False` if your module is not functioning properly or is not opperating
+    - `data` is a dictionary that contains key/value pairs of either strings or an image (path to an image or PIL image object).
+    - `priority` indicates your modules priority
+        - The default should be to return `self.max_priority`; it is allowed to return `self.max_priority - 1` if your plugin detects an important event.
+        - If the module is in a passive state (e.g. there is no interesting data to show) set `priority` to `2**15` to ensure it is not included in the display loop
+* Example docstring:
+    ```
+    '''
+    update function for my_plugin_name provides foo information
+    
+    # longer description of what this plugin does
+    This plugin provides...
+    
+    # required configuration elements that must be passed to this plugin
+    Requirements:
+        self.config(dict): {
+            key1: value1
+            key2: value2
+        }
+        self.cache(CacheFiles object): location to store downloaded images
+    
+    # arguments the update_function accepts
+    Args:
+       self(namespace): namespace from plugin object
+     
+    # return values
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))
+    # marker '%U' that indicates this is a user-facing function that should be included when producing 
+    # documentation
+    %U'''
+    ```
+
+**`sample.py` specifications**
+To provide a sample image and automatically create documentation provide a `sample.py` file with your module with the following information:
+`config = {
+    # this is required
+    'layout': 'layout_name_to_use_for_sample_img',
+    # optional below this point
+    'config_option': 'value',
+    'config_option2': 12345
+}
+
 ## Plugins Currently Avialable
 ### [dec_binary_clock](../paperpi/plugins/dec_binary_clock/README.md)
 ![dec_binary_clock sample Image](../paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png)
@@ -55,6 +146,9 @@ Some plugins require additonal configuration such as API keys, location informat
 
 ### [default](../paperpi/plugins/default/README.md)
 ![default sample Image](../paperpi/plugins/default/default_sample.png)
+
+### [demo_plugin](../paperpi/plugins/demo_plugin/README.md)
+![demo_plugin sample Image](../paperpi/plugins/demo_plugin/demo_plugin_sample.png)
 
 ### [splash_screen](../paperpi/plugins/splash_screen/README.md)
 ![splash_screen sample Image](../paperpi/plugins/splash_screen/splash_screen_sample.png)
