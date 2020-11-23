@@ -83,12 +83,13 @@ class Plugin:
         
         self.layout = layout
         
-        if update_function:
-            self._add_update_function(update_function)
-        else:
-#             self.update_function = print('no update function set')
-            pass
-        
+#         if update_function:
+#             self._add_update_function(update_function)
+#         else:
+# #             self.update_function = print('no update function set')
+#             pass
+        self.update_function = update_function
+    
         self.max_priority = max_priority
         
         self.refresh_rate = refresh_rate
@@ -138,6 +139,27 @@ class Plugin:
         
     
     @property
+    def update_function(self):
+        '''update function provided by the plugin module
+        
+        The update_function is called by the update method to provide status and data for 
+        the Plugin.
+        
+        Args:
+            function(function): function that accepts self, *args, **kwargs
+            
+        Returns:
+            tuple of is_updated(bool), data(dict), priority(int)'''
+        return self._update_function
+    
+    @update_function.setter
+    def update_function(self, function):
+        if not function:
+            self._update_function = None
+        else:
+            self._update_function = function.__get__(self)
+    
+    @property
     def cache(self):
         '''CacheFiles object used for caching remote files used by plugins
         cache(`CacheFiles` obj)'''
@@ -161,9 +183,9 @@ class Plugin:
         self._last_ask = last_ask
         
     
-    def _add_update_function(self, function):
-        '''private function for adding update_functions properly to class'''
-        self.update_function = function.__get__(self)
+#     def _add_update_function(self, function):
+#         '''private function for adding update_functions properly to class'''
+#         self.update_function = function.__get__(self)
         
     def _generate_hash(self):
         '''generate a hash based on the self.name and the current time
@@ -229,6 +251,7 @@ class Plugin:
 
 
 def main():
+    '''demo of Plugin data type'''
     from random import randint
     from IPython.display import display
     from time import sleep
@@ -256,8 +279,11 @@ def main():
     p = Plugin(resolution=(300, 210), 
                refresh_rate=3, 
                max_priority=1, 
-               update_function=bogus_plugin, 
+#                update_function=bogus_plugin, 
                layout=bogus_layout)
+    
+    Plugin.update_function = bogus_plugin
+    
     logger.root.setLevel('DEBUG')
     print('this demo is best run from inside jupyter notebook')
     for i in range(100):
