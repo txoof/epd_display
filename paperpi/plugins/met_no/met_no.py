@@ -11,7 +11,7 @@ from copy import deepcopy
 import requests
 import logging
 from urllib.parse import quote
-import constants
+# import constants
 from dictor import dictor
 from pathlib import Path
 from PIL import Image
