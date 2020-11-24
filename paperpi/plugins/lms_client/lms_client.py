@@ -13,22 +13,11 @@ import logging
 
 
 
-import lmsquery
 import requests
 from epdlib.Screen import Update
 from copy import copy
 
-
-
-
-
-
 import QueryLMS
-
-
-
-
-
 
 import sys
 from pathlib import Path
