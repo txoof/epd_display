@@ -110,7 +110,7 @@ def update_function(self):
     def build_lms():
         logging.debug(f'building LMS Query object for player: {player_name}')
 #         self.my_lms = lmsquery.LMSQuery(player_name=player_name)
-        self.my_lms = QueryLMS.QueryLMS(player_name=player_name)
+        self.my_lms = QueryLMS.QueryLMS(player_name=player_name, handle_requests_exceptions=True)
     
     logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
@@ -215,8 +215,8 @@ def update_function(self):
 
 
 
-# from SelfDummy import SelfDummy
-# from CacheFiles import CacheFiles
+# from library.SelfDummy import SelfDummy
+# from library.CacheFiles import CacheFiles
 
 
 # logger.root.setLevel('DEBUG')
@@ -258,13 +258,13 @@ def scan_servers(*args, **kwargs):
         None
     %U"""
     print(f'Scanning for available LMS Server and players')
-    servers = QueryLMS.QueryLMS().scan_lms()
+    servers = QueryLMS.QueryLMS(handle_requests_exceptions=True).scan_lms()
     if not servers:
         print('Error: no LMS servers were found on the network. Is there one running?')
         do_exit(1)
     print('servers found:')
     print(servers)
-    players = QueryLMS.QueryLMS().get_players()
+    players = QueryLMS.QueryLMS(handle_requests_exceptions=True).get_players()
     # print selected keys for each player
     keys = ['name', 'playerid', 'modelname']
     for p in players:
