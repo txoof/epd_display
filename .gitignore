@@ -1,3 +1,5 @@
 Pipfile.lock
 */build/*
 */dist/*
+build/*
+dist/*
