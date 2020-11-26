@@ -167,6 +167,10 @@ def update_function(self):
                                                      now_playing['album_id'])
         except KeyError as e:
             logging.warning(f'failed to cache file -- now_playing data did not contain complete data: {e}')
+    else:
+        # fill in with default data
+        now_playing = constants.data
+        
     logging.debug(f'now_playing: {now_playing["mode"]}')
     if now_playing['mode'] == 'play':
         if self.data == data:
