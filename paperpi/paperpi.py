@@ -20,6 +20,7 @@ from time import sleep
 from pathlib import Path
 from os import chdir
 from distutils.util import strtobool
+import waveshare_epd
 
 
 
@@ -531,6 +532,13 @@ def main():
     logging.info('caught terminate signal -- cleaning up and exiting')
     clean_up(cache, screen)
     return plugins
+
+
+
+
+
+
+constants.absolute_path
 
 
 
