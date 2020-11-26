@@ -8,7 +8,8 @@
 
 
 
-import logging
+import os
+import logging 
 import logging.config
 import shutil
 import sys
@@ -34,7 +35,6 @@ from library.InterruptHandler import InterruptHandler
 from library import get_help
 from library import run_module
 import constants
-import errors
 
 
 
@@ -253,17 +253,22 @@ def setup_splash(config, resolution):
 
 
 def setup_display(config):
+    
+    keyError_fmt = 'configuration KeyError: section[{}], key: {}'
+
+    moduleNotFoundError_fmt = 'could not load module: {} -- error: {}'
+    
     try:
         logging.debug('setting display type')
         epd_module = '.'.join([constants.waveshare_epd, config['main']['display_type']])
         epd = import_module(epd_module)
     except KeyError as e:
-        return_val = ret_obj(obj=None, status=1, message=errors.keyError_fmt.format('main', 'display_type'))
+        return_val = ret_obj(obj=None, status=1, message=keyError_fmt.format('main', 'display_type'))
         logging.error(return_val['message'])
         return return_val
     except ModuleNotFoundError as e:
         logging.error('Check your config files and ensure a known waveshare_epd display is specified!')
-        return_val = ret_obj(None, 1, errors.moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
+        return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
         return return_val
         
     screen = Screen()
@@ -278,13 +283,13 @@ def setup_display(config):
     try:
         config['main']['rotation'] = int(config['main']['rotation'])
     except KeyError as e:
-        logging.info(errors.keyError_fmt.format('main', 'rotation'))
+        logging.info(keyError_fmt.format('main', 'rotation'))
         logging.info('using default: 0')
     try:
         screen.rotation = config['main']['rotation']
     except ValueError as e:
         logging.error('invalid rotation; valid values are: 0, 90, -90, 180')
-        return_val = ret_obj(None, 1, errors.keyError_fmt.format('main', 'rotation'))
+        return_val = ret_obj(None, 1, keyError_fmt.format('main', 'rotation'))
         
     return ret_obj(obj=screen)
 
@@ -451,6 +456,10 @@ def update_loop(plugins, screen):
 
 
 def main():
+    
+    # change the working directory -- this simplifies all path work later on
+    os.chdir(constants.absolute_path)
+    
     # set the absolute path to the current directory
     absolute_path = constants.absolute_path
     
@@ -481,7 +490,7 @@ def main():
         return
     
     if cmd_args.options.plugin_info:
-        get_help.get_help(cmd_args.options.plugin_info)
+        print(get_help.get_help(cmd_args.options.plugin_info))
         return
     
     if cmd_args.options.list_plugins:
@@ -530,9 +539,9 @@ def main():
 
 if __name__ == "__main__":
     # remove jupyter runtime junk for testing
-#     if len(sys.argv) >= 2 and 'ipykernel' in sys.argv[0]:
-#         sys.argv = [sys.argv[0]]
-#         sys.argv.extend(sys.argv[3:])
+    if len(sys.argv) >= 2 and 'ipykernel' in sys.argv[0]:
+        sys.argv = [sys.argv[0]]
+        sys.argv.extend(sys.argv[3:])
     c = main()
 
 
