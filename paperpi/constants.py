@@ -9,18 +9,24 @@ url = 'https://github.com/txoof/epd_display'
 ## configuration
 
 # configuration file directory
+# config_path = Path('./config')
 config_path = Path('./config')
 
 # default name for configuration file
 config_filename = f'{app_name.lower()}.ini'
-config_base = Path(config_path/config_filename).resolve()
+#config_base = Path(config_path/config_filename).resolve()
+config_base = f'{config_path}/{config_filename}'
+
 # path for user config file
 config_user = Path(f'~/.config/{devel_name}/{config_filename}').expanduser().resolve()
+
 # path for system configurationf ile
-config_system = Path(f'/etc/default/{config_filename}').resolve()
+#config_system = Path(f'/etc/default/{config_filename}').resolve()
+config_system = Path(f'/etc/default/{config_filename}')
 
 # path to logging configuration file
-logging_config = Path(config_path/'./logging.cfg').resolve()
+#logging_config = Path(config_path/'./logging.cfg').resolve()
+logging_config = f'{config_path}/logging.cfg'
 
 
 
@@ -35,6 +41,7 @@ ws_version = '751a9fb 2020-09-04 15:30:45 +0800'
 waveshare_epd = 'waveshare_epd'
 
 ## Runtime Constants
+
 absolute_path = Path(__file__).absolute().parent
 
 version_string = f'''
