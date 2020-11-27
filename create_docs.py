@@ -6,11 +6,19 @@
 
 
 
-from library import Plugin, CacheFiles
-from library import get_help
+# ugly hack to make the imports work properly
+# import os
+# os.chdir('./paperpi')
+
+
+
+
+
+
+from paperpi.library import Plugin, CacheFiles, get_help
 from importlib import import_module
 from pathlib import Path
-import constants
+import paperpi.constants as paperpi_constants
 import logging
 from IPython.display import Image 
 import argparse
@@ -27,26 +35,37 @@ logger = logging.getLogger(__name__)
 
 
 
-def setup_plugins():
+def setup_plugins(project_root, plugin_list=None, resolution=(640, 400)):
+    plugin_path = Path(f'{project_root}/{paperpi_constants.plugins}')
     print('setting up plugins with sample configuration...')
+    logging.info(f'using plugin_path: {plugin_path}')
+    
     # discover plugins
-    plugins = get_help.get_modules()
-    # create a cache object for those plugins that need it
+    plugins = get_help.get_modules(plugin_path)
+#     resolution = resolution
+
+    if plugin_list:
+        my_list = []
+        for i in plugins:
+            if i in plugin_list:
+                my_list.append(i)
+            plugins = my_list
+            
     cache = CacheFiles()
-    plugin_path = Path(constants.plugins)
-    resolution = constants.sample_resolution
+    
     plugin_dict = {}
     for plugin in plugins:
-        print(f'setting up plugin: {plugin}')
+        print(f'setting up plugin {plugin}')
         # get sample values
+        pkg_name = f'{".".join(plugin_path.parts)}'
+        logging.debug(f'importing pkg: {pkg_name}')
         try:
-            sample_info = import_module(f'{plugin_path}.{plugin}.sample')
-            module = import_module(f'{plugin_path}.{plugin}')
+            sample_info = import_module(f'{pkg_name}.{plugin}.sample')
+            module = import_module(f'{pkg_name}.{plugin}')
         except ModuleNotFoundError as e:
             logging.warning(f'module "{plugin}" is missing a sample configuration or could not be loaded: {e}')
             continue
-        
-        # get the sample configuration
+
         try:
             config = sample_info.config
         except AttributeError as e:
@@ -79,17 +98,22 @@ def setup_plugins():
                 my_plugin.update()
         except Exception as e:
             logging.warning(f'plugin "{plugin}"could not be configured due to a thrown exception: {e}')
-        plugin_dict[plugin] = {'module': module, 'plugin_obj': my_plugin}
+        plugin_dict[plugin] = {'module': module, 'plugin_obj': my_plugin, 'doc_path': plugin_path/plugin}
     return plugin_dict
+
+
+
+
+
+
+def create_readme(plugin_dict, project_root, overwrite_images=False):
+    '''build README.md for each plugin using information from docstrings and sample images
     
-
-
-
-
-
-
-def create_readme(plugin_dict, overwrite_images=False):
-    plugin_path = Path(constants.plugins)
+    Args:
+        plugin_dict(dict): dictonary provided by setup_plugins
+        overwrite_images(bool): overwrite existing sample image when true'''
+#     plugin_path = Path(paperpi_constants.plugins)
+    plugin_path = Path(f'{project_root}/{paperpi_constants.plugins}')
     readme_name = 'README'
     readme_additional = '_additional'
     suffix = '.md'
@@ -101,7 +125,8 @@ def create_readme(plugin_dict, overwrite_images=False):
         
     for plugin, values in plugin_dict.items():
         print(f'\tprocessing plugin: {plugin}')
-        doc_path = Path(plugin_path/plugin)
+#         doc_path = Path(plugin_path/plugin)
+        doc_path = values['doc_path']
         plugin_readme = Path(doc_path/f'{readme_name}{suffix}')
         additional_readme = Path(doc_path/f'{readme_name}{readme_additional}{suffix}')
         plugin_image = Path(doc_path/f'{plugin}_sample.png')
@@ -137,9 +162,12 @@ def create_readme(plugin_dict, overwrite_images=False):
 
         
         with open(plugin_readme, 'w') as file:
+            plugin_name = ".".join(doc_path.parts)
+            logging.debug(f'writing help for {plugin_name}')
             file.write(f'# {plugin}\n')
             file.write(f'![sample image for plugin {plugin}](./{plugin_image.name})\n')
-            file.write('```\n'+get_help.get_help(plugin, False) + '\n```')
+            file.write('```\n'+get_help.get_help(plugin, False, plugin_path=plugin_path) + '\n```')
+#             file.write('```\n'+get_help.get_help(plugin, False) + '\n```')
             file.write('\n\n')
             file.write(additional_text)
     
@@ -154,8 +182,12 @@ def create_readme(plugin_dict, overwrite_images=False):
 
 
 
-def update_plugin_docs(plugin_docs):
-    doc_path = Path(constants.doc_path)
+def update_plugin_docs(plugin_docs, doc_path):
+    '''update Plugin.md documentation with snips from all plugin READMEs
+    
+    Args:
+        plugin_docs(dict): dictionary provided by create_readme'''
+    doc_path = Path(doc_path)
     plugin_readme_source = Path(doc_path/'source/Plugins.md')
     plugin_readme_final = Path(doc_path/plugin_readme_source.name)
     
@@ -165,8 +197,8 @@ def update_plugin_docs(plugin_docs):
     with open(plugin_readme_final, 'w') as file:
         file.write(source)
         for plugin, values in plugin_docs.items():
-            file.write(f'### [{plugin}]({Path("../paperpi")/values["readme"]})\n')
-            file.write(f'![{plugin} sample Image]({Path("../paperpi")/values["image"]})\n\n')
+            file.write(f'### [{plugin}]({Path("..")/values["readme"]})\n')
+            file.write(f'![{plugin} sample Image]({Path("..")/values["image"]})\n\n')
         
 
 
@@ -176,22 +208,28 @@ def update_plugin_docs(plugin_docs):
 
 def main():
     parser = argparse.ArgumentParser(description='create_docs')
+ 
     parser.add_argument('-o', '--overwrite_images', default=False, action='store_true',
                        help='overwrite existing images for plugins when updating README files')
     
+    parser.add_argument('-p', '--plugin_list', default=None, nargs='*', 
+                       help='list of specific plugins to process')
+    
+    parser.add_argument('-r', '--project_root', default='./paperpi/', nargs=1,
+                       help='path to project root')
+    
+    parser.add_argument('-d', '--documentation_path', default='./documentation',
+                       help='path to documentation directory')
+    
     args = parser.parse_args()
 #     args = parser.parse_known_args()
-    plugin_dict = setup_plugins()
-    plugin_docs = create_readme(plugin_dict, overwrite_images = args.overwrite_images)
-    update_plugin_docs(plugin_docs)
+    plugin_dict = setup_plugins(args.project_root, args.plugin_list)
+    plugin_docs = create_readme(plugin_dict, 
+                                project_root=args.project_root,
+                                overwrite_images=args.overwrite_images)
+    return plugin_docs
+    update_plugin_docs(plugin_docs, doc_path=args.documentation_path)
     
-
-
-
-
-
-
-
 
 
 
@@ -204,93 +242,5 @@ if __name__ == "__main__":
     main()
 
 
-
-
-
-
-
-
-# doc_path = Path('../documentation')
-# plugin_readme_source = Path(doc_path/'source/Plugins.md')
-# plugin_readme_final = Path(doc_path/plugin_readme_source.name)
-
-# with open(plugin_readme_source, 'r') as file:
-#     source = file.read()
-
-# with open(plugin_readme_final, 'w') as file:
-#     file.write(source)
-#     for doc, value, in plugin_docs.items():
-#         file.write(f'### [{doc}]({Path("../paperpi")/value["readme"]})\n')
-#         file.write(f'![{plugin} sample image]({Path("../paperpi")/value["image"]})\n\n')
-
-
-
-
-
-
-# # discover plugins
-# plugins = get_help.get_modules()
-
-# # set up basic configuration
-# cache = CacheFiles()
-# refresh_rate = 1
-# plugin_path = Path('./plugins')
-# resolution = (640,448)
-# plugin_readme_name = f'README.md'
-# plugin_readme_additional_name = f'{plugin_readme_name.split(".")[0]}_additional.md'
-# plugin_docs = {}
-
-
-# # loop through all the discovered plugins
-# for plugin in plugins:
-#     config = None
-#     module = None
-#     doc_path = Path(plugin_path/f'{plugin}/')
-#     plugin_sample_img = None
-#     try:
-#         sample = import_module(f'{constants.plugins}.{plugin}.sample')
-#         module = import_module(f'{constants.plugins}.{plugin}')
-#     except ModuleNotFoundError:
-#         logging.warning(f'module "{plugin}" is missing a sample configuration; cannot process')
-#         continue
-        
-#     # pull configuration from sample.py
-#     config = sample.config
-#     if config and module:
-#         # pull the appropriate layout from the layouts file
-#         layout = getattr(module.layout, config['layout'])
-#         # build a plugin using the sample configuration
-#         my_plugin = Plugin(resolution=resolution, 
-#                            cache=cache, layout=layout,
-#                            update_function=module.update_function, config=config)
-#         # set refresh rate
-#         my_plugin.refresh_rate = refresh_rate
-#         # pass any kwargs needed to configure this plugin
-#         if 'kwargs' in config:
-#             my_plugin.update(**config['kwargs'])
-#         else:
-#             my_plugin.update()
-    
-#     # write out readme and save image
-#     plugin_readme = Path(doc_path/plugin_readme_name)
-#     plugin_readme_additional = Path(doc_path/plugin_readme_additional_name)
-    
-#     if plugin_readme_additional.exists():
-#         with open(plugin_readme, 'r') as file:
-#             additional_text = file.read()
-#     else:
-#         additional_text = ''
-            
-#     if my_plugin.image:
-#         plugin_sample_img = Path(doc_path/f'{plugin}_sample.png')
-#         my_plugin.image.save(plugin_sample_img)
-#     with open(plugin_readme, 'w') as file:
-#         file.write(f'# {plugin}\n')
-#         file.write(f'![sample image for plugin {plugin}]({plugin_sample_img.name})\n')
-#         file.write('```\n' + get_help.get_help(plugin, False) + '\n```')
-#         file.write('\n\n')
-#         file.write(additional_text)
-        
-#     plugin_docs[plugin] = {'readme': plugin_readme, 'image': plugin_sample_img}
 
 
