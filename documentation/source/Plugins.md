@@ -47,10 +47,11 @@ max_priority = int
 Some plugins require additonal configuration such as API keys, location information or other configuration details. Use `--plugin_info plugin_name` to find a sample configuration. Check the plugin README for additional information.
 
 ## Writing Plugins
-PaperPi is designed to support additional plugins. See the included `demo_plugin` for a simple, well documented plugin that can be used as a template for building a plugin.
+PaperPi is designed to support additional plugins. See the included [`demo_plugin`](../paperpi/plugins/demo_plugin) for a simple, well documented plugin that can be used as a template for building a plugin.
 
 Plugins are written in python 3 and should follow the following guidelines to function properly:
-* Plugin modules must be added to the `plugins` directory
+**REQUIREMENTS**
+* Plugin modules must** be added to the `plugins` directory
 * Plugin modules must be named with exactly the same name as their module directory:
     - `plugins/my_new_plugin/my_new_plugin.py
 * Include a `__init__.py` file that contains:
@@ -62,13 +63,15 @@ Plugins are written in python 3 and should follow the following guidelines to fu
 * Plugin modules must at minimum contain a `layout.py` file that contains a layout file. 
     - The default layout should be named `layout`
         - it is acceptable to set `layout = my_complex_name` for the default playout
-    - See the [epdlib Layout module](https://github.com/txoof/epdlib#layout-module)
-    - See the `basic_clock` plugin for a simple layout template
-* Plugin modules may have user-facing helper functions that can help the user setup or configure the plugin
-    - See the `lms_client` plugin and the `met_no` plugins for examples
+    - See the [epdlib Layout module](https://github.com/txoof/epdlib#layout-module) for more information
+    - See the [`basic_clock` layout](../paperpi/plugins/basic_clock/layout.py) for a simple layout template
 * At minimum the `update_function` should contain a docstring that completely documents the plugin's use and behavior
     - See the example below
     - End all user-facing docstrings with `%U`; to ensure they are included in the auto-documenting build scripts
+
+**OPTIONAL**
+* Plugin modules may have user-facing helper functions that can help the user setup or configure the plugin
+    - See the `lms_client` plugin and the `met_no` plugins for examples
 * Plugin modules should contain a `constants.py` file that contains:
     - `version='version string'
     - `name='name of plugin'`
@@ -129,12 +132,23 @@ The update_function is added to a `library.Plugin()` object as a method. The upd
 
 **`sample.py` specifications**
 To provide a sample image and automatically create documentation provide a `sample.py` file with your module with the following information:
-`config = {
+```
+config = {
     # this is required
     'layout': 'layout_name_to_use_for_sample_img',
     # optional below this point
     'config_option': 'value',
     'config_option2': 12345
 }
+```
+
+## Adding Plugins to PaperPi
+Once you've built an tested your plugin, you can add it to PaperPi by submitting a pull request. You should do the following to make sure your plugin is ready to go:
+
+* Run the `create_doc.py` script to make sure your README and sample images are built properly. 
+    - `$ pipenv run python create_doc.py -p your_plugin_name` will create the documentation for your plugin
+* Run the `build.py` script and test the pyinstaller binary in the `dist` folder runs properly
+    - `$ pipenv run python build.py`
+* Submit a PR
 
 ## Plugins Currently Avialable
