@@ -43,6 +43,7 @@ sample_config = '''
 [Plugin: Librespot]
 layout = layout
 plugin = librespot_client
+refresh_rate = 10
 max_priority = 0
 min_display_time = 15
 # name of librespot player
