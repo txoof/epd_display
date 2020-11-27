@@ -7,6 +7,7 @@ plugin_path = './paperpi/plugins'
 
 # command additional options
 options = [
+  '-F',
   '--noconfirm',
   '--clean',
 ]
