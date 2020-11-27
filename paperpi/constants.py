@@ -50,6 +50,3 @@ Version: {version}
 {url}
 '''
 
-# Document Creation:
-sample_resolution = (640, 448)
-doc_path = '../documentation'
