@@ -1,0 +1,16 @@
+#!/bin/bash
+off() {
+  echo 0 > /sys/class/leds/led1/brightness
+  echo 0 > /sys/class/leds/led0/brightness
+}
+
+on () {
+  echo 255 > /sys/class/leds/led1/brightness
+  echo 255 > /sys/class/leds/led0/brightness
+}
+
+case $1 in
+  on|off) "$1" ;;
+  *) echo "usage: $0 [on|off]" ;;
+
+esac

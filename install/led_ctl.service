@@ -1,0 +1,12 @@
+[Unit]
+Description=LEDs Out
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/led_ctl off
+ExecStop=/usr/bin/led_ctl on
+RemainAfterExit=yes
+
+
+[Install]
+WantedBy=multiuser.target
