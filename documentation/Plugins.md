@@ -152,33 +152,33 @@ Once you've built an tested your plugin, you can add it to PaperPi by submitting
 * Submit a PR
 
 ## Plugins Currently Avialable
-### [dec_binary_clock](../paperpi/paperpi/plugins/dec_binary_clock/README.md)
-![dec_binary_clock sample Image](../paperpi/paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png)
+### [dec_binary_clock](../paperpi/plugins/dec_binary_clock/README.md)
+![dec_binary_clock sample Image](../paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png)
 
-### [met_no](../paperpi/paperpi/plugins/met_no/README.md)
-![met_no sample Image](../paperpi/paperpi/plugins/met_no/met_no_sample.png)
+### [met_no](../paperpi/plugins/met_no/README.md)
+![met_no sample Image](../paperpi/plugins/met_no/met_no_sample.png)
 
-### [default](../paperpi/paperpi/plugins/default/README.md)
-![default sample Image](../paperpi/paperpi/plugins/default/default_sample.png)
+### [default](../paperpi/plugins/default/README.md)
+![default sample Image](../paperpi/plugins/default/default_sample.png)
 
-### [demo_plugin](../paperpi/paperpi/plugins/demo_plugin/README.md)
-![demo_plugin sample Image](../paperpi/paperpi/plugins/demo_plugin/demo_plugin_sample.png)
+### [demo_plugin](../paperpi/plugins/demo_plugin/README.md)
+![demo_plugin sample Image](../paperpi/plugins/demo_plugin/demo_plugin_sample.png)
 
-### [splash_screen](../paperpi/paperpi/plugins/splash_screen/README.md)
-![splash_screen sample Image](../paperpi/paperpi/plugins/splash_screen/splash_screen_sample.png)
+### [splash_screen](../paperpi/plugins/splash_screen/README.md)
+![splash_screen sample Image](../paperpi/plugins/splash_screen/splash_screen_sample.png)
 
-### [basic_clock](../paperpi/paperpi/plugins/basic_clock/README.md)
-![basic_clock sample Image](../paperpi/paperpi/plugins/basic_clock/basic_clock_sample.png)
+### [basic_clock](../paperpi/plugins/basic_clock/README.md)
+![basic_clock sample Image](../paperpi/plugins/basic_clock/basic_clock_sample.png)
 
-### [pi_dash](../paperpi/paperpi/plugins/pi_dash/README.md)
-![pi_dash sample Image](../paperpi/paperpi/plugins/pi_dash/pi_dash_sample.png)
+### [pi_dash](../paperpi/plugins/pi_dash/README.md)
+![pi_dash sample Image](../paperpi/plugins/pi_dash/pi_dash_sample.png)
 
-### [librespot_client](../paperpi/paperpi/plugins/librespot_client/README.md)
-![librespot_client sample Image](../paperpi/paperpi/plugins/librespot_client/librespot_client_sample.png)
+### [librespot_client](../paperpi/plugins/librespot_client/README.md)
+![librespot_client sample Image](../paperpi/plugins/librespot_client/librespot_client_sample.png)
 
-### [lms_client](../paperpi/paperpi/plugins/lms_client/README.md)
-![lms_client sample Image](../paperpi/paperpi/plugins/lms_client/lms_client_sample.png)
+### [lms_client](../paperpi/plugins/lms_client/README.md)
+![lms_client sample Image](../paperpi/plugins/lms_client/lms_client_sample.png)
 
-### [word_clock](../paperpi/paperpi/plugins/word_clock/README.md)
-![word_clock sample Image](../paperpi/paperpi/plugins/word_clock/word_clock_sample.png)
+### [word_clock](../paperpi/plugins/word_clock/README.md)
+![word_clock sample Image](../paperpi/plugins/word_clock/word_clock_sample.png)
 
