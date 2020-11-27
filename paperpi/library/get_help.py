@@ -8,6 +8,14 @@ import importlib
 import inspect
 from pathlib import Path
 import textwrap
+import logging
+
+
+
+
+
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -15,7 +23,7 @@ import textwrap
 
 
 class multi_line_string():
-    def __init__(self, s='', columns=65):
+    def __init__(self, s=' ', columns=65):
         self._string = []
         self.string = s
         self.columns=columns
@@ -194,7 +202,7 @@ def get_doc_string(module, function):
 
 
 
-def get_help(module=None, print_help=True):
+def get_help(module=None, print_help=True, plugin_path='./plugins'):
     '''display information for a plugin module including:
         * Functions available
         * Layouts defined
@@ -203,47 +211,74 @@ def get_help(module=None, print_help=True):
     Args:
         module(`str`): "plugin_name" or "plugin_name.function" or None for a list of plugins
         when a function is provided, the function is executed'''
+    plugin_path = Path(plugin_path)
     mls = multi_line_string()
     plugin_list = []
+    
     if not module:
-        p = Path("./plugins/").resolve()
         mls.string = 'get plugin information and user-facing functions:'
         mls.string = 'Usage: --plugin_info PLUGIN_NAME|PLUGIN_NAME.FUNCTION'
         mls.string = 'PLUGINS AVAILABLE:'
-        for i in get_modules():
+        for i in get_modules(plugin_path):
             mls.string = f'  {i}'
+            if print_help:
+                print(mls.string)
         return mls.string
     
     my_module = module.split('.')
+    logging.debug(f'gathering information for: {module}')
     
+#     my_module = module.split('.')
+#     logging.debug(f'my_module: {my_module}')
     
     try:
-        i = importlib.import_module(f'plugins.{my_module[0]}.{my_module[0]}')
-    except Exception as e:
-        mls.string = f'error gathering information for module {e}'
-        return 
-        
+        plugin_name = f'{".".join(plugin_path.parts)}.{my_module[0]}.{my_module[0]}'
+        logging.debug(f'attempting to import: {plugin_name}')
+        imported = importlib.import_module(plugin_name)
+    except ImportError as e:
+        logging.warning(f'error importing {plugin_name}: {e}')
+        mls.string = f'error importing {plugin_name}: {str(e)}'
+        imported = False
+    
+#     try:
+#         logging.debug(f'importing module: {my_module[0]}')
+#         imported = importlib.import_module(f'{plugin_path.name}.{my_module[0]}.{my_module[0]}')
+#     except Exception as e:
+#         mls.string = f'error gathering information for module: {str(e)}'
+#         logging.debug(mls.string)
+#         imported = None
+
     try:
-        version = i.constants.version
+        version = imported.constants.version
     except AttributeError:
         version = 'no version provided'
-    
-    if len(my_module) == 1:
+
+#     try:
+#         version = imported.constants.version
+#     except AttributeError:
+#         version = 'no version provided'
+
+
+    if len(my_module) == 1 and imported:
         plugin_list.append(my_module)
         mls.string = f'PLUGIN: {my_module[0]} v:{version}\n'
-        mls.string = get_module_docs(i)
-        mls.string = get_sample_config(i)
-        mls.string = get_layouts(i)
-        mls.string = get_data_keys(i)
+        mls.string = get_module_docs(imported)
+        mls.string = get_sample_config(imported)
+        mls.string = get_layouts(imported)
+        mls.string = get_data_keys(imported)
                
     elif len(my_module) > 1:
-        mls.string = get_doc_string(i, my_module[1])
+        mls.string = get_doc_string(imported, my_module[1])
     else:
         pass
     
     if print_help:
         print(mls.string)
     return mls.string
+
+
+
+
 
 
 
