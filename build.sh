@@ -10,7 +10,6 @@ function check_env {
     echo "pipenv OK"
   fi
 
-  ls
 
   if ! pipenv --venv
   then
