@@ -15,7 +15,7 @@ pyinstaller = "*"
 argconfigparse = "*"
 gpiozero = "*"
 python-dateutil = "*"
-querylms = {path = "./../querylms/dist/QueryLMS-0.1.2-py3-none-any.whl"}
+querylms = "*"
 
 [requires]
 python_version = "3.7"
