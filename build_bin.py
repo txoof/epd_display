@@ -90,20 +90,63 @@ def build_pyinstaller_command():
 
 
 
+def run(command):
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    while True:
+        line = process.stdout.readline().rstrip()
+        if not line:
+            break
+        yield line
+
+
+
+
+
+
 def main():
+    exit_status = 0
     pre_import_modules = set(sys.modules)
     pyinstaller_command = build_pyinstaller_command()
+    
+#     process = subprocess.Popen(pyinstaller_command, stdout=subprocess.PIPE)
+#     while True:
+#         output = process.stdout.readline()
+#         if output == '' and process.poll() is not None:
+#             break
+#         if output:
+#             print(output.strip())
+    
+#     rc = process.poll()
+    
+#     if rc > 0:
+#         print('pyinstaller exited with errors!')
+#         print('try running the build command manually from within a pipenv shell: ')
+#         print(" ".join(pyinstaller_command))
+#         print('pyinstaller exited with errors!')
+#     else:
+#         print('executable is stored in ./dist')
+        
+#     return rc
+    
+    timeout = 500
 #     print(pyinstaller_command)
     proc = subprocess.Popen(pyinstaller_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+    print(f'starting build -- will timeout after {timeout} seconds')
     try:
-        outs, errs = proc.communicate(timeout=120)
-    except TimeoutExpired:
+        outs, errs = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
         proc.kill()
+        print('timeout exceeded! build failed!')
+        print(f'try running this command manually from within the pipenv shell:')
+        print(f'{" ".join(pyinstaller_command)}')
+        print('timeout exceeded! build failed!')
         outs, errs = proc.communicate()
-
+        exit_status = 1
     print(outs)
     print(errs)    
+    if exit_status == 0:
+        print(f'executable created in ./build/')
+    return exit_status
 
 
 
@@ -111,16 +154,26 @@ def main():
 
 
 if __name__ == '__main__':
+    exit_status = 0
     build = True
     for i in sys.argv:
         if 'ipykernel' in i:
             print('this should **NOT** be run from within jupyter notebook')
             print('modules imported by jupyter can interfere with module discovery.')
             build = False
+            exit_status = 1
     if build:
-        main()
+        exit_status = main()
+    exit(exit_status)
 
 
+
+
+
+
+
+
+exit(0)
 
 
 
