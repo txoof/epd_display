@@ -538,13 +538,6 @@ def main():
 
 
 
-constants.absolute_path
-
-
-
-
-
-
 if __name__ == "__main__":
     # remove jupyter runtime junk for testing
     if len(sys.argv) >= 2 and 'ipykernel' in sys.argv[0]:
