@@ -60,8 +60,7 @@ def do_exit(status=0, message=None, **kwargs):
 
 
 
-def ret_obj(obj=None, status=0, message=None):
-    return{'obj': obj, 'status': status, 'message': message}
+
 
 
 
@@ -254,7 +253,8 @@ def setup_splash(config, resolution):
 
 
 def setup_display(config):
-    
+    def ret_obj(obj=None, status=0, message=None):
+        return{'obj': obj, 'status': status, 'message': message}    
     keyError_fmt = 'configuration KeyError: section[{}], key: {}'
 
     moduleNotFoundError_fmt = 'could not load module: {} -- error: {}'
@@ -270,6 +270,15 @@ def setup_display(config):
     except ModuleNotFoundError as e:
         logging.error('Check your config files and ensure a known waveshare_epd display is specified!')
         return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
+        return return_val
+    except FileNotFoundError as e:
+        msg = f''''Error loading waveshare_epd module: {e}
+        This is typically due to SPI not being enabled, or the current user is 
+        not a member of the SPI group.
+        "$ sudo raspi-config nonint get_spi" will return 0 if SPI is enabled
+        Try enabling SPI and run this program again. '''
+        logging.error(msg)
+        return_val = ret_obj(obj=None, status=1, message=msg)
         return return_val
         
     screen = Screen()

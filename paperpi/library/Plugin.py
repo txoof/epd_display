@@ -279,20 +279,21 @@ def main():
     p = Plugin(resolution=(300, 210), 
                refresh_rate=3, 
                max_priority=1, 
-#                update_function=bogus_plugin, 
+               update_function=bogus_plugin, 
                layout=bogus_layout)
-    
-    Plugin.update_function = bogus_plugin
+
+#     Plugin.update_function = bogus_plugin
     
     logger.root.setLevel('DEBUG')
     print('this demo is best run from inside jupyter notebook')
-    for i in range(100):
+    for i in range(5):
         print('trying to update plugin')
         p.update()
         print('displaying image')
         display(p.image)
         print('sleep for 1 second')
         sleep(1)
+    return p
 
 
 
@@ -300,7 +301,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    p = main()
 
 
 
