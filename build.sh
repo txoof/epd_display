@@ -39,13 +39,33 @@ function update_waveshare {
 }
 
 function check_packages {
+  halt=0
   echo "checking for required debian packages"
   for i in "${required_deb[@]}"
   do
     echo checking package $i
-
+    if [ $(dpkg-query -W -f='{Status}' $i 2>/dev/null | grep -c "ok installed") -gt 0 ]
+    then
+      echo package $i is not installed. Install with:
+      echo $sudo aptt install $i
+      echo ""
+      halt=$((halt+1))
+    else
+      echo $i...ok
+      echo ""
+    fi
   done
+
+  if [[ $halt -gt 0 ]]
+  then
+    echo "$halt critical packages missing. See messages above."
+    echo "stopping build here"
+    exit 1
+  fi
 }
+
+check_packages
+
 
 #check_env
 
