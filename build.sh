@@ -1,5 +1,9 @@
 #!/bin/bash
 
+project_path="./paperpi/"
+
+required_deb=("libtiff5" "libopenjp")
+
 function check_env {
   echo "checking build environment"
   if ! command -v pipenv &> /dev/null
@@ -23,4 +27,28 @@ function check_env {
   fi
 }
 
-check_env
+function update_waveshare {
+  ws_version=$(grep ws_version $project_path/constants.py)
+  echo "Waveshare EPD Library version: $ws_version"
+  read -p "would you like to pull the latest version? [y/N] " -n 1 -r
+  if [[ ! $REPLY =~ [^Yy]$ ]]
+  then
+    bash ./update_waveshare.sh
+  fi
+
+}
+
+function check_packages {
+  echo "checking for required debian packages"
+  for i in "${required_deb[@]}"
+  do
+    echo checking package $i
+
+  done
+}
+
+#check_env
+
+# update_waveshare
+
+
