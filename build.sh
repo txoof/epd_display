@@ -9,7 +9,9 @@ function check_env {
   if ! command -v pipenv &> /dev/null
   then
     echo "pipenv could not be found"
-    echo "install with `$ apt install pipenv`"
+    echo "install with: $ apt install pipenv"
+    echo "exiting"
+    exit 1
   else
     echo "pipenv OK"
   fi
