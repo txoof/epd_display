@@ -145,7 +145,7 @@ def main():
     print(outs)
     print(errs)    
     if exit_status == 0:
-        print(f'executable created in ./build/')
+        print(f'executable created in ./dist/')
     return exit_status
 
 
