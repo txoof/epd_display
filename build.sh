@@ -2,7 +2,7 @@
 
 project_path="./paperpi/"
 
-required_deb=("libtiff5" "libopenjp")
+required_deb=("libtiff5" "libopenjp*")
 
 function check_env {
   echo "checking build environment"
@@ -44,10 +44,10 @@ function check_packages {
   for i in "${required_deb[@]}"
   do
     echo checking package $i
-    if [ $(dpkg-query -W -f='{Status}' $i 2>/dev/null | grep -c "ok installed") -gt 0 ]
+    if [ $(dpkg-query -W -f='${Status}' $i | grep -c "ok installed") -eq 0 ]
     then
       echo package $i is not installed. Install with:
-      echo $sudo aptt install $i
+      echo $sudo apt install $i
       echo ""
       halt=$((halt+1))
     else
