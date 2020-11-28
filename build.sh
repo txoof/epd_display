@@ -2,7 +2,7 @@
 
 project_path="./paperpi/"
 
-required_deb=("libtiff5" "libopenjp*")
+required_deb=("libtiff5" "libopenjp2-7")
 
 function check_env {
   echo "checking build environment"
@@ -66,9 +66,8 @@ function check_packages {
 
 check_packages
 
+check_env
 
-#check_env
-
-# update_waveshare
+update_waveshare
 
 
