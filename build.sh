@@ -34,6 +34,8 @@ function update_waveshare {
   if [[ ! $REPLY =~ [^Yy]$ ]]
   then
     bash ./update_waveshare.sh
+  else
+    echo skipping update of waveshare library...
   fi
 
 }
@@ -64,10 +66,18 @@ function check_packages {
   fi
 }
 
+
+function build_binary {
+  echo "building binary using pyinstaller"
+
+  pipenv run python build_bin.py
+
+}
+
 check_packages
 
 check_env
 
 update_waveshare
 
-
+build_binary
