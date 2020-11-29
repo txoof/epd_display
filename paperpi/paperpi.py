@@ -18,7 +18,6 @@ from inspect import getfullargspec
 from importlib import import_module
 from time import sleep
 from pathlib import Path
-from os import chdir
 from distutils.util import strtobool
 import waveshare_epd
 
@@ -161,10 +160,11 @@ def get_config_files(cmd_args):
                 logging.critical(f'could not copy configuration file to {constants.config_user}: {e}')
     
     if not config_exists:
-        msg = f'''User configuration file created in {constants.config_user}
-        At minimum you edit this file and add a waveshare display_type
+        msg = f'''This appears to be the first time PaperPi has been run.
+A user configuration file created: {constants.config_user}
+At minimum you edit this file and add a display_type
         
-        Edit the configu file with "$ nano {constants.config_user}"'''
+Edit the configu file with "$ nano {constants.config_user}"'''
         do_exit(0, msg)
 
     config_files = ArgConfigParse.ConfigFile(config_files_list, ignore_missing=True)
@@ -471,15 +471,12 @@ def update_loop(plugins, screen):
 def main():
     
     # change the working directory -- this simplifies all path work later on
+    print(dir(constants))
     os.chdir(constants.absolute_path)
     
     # set the absolute path to the current directory
     absolute_path = constants.absolute_path
-    
-    # change directory into the current working directory
-    # to simplify futher path related work
-    chdir(absolute_path)
-    
+       
     # set up logging
     logging.config.fileConfig(constants.logging_config)
     logger = logging.getLogger(__name__)

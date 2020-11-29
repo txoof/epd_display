@@ -42,7 +42,7 @@ waveshare_epd = 'waveshare_epd'
 
 ## Runtime Constants
 
-absolute_path = Path(__file__).absolute().parent
+absolute_path = Path(__file__).resolve().parent
 
 version_string = f'''
 {app_name}
