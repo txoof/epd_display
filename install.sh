@@ -60,8 +60,8 @@ install () {
 
   echo " "
   echo " "
-  echo "Please configure $appName by editing /etc/$appName.cfg
-  HINT: $ sudo nano /etc/$appName.cfg
+  echo "Please configure $appName by editing $sysConfigInstallPath
+  HINT: $ sudo nano $sysConfigInstallPath
 
 The following MUST be updated for *your* system:
   * player_name = <player to be monitored> 
