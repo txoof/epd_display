@@ -5,6 +5,7 @@ sysConfig="$appName.ini"
 sysConfigPath="$appName/config/$sysConfig"
 serviceName=$appName-daemon
 sysdService="./install/$serviceName.service"
+sysConfigInstallPath="/etc/default"
 
 
 if [ "$EUID" -ne 0 ]
@@ -43,10 +44,10 @@ install () {
 
   cp -r ./dist/$appName $installPath
 
-  echo "installing config file to /etc/$sysConfig..."
+  echo "installing config file to $sysConfigInstallPath."
   # copy the system configuration into /etc/
-  if [[ ! -f /etc/$sysConfig ]]; then
-    cp $sysConfigPath /etc/
+  if [[ ! -f $sysConfigInstallPath ]]; then
+    cp $sysConfigPath $sysConfigInstallPath 
   else
     echo 'config file found, leaving existing configuration file intact'
   fi
