@@ -35,7 +35,7 @@ install () {
   # add the user
   useradd --system $appName
 
-  echo "addinng $appName to groups: spi, gpio"
+  echo "adding $appName to groups: spi, gpio"
   # add the user to the appropriate groups
   usermod -a -G spi,gpio $appName
 
@@ -60,14 +60,10 @@ install () {
 
   echo " "
   echo " "
-  echo "Please configure $appName by editing $sysConfigInstallPath
-  HINT: $ sudo nano $sysConfigInstallPath
+  echo "Please configure $appName by editing $sysConfigInstallPath/$sysConfig
+  HINT: $ sudo nano $sysConfigInstallPath/$sysConfig
 
-The following MUST be updated for *your* system:
-  * player_name = <player to be monitored> 
-      - available players can be found by running: 
-        $installPath/$appName -s
-  * display = <epd type>
+  At minimum you must set a display_type
 
 Once configured, start $appName with:
   $ sudo systemctl start $serviceName
