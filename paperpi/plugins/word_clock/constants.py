@@ -53,7 +53,7 @@ sample_config = '''
 [Plugin: Word Clock]
 layout = layout
 plugin = word_clock
-refresh_rate = 100
-min_display_time = 30
+refresh_rate = 125
+min_display_time = 255
 max_priority = 2
 '''

@@ -18,6 +18,7 @@ sample_config = '''
 layout = layout
 plugin = lms_client
 player_name = Your Player Name
+refresh_rate = 5
 min_display_time = 30
 max_priority = 0
 idle_timeout = 15

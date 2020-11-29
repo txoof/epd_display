@@ -10,7 +10,7 @@ sample_config = '''
 [Plugin: Basic Clock]
 layout = layout
 plugin = basic_clock
-refresh_rate = 55
-min_display_time = 60
+refresh_rate = 30
+min_display_time = 50
 max_priority = 2
 '''
