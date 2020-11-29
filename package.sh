@@ -39,7 +39,7 @@ fi
 
 if [[ $package -eq 1 ]]; then
 
-  tar cvzf $filename --transform 's,^,paperpi/,' -T manifest.txt
+  tar hcvzf $filename --transform 's,^,paperpi/,' -T manifest.txt
   cp $filename $latestName
 fi
 
