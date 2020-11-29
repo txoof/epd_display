@@ -1,8 +1,8 @@
 #!/bin/bash
 appName="paperpi"
 installPath="/usr/bin/"
-sysConfig="$appName.cfg"
-sysConfigPath="./dist/$appName/$sysConfig"
+sysConfig="$appName.ini"
+sysConfigPath="$appName/config/$sysConfig"
 serviceName=$appName-daemon
 sysdService="./install/$serviceName.service"
 
