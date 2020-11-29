@@ -112,5 +112,5 @@ use:
   * uninstall $appName: $ $0 -u|--uninstall 
   * uninstall $appName and purge configuration files: 
     $ $0 -u|--uninstall [-p|--Purge]"
-esac
+  esac
 fi
