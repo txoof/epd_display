@@ -2,7 +2,7 @@
 appName="paperpi"
 installPath="/usr/bin/"
 sysConfig="$appName.ini"
-sysConfigPath="$appName/config/$sysConfig"
+sysConfigPath="install/$sysConfig"
 serviceName=$appName-daemon
 sysdService="./install/$serviceName.service"
 sysConfigInstallPath="/etc/default"
@@ -21,8 +21,8 @@ The installer will setup $appName to run at system boot by doing the following:
     * Install $appName files in $installPath
     * Create configuration files in /etc/
     * Setup systemd scripts
-    * Create user and group 'slimpi' to run the system daemon
-    * Add user 'slimpi' to the GPIO and SPI access groups
+    * Create user and group "$appName" to run the system daemon
+    * Add user "$appName" to the GPIO and SPI access groups
 
 To uninstall use:
     # `basename "$0"` --uninstall 

@@ -35,12 +35,11 @@ echo $filename
 
 if [[ $build -eq 1 ]]; then
   ./build.sh
-#  pipenv run pyinstaller --clean --noconfirm slimpi.spec
 fi
 
 if [[ $package -eq 1 ]]; then
 
-  tar cvzf $filename --transform 's,^,slimpi/,' -T manifest.txt
+  tar cvzf $filename --transform 's,^,paperpi/,' -T manifest.txt
   cp $filename $latestName
 fi
 
