@@ -60,13 +60,6 @@ def do_exit(status=0, message=None, **kwargs):
 
 
 
-
-
-
-
-
-
-
 def clean_up(cache=None, screen=None):
     logging.info('cleaning up cache and screen')
     try:
@@ -139,6 +132,8 @@ def get_config_files(cmd_args):
     
     daemon = False
     
+    config_exists = True
+    
     if hasattr(cmd_args.options, "main__daemon"):
         logging.debug('-d specified on command line')
         if cmd_args.options.main__daemon:
@@ -153,6 +148,7 @@ def get_config_files(cmd_args):
     if not daemon:
         # create a user config directory
         if not constants.config_user.exists():
+            config_exists = False
             logging.info('creating user config directory and inserting config file')
             try:
                 constants.config_user.parent.mkdir(parents=True, exist_ok=True)
@@ -163,6 +159,13 @@ def get_config_files(cmd_args):
                 shutil.copy(constants.config_base, constants.config_user)
             except Exception as e:
                 logging.critical(f'could not copy configuration file to {constants.config_user}: {e}')
+    
+    if not config_exists:
+        msg = f'''User configuration file created in {constants.config_user}
+        At minimum you edit this file and add a waveshare display_type
+        
+        Edit the configu file with "$ nano {constants.config_user}"'''
+        do_exit(0, msg)
 
     config_files = ArgConfigParse.ConfigFile(config_files_list, ignore_missing=True)
     config_files.parse_config()
