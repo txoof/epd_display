@@ -1,0 +1,5 @@
+./dist/paperpi
+./install.sh
+./install
+./LICENSE
+./README.md
