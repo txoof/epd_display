@@ -46,11 +46,11 @@ install () {
 
   echo "installing config file to $sysConfigInstallPath."
   # copy the system configuration into /etc/
-  if [[ -f $sysConfigInstallPath ]] 
+  if [[ -f $sysConfigInstallPath/$sysConfig ]]
   then
     echo 'config file found, leaving existing configuration file intact'
   else
-    cp $sysConfigPath $sysConfigInstallPath 
+    cp $sysConfigPath $sysConfigInstallPath
   fi
 
   # install the systemd unit file
