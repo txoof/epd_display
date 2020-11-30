@@ -374,6 +374,7 @@ def build_plugin_list(config, resolution, cache):
 
 
 def update_loop(plugins, screen):
+    exit_code = 1
     logging.info('starting update loop')
     
     
@@ -421,6 +422,7 @@ def update_loop(plugins, screen):
         while True:    
             if h.interrupted:
                 logging.info('caught interrupt -- stoping execution')
+                exit_code = 0
                 break
             priority_list = update_plugins()
 
@@ -461,7 +463,8 @@ def update_loop(plugins, screen):
                 this_plugin_timer.update()    
                     
         
-            sleep(1)    
+            sleep(1)
+    return exit_code
 
 
 
@@ -471,7 +474,6 @@ def update_loop(plugins, screen):
 def main():
     
     # change the working directory -- this simplifies all path work later on
-    print(dir(constants))
     os.chdir(constants.absolute_path)
     
     # set the absolute path to the current directory
@@ -536,11 +538,12 @@ def main():
     cache = CacheFiles(path_prefix=constants.app_name)
     plugins = build_plugin_list(config, screen.resolution, cache)
     
-    update_loop(plugins, screen)
+    exit_code = update_loop(plugins, screen)
 
     logging.info('caught terminate signal -- cleaning up and exiting')
     clean_up(cache, screen)
-    return plugins
+    
+    return exit_code
 
 
 
@@ -552,7 +555,8 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2 and 'ipykernel' in sys.argv[0]:
         sys.argv = [sys.argv[0]]
         sys.argv.extend(sys.argv[3:])
-    c = main()
+    exit_code = main()
+    sys.exit(exit_code)
 
 
 
