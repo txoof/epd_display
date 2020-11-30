@@ -6,21 +6,21 @@ echo version number is $version
 filename=$appName\_$version.tgz
 latestName=$appName\_latest.tgz
 
+release=0
+build=0
+package=0
+
 case $1 in
   -r|--release)
-    release=1
-    build=1
-    package=1
+    release=$((release+1))
+    build=$((build+1))
+    package=$((package+1))
     ;;
   -p|--package)
-    release=0
-    build=0
-    package=1
+    package=$((package+1))
     ;;
   -b|--build)
-    release=0
-    build=1
-    package=0
+    build=$((build+1))
     ;;
   *)
     echo "useage: $0 [OPTION...]
