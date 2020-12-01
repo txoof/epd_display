@@ -87,6 +87,17 @@ function check_permissions {
   fi
 }
 
+function finish_install {
+  echo "
+  install completed
+  you must complete the configuration of $app_name by editing $system_config_path
+  at minimum you must specify the appropriate display_type.
+  $app_name will now start on boot. To start $app_name immediately, use:
+
+  $ sudo systemctl start $system_unit_file_name
+  "
+}
+
 check_permissions
 
 install_bin
@@ -96,3 +107,5 @@ add_user
 install_unit
 
 install_config
+
+finish_install
