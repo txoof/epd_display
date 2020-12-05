@@ -50,10 +50,19 @@ def update_function(self):
         pi_load = gpiozero.LoadAverage()
         pi_disk = gpiozero.DiskUsage()
         pi_info = gpiozero.pi_info()
-    except gpiozero.GPIOZeroError:
+    except gpiozero.GPIOZeroError as e:
+        logging.warning(f'error getting gpio data: {e}')
         return failure
 
     img_path = Path(constants.img_path)
+    logging.debug(f'using images stored in: {img_path}')
+    
+    try:
+        hostname = socket.gethostname()
+    except Exception as e:
+        logging.warning(f'error getting hostname: {e}')
+        hostname = 'Unknown'
+    
     try:   
         data = {'temp': f'{int(pi_temp.temperature)}C', 
                 'temp_icon': img_path/'Thermometer_icon.png',
@@ -63,7 +72,7 @@ def update_function(self):
                 'disk_icon': img_path/'SSD_icon.png',
                 'pi_model': f'Pi {pi_info.model} rev {pi_info.revision}',
                 'pi_logo': img_path/'pi_logo.png',
-                'hostname': socket.gethostname()}
+                'hostname': hostname}
     except Exception as e:
         logging.warning({e})
         
