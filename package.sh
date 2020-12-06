@@ -26,7 +26,7 @@ case $1 in
     echo "useage: $0 [OPTION...]
       --package, -p: package only
       --build, -b: build only
-      --release, -r: build, package and push the build to github"
+      --release, -r: build, package update documents and push the build to github"
     exit
     ;;
 esac
@@ -46,6 +46,8 @@ fi
 
 if [[ $release -eq 1 ]]; then
 #  git add $filename
+  pipenv run python create_docs.py
+  git commit -m "update documentation" ./plugins/*.md ./documentation/*.md
   git commit -m "update build" $latestName
   git tag -a "v$version" -m "release version: $version"
   git push
