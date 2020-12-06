@@ -15,7 +15,7 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src=./paperpi/plugins/librespot_client/librespot_client_sample.png alt="librespot plugin" width=300 />[LibreSpot (spotify) Plugin](./paperpi/plugins/librespot_client/README.md)|<img src=./paperpi/plugins/word_clock/word_clock_sample.png alt="word clock plugin" width=300 />[Word Clock](./paperpi/plugins/word_clock/README.md)|<img src=./paperpi/plugins/lms_client/lms_client_sample.png alt="lms client plugin" width=300 />[Logitech Media Server Plugin](./paperpi/plugins/lms_client/README.md)|
-|<img src=./paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png alt="decimal binary clock" width=300 />[Decimal-Binary Clock](./paperpi/plugins/dec_binary_clock/README.md)|<img src=./paperpi/plugins/met_no/met_no_sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/pi_dash/pi_dash_sample.png alt="Pi Dashboard" width=300 />[Pi Dashboard](./paperpi/plugins/pi_dash/README.md)|
+|<img src=./paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png alt="decimal binary clock" width=300 />[Decimal-Binary Clock](./paperpi/plugins/dec_binary_clock/README.md)|<img src=./paperpi/plugins/met_no/met_no_sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock_sample.png alt="basic clock" width=300 />[Basic Clock](./paperpi/plugins/pi_dash/README.md)|
 
 <a name="requirements"></a>
 ## Requirements
@@ -46,6 +46,7 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 ## Hardware/OS Setup
 The WaveShare displays require SPI access. SPI can be enabled through the `raspi-config` command.
 * `$ sudo raspi-config`
+
 |  |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
