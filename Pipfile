@@ -16,6 +16,7 @@ gpiozero = "*"
 python-dateutil = "*"
 querylms = "*"
 epdlib = "*"
+"rpi.gpio" = "*"
 
 [requires]
 python_version = "3.7"
