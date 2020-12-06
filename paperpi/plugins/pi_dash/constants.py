@@ -1,7 +1,7 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 img_path = dir_path+'/images'
-version = '0.1.0'
+version = '0.1.1'
 name = 'pi_dash'
 data  = {'temp': '0',
          'temp_icon': dir_path+'/./images/Thermometer_icon.png',
@@ -10,7 +10,8 @@ data  = {'temp': '0',
          'disk_use': '0%',  
          'disk_icon': dir_path+'/./images/SSD_icon.png',
          'pi_model': 'Unknown',
-         'hostname': 'Unknown'}
+         'hostname': 'Unknown',
+         'pi_logo': dir_path+'/./images/pi_logo.png'}
 
 
 sample_config = '''

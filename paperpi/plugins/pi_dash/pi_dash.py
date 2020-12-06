@@ -42,7 +42,8 @@ def update_function(self):
         tuple: (is_updated(bool), data(dict), priority(int))
         
     %U'''
-    
+    logging.debug(f'## {constants.name} v{constants.version} update_function ##')
+
     data = constants.data
     failure = False, data, self.max_priority
     try:
@@ -52,6 +53,7 @@ def update_function(self):
         pi_info = gpiozero.pi_info()
     except gpiozero.GPIOZeroError as e:
         logging.warning(f'error getting gpio data: {e}')
+        logging.warning(f'returning: {failure}')
         return failure
 
     img_path = Path(constants.img_path)
@@ -74,7 +76,9 @@ def update_function(self):
                 'pi_logo': img_path/'pi_logo.png',
                 'hostname': hostname}
     except Exception as e:
-        logging.warning({e})
+        logging.warning(f'failed to read GPIO data: {e}')
+        logging.waringin(f'returning: {failure}')
+        return failure
         
     
     return True, data, self.max_priority
