@@ -4,3 +4,4 @@ Pipfile.lock
 build/*
 dist/*
 *.ignore
+*.tgz
