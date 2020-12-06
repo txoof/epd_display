@@ -1,11 +1,13 @@
 # PaperPi
 ![lms_client plugin](./paperpi/plugins/splash_screen/splash_screen_sample.png)
 
-E-Paper display with multiple display plugins. 
+E-Paper display with multiple, rotating display plugins. 
 
 PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
 
 PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
+
+To get started, jump to the **[Setup Instructions](#setup)**
 
 ## Plugins
 PaperPi supports many different plugins and layouts for each plugin. The plugin structure is open and documented to allow building your own plugins or customizing existing plugins.
@@ -15,7 +17,7 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src=./paperpi/plugins/librespot_client/librespot_client_sample.png alt="librespot plugin" width=300 />[LibreSpot (spotify) Plugin](./paperpi/plugins/librespot_client/README.md)|<img src=./paperpi/plugins/word_clock/word_clock_sample.png alt="word clock plugin" width=300 />[Word Clock](./paperpi/plugins/word_clock/README.md)|<img src=./paperpi/plugins/lms_client/lms_client_sample.png alt="lms client plugin" width=300 />[Logitech Media Server Plugin](./paperpi/plugins/lms_client/README.md)|
-|<img src=./paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png alt="decimal binary clock" width=300 />[Decimal-Binary Clock](./paperpi/plugins/dec_binary_clock/README.md)|<img src=./paperpi/plugins/met_no/met_no_sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock_sample.png alt="basic clock" width=300 />[Basic Clock](./paperpi/plugins/pi_dash/README.md)|
+|<img src=./paperpi/plugins/dec_binary_clock/dec_binary_clock_sample.png alt="decimal binary clock" width=300 />[Decimal-Binary Clock](./paperpi/plugins/dec_binary_clock/README.md)|<img src=./paperpi/plugins/met_no/met_no_sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock_sample.png alt="Basic Clock" width=300 />[Basic Clock](./paperpi/plugins/basic_clock/README.md)|
 
 <a name="requirements"></a>
 ## Requirements
@@ -45,9 +47,14 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 
 ## Hardware/OS Setup
 The WaveShare displays require SPI access. SPI can be enabled through the `raspi-config` command.
-* `$ sudo raspi-config`
 
-|  |
+**NB!** It may be necessary to reboot the raspberry pi after enabling SPI.
+* `$ sudo raspi-config`
+    - enable SPI (see images below)
+* `$ sudo shutdown -r now`
+    - restart the pi
+
+| |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
@@ -55,9 +62,12 @@ The WaveShare displays require SPI access. SPI can be enabled through the `raspi
 
 
 
+<a name="setup"> </a>
 ## Intial Setup
 PaperPi can run either as a daemon and start at boot, or can run on demand from a user's directory in "single user mode."
-1. Download the archive containing the executable and install scripts
+
+### User Setup
+1. [Download the tarball](https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz)
 2. Decompress the archive: `tar xvzf paperpi.tgz`
 3. Launch PaperPi: `./paperpi`
     - On the first run PaperPi will create a configuration file in `~/.config/com.txoof.paperpi/paperpi.ini` and then exit
