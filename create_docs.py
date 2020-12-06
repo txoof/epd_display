@@ -190,7 +190,8 @@ def update_plugin_docs(plugin_docs, doc_path):
     doc_path = Path(doc_path)
     plugin_readme_source = Path(doc_path/'source/Plugins.md')
     plugin_readme_final = Path(doc_path/plugin_readme_source.name)
-    
+    print('updating Plugins.md...')
+    print(f'using: {plugin_readme_source}')
     with open(plugin_readme_source, 'r') as file:
         source = file.read()
     
@@ -227,7 +228,6 @@ def main():
     plugin_docs = create_readme(plugin_dict, 
                                 project_root=args.project_root,
                                 overwrite_images=args.overwrite_images)
-    return plugin_docs
     update_plugin_docs(plugin_docs, doc_path=args.documentation_path)
     
 
@@ -238,8 +238,16 @@ def main():
 
 if __name__ == "__main__":
     logger.setLevel('DEBUG')
+    logging.root.setLevel('DEBUG')
     print('updating documents...')
     main()
+
+
+
+
+
+
+
 
 
 
