@@ -344,6 +344,10 @@ def build_plugin_list(config, resolution, cache):
                 my_config['layout'] = getattr(module.layout, values['layout'])
             except KeyError as e:
                 logging.info('no module specified; skipping update_function and layout')
+            except ModuleNotFoundError as e:
+                logging.warning(f'error: {e} while loading module {constants.plugins}.{values["plugin"]}')
+                logging.warning(f'skipping module')
+                continue
             my_plugin = Plugin(**my_config)
             try:
                 my_plugin.update()
@@ -361,7 +365,12 @@ def build_plugin_list(config, resolution, cache):
         my_config['name'] = 'default plugin'
         my_config['resolution'] = resolution
         my_config['cache'] = cache
-        module = import_module(f'{constants.plugins}.default')
+        try:
+            module = import_module(f'{constants.plugins}.default')
+        except ModuleNotFoundError as e:
+            msg = f'could not load {constants.plugins}.default'
+            logging.error(msg)
+            do_exit(1, msg)
         my_config['update_function'] = module.update_function
         my_config['layout'] = getattr(module.layout, 'default')
         my_plugin = Plugin(**my_config)
