@@ -1,114 +1,118 @@
 #!/bin/bash
-appName="paperpi"
-installPath="/usr/bin/"
-sysConfig="$appName.ini"
-sysConfigPath="install/$sysConfig"
-serviceName=$appName-daemon
-sysdService="./install/$serviceName.service"
-sysConfigInstallPath="/etc/default"
+app_name="paperpi"
+bin_file_src="./dist/$app_name"
+bin_install_path="/usr/bin/"
+config_file_name="$app_name.ini"
+config_file_src="./install/$config_file_name"
+system_config_path="/etc/default/$config_file_name"
+systemd_unit_file_name="$app_name-daemon.service"
+systemd_unit_file_src="./install/$systemd_unit_file_name"
+systemd_unit_path="/etc/systemd/system/$systemd_unit_file_name"
 
 
-if [ "$EUID" -ne 0 ]
-  then 
-
-    echo "
-This installer must be run as root.
-
-Try: 
-    $ sudo `basename "$0"`
-
-The installer will setup $appName to run at system boot by doing the following:
-    * Install $appName files in $installPath
-    * Create configuration files in /etc/
-    * Setup systemd scripts
-    * Create user and group "$appName" to run the system daemon
-    * Add user "$appName" to the GPIO and SPI access groups
-
-To uninstall use:
-    # `basename "$0"` --uninstall 
-    "
-  exit
-fi
-
-install () {
-  echo "adding user: $appName"
-  # add the user
-  useradd --system $appName
-
-  echo "adding $appName to groups: spi, gpio"
-  # add the user to the appropriate groups
-  usermod -a -G spi,gpio $appName
-
-  echo "copying $appName to $installPath"
-  # copy program files to $installPath
-
-  cp -r ./dist/$appName $installPath
-
-  echo "installing config file to $sysConfigInstallPath."
-  # copy the system configuration into /etc/
-  if [[ -f $sysConfigInstallPath/$sysConfig ]]
+function install_config {
+  if [[ -f $system_config_path ]]
   then
-    echo 'config file found, leaving existing configuration file intact'
+    echo "existing configuration file found at $system_config_path"
+    echo "will not overwrite existing configuration file"
   else
-    cp $sysConfigPath $sysConfigInstallPath
+    echo "installing configuration file to $system_config_path"
+    cp $config_file_src $system_config_path
+    if [ $? -ne 0 ]
+    then
+      echo "failed to copy $config_file_src to $system_config_path"
+      echo "install abored"
+      exit 1
+    fi
   fi
-
-  # install the systemd unit file
-  cp $sysdService /etc/systemd/system/
-
-  # start the service
-  systemctl enable $serviceName
-
-  echo " "
-  echo " "
-  echo "Please configure $appName by editing $sysConfigInstallPath/$sysConfig
-  HINT: $ sudo nano $sysConfigInstallPath/$sysConfig
-
-  At minimum you must set a display_type
-
-Once configured, start $appName with:
-  $ sudo systemctl start $serviceName
-
-$appName will now start when this system is booted.
-"
 }
 
 
-uninstall () {
-
-  systemctl stop $serviceName
-  echo "uninstalling $appName"
-  if [ "$1" == "-p" ] || [ "$1" == "--purge" ]
+function install_unit {
+  echo "installing unit file to $systemd_unit_path"
+  cp $systemd_unit_file_src $systemd_unit_path
+  if [ $? -ne 0 ]
   then
-    echo "purging system configuration files"
-    rm /etc/$appName.cfg
+    echo "failed to copy $systemd_unit_file_src to $systemd_unit_path"
+    echo "install aborted"
+    exit 1
+  fi
+}
+
+function add_user {
+  echo "adding user and group $app_name"
+  /usr/sbin/useradd --system $app_name
+  result=$?
+  if [ $result -ne 0 ] && [ $result -ne 9 ]
+  then
+    echo "failed to add user"
+    echo "install aborted"
+    exit 1
   fi
 
-  systemctl stop $serviceName
-  systemctl disable $serviceName
-  rm /etc/systemd/system/$serviceName.service
-
-  userdel $appName
-
-  rm -r $installPath/$appName
+  echo "adding $app_name to groups spi, gpio"
+  /usr/sbin/usermod -a -G spi,gpio $app_name
+  if [ $? -ne 0 ]
+  then
+    echo "failed to add user to groups"
+    echo "install aborteD"
+    exit 1
+  fi
 
 }
 
+function install_bin {
+  cp $bin_file_src $bin_install_path
+  if [ $? -ne 0 ]
+  then
+    echo "copying $bin_file_src to $bin_install_path failed"
+    echo "install aborted. exiting"
+    exit 1
+  fi
+}
 
+function check_permissions {
+  if [ "$EUID" -ne 0 ]
+  then
+    echo "
+  This installer must be run as root.
 
-if [ $# -eq 0 ]; then
-  install
-else
-  case $1 in
-    -u|--uninstall)
-      uninstall $2;;
-    -h|--help|*)
-      echo "Unknown argument: $1
+  Try:
+    $ sudo $(basename $0)
 
-use:
-  * install $appName: $ $0
-  * uninstall $appName: $ $0 -u|--uninstall 
-  * uninstall $appName and purge configuration files: 
-    $ $0 -u|--uninstall [-p|--Purge]"
-  esac
-fi
+  This installer will setup $app_name to run at system boot by doing the following:
+    * install $app_name to $bin_install_path
+    * create configuration files in $system_config_path
+    * setup systemd unit files in $system_unit_path
+    * create user and group "$app_name" to run the system daemon
+    * add user "$app_name" to the GPIO and SPI access groups
+
+  To uninstall use:
+    $ $(basename $0) --uninstall
+"
+  exit 0
+  fi
+}
+
+function finish_install {
+  echo "
+  install completed
+  you must complete the configuration of $app_name by editing $system_config_path
+  at minimum you must specify the appropriate display_type.
+  $app_name will now start on boot. To start $app_name immediately, use:
+
+  $ sudo systemctl start $system_unit_file_name
+  "
+}
+
+check_permissions
+
+install_bin
+
+add_user
+
+install_unit
+
+install_config
+
+finish_install
