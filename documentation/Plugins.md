@@ -170,9 +170,6 @@ Once you've built an tested your plugin, you can add it to PaperPi by submitting
 ### [basic_clock](../paperpi/plugins/basic_clock/README.md)
 ![basic_clock sample Image](../paperpi/plugins/basic_clock/basic_clock_sample.png)
 
-### [pi_dash](../paperpi/plugins/pi_dash/README.md)
-![pi_dash sample Image](../paperpi/plugins/pi_dash/pi_dash_sample.png)
-
 ### [librespot_client](../paperpi/plugins/librespot_client/README.md)
 ![librespot_client sample Image](../paperpi/plugins/librespot_client/librespot_client_sample.png)
 
