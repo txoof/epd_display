@@ -23,7 +23,10 @@ function install_config {
       echo "failed to copy $config_file_src to $system_config_path"
       echo "install abored"
       exit 1
+    else
+      systemctl enable $systemd_unit_file_name
     fi
+
   fi
 }
 
