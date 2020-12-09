@@ -25,6 +25,7 @@ function install_config {
       exit 1
     else
       systemctl enable $systemd_unit_file_name
+      systemctl reload $systemd_unit_file_name
     fi
 
   fi
