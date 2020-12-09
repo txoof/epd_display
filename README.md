@@ -45,15 +45,16 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 ### Optional Software
 PaperPi plugins work with a variety of other software such as Logitech Media Server and Spotify. Check the [Plugin documentation](./documentation/Plugins.md) for further instructions
 
-## Hardware/OS Setup
-The WaveShare displays require SPI access. SPI can be enabled through the `raspi-config` command.
+<a name="setup"> </a>
+## Setup
 
-**NB!** It may be necessary to reboot the raspberry pi after enabling SPI.
-* `$ sudo raspi-config`
-    - enable SPI (see images below)
-* `$ sudo shutdown -r now`
-    - restart the pi
-
+### Hardware/OS Setup
+The WaveShare displays require use of the SPI interface. SPI can be enabled through the `raspi-config` command.
+1. Enable SPI (see images below)
+    - `$ sudo raspi-config` > Interface Options > SPI > Yes
+2. Reboot
+    - `$ sudo shutdown -r now`
+   
 | |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
@@ -62,32 +63,41 @@ The WaveShare displays require SPI access. SPI can be enabled through the `raspi
 
 
 
-<a name="setup"> </a>
-## Intial Setup
-PaperPi can run either as a daemon and start at boot, or can run on demand from a user's directory in "single user mode."
-
-### User Setup
+### Userland Setup
+PaperPi can be run directly on-demand from a user account such as the default "pi" user. Any other user will work as well, but the user must be a member of the spi group.
 1. [Download the tarball](https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz)
+    - `$ wget https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz`
 2. Decompress the archive: `tar xvzf paperpi.tgz`
-3. Launch PaperPi: `./paperpi`
+3. Launch PaperPi: `$ ./paperpi/dist/paperpi`
     - On the first run PaperPi will create a configuration file in `~/.config/com.txoof.paperpi/paperpi.ini` and then exit
 4. Edit the configuration file to match your needs. The default configuration will provide a reasonable starting point
-    - At minimum you must specify the `display_type` 
-    ```
-    display_type = epd2in7
-    ```
-    - See the list of [supported screens](#supportedScreens) for more information
+    - `$ nano ~/.config/com.txoof.paperpi/paperpi.ini`
+        - At minimum you must specify the `display_type` 
+        ```
+        # choose the display type that matches your e-paper pannel 
+        display_type = epd2in7
+        ```
+        - See the list of [supported screens](#supportedScreens) for more information
 5. Launch PaperPi again -- you should immediately see a splash screen followed shortly by the first active plugin.
+6. Press `ctrl+c` to shutdown paperpi cleanly
+    - Waveshare recommends clearing pannels to a blank state prior to long-term storage
 
 ### Daemon Setup
-1. To install PaperPi as a service, run the `install.sh` script. 
+PaperPi is designed to run 
+1. [Download the tarball](https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz)
+    - `$ wget https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz`
+2. Decompress the archive: `tar xvzf paperpi.tgz`
+2. Install PaperPi as a service, run the install script: `$ sudo ./install.sh` 
     - This will:
-        * add the necessary users and groups
+        * add the necessary service users and groups
         * add a configuration file to `/etc/defaults/paperpi.ini`
         * install PaperPi as a systemd service
 2. Edit `/etc/defaults/paperpi.ini` to configure a `display_type` and enable any plugins
-3. Start PaperPi: `sudo systemctl restart paperpi` 
-    - PaperPi will now start at boot as a systemd service
+    - `$ sudo nano /etc/defaults/paperpi.ini`
+    - At minimum you must specify the `display_type`
+    - See the list of [supported screens](#supportedScreens) for more information
+3. Start PaperPi: `$ sudo systemctl restart paperpi` 
+    - PaperPi will now start and restart at boot as a systemd service
 
 
 ## Building PaperPi
@@ -105,7 +115,7 @@ If you would like to develop [plugins](./documentation/Plugins.md) for PaperPi, 
     - executables are stored in `./dist/`
 
 ## Contributing
-PaperPi's core is written and maintained in Jupyter Notebook. If you'd like to contribute, please make pull requests in the Jupyter notebooks. Making PRs to the `.py` files means manually moving the changes into the Jupyter Notebook. 
+PaperPi's core is written and maintained in Jupyter Notebook. If you'd like to contribute, please make pull requests in the Jupyter notebooks. Making PRs to the `.py` files means manually moving the changes into the Jupyter Notebook and adds considerable work to the build/test process.
 
 Plugins can be pure python, but should follow the [guide provided](./documentation/Plugins.md).
 
