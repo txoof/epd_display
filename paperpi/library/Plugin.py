@@ -103,7 +103,7 @@ class Plugin:
         self.hash = self._generate_hash()
         self.data = {}
         self.image = None
-        self.priority = -1
+        self.priority = max_priority
     
     @property
     def name(self):

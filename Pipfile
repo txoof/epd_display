@@ -15,8 +15,8 @@ argconfigparse = "*"
 gpiozero = "*"
 python-dateutil = "*"
 querylms = "*"
-epdlib = "*"
 "rpi.gpio" = "*"
+epdlib = {path = "/home/pi/src/epdlib/dist/epdlib-0.2.0_12.10.2151-py3-none-any.whl"}
 
 [requires]
 python_version = "3.7"
