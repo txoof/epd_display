@@ -466,7 +466,13 @@ def update_loop(plugins, screen):
                     logging.debug('data refreshed, refreshing screen')
                     this_hash = this_plugin.hash
                     screen.initEPD()
-                    screen.writeEPD(this_plugin.image)
+                    if screen.writeEPD(this_plugin.image):
+                        logging.debug('successfully wrote image')
+                    else:
+                        logging.warning('#=#=# failed to write image #=#=#')
+                        logging.info('trying next plugin')
+                        plugin_is_active = False
+                        
                     
                 else:
                     logging.debug('plugin data not refreshed -- skipping screen refresh')
