@@ -53,7 +53,7 @@ class Plugin:
     def __init__(self, resolution, name=None, 
                  layout={}, 
                  update_function=None, 
-                 max_priority=-1,
+                 max_priority=2**15,
                  refresh_rate=60, 
                  min_display_time=30, 
                  config={},
