@@ -6,15 +6,14 @@ Wants=network-online.target
 
 [Service]
 # adding arguments https://superuser.com/questions/728951/systemd-giving-my-service-multiple-arguments
-
-# Type=simple
+Type=simple
 # wait until everything else is started
-Type=idle
-PIDFile=/run/paperpi.pid
+#Type=idle
+#PIDFile=/run/paperpi.pid
 ExecStart=/usr/bin/paperpi -d
 TimeoutStopSec=30
-ExecStop=/bin/kill -s SIGINT -$MAINPID
-#KillSignal=SIGINT
+#ExecStop=/bin/kill -s SIGINT -$MAINPID
+KillSignal=SIGTERM
 User=paperpi
 Group=paperpi
 Restart=on-failure
