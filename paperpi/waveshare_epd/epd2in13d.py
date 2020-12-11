@@ -153,7 +153,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(5)
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
@@ -178,7 +178,7 @@ class EPD:
         
     def TurnOnDisplay(self):
         self.send_command(0x12)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(100)
         self.ReadBusy()
         
     def init(self):
@@ -307,7 +307,6 @@ class EPD:
         if (Image == None):
             return
             
-        self.SetPartReg()
         self.send_command(0x91)
         self.send_command(0x90)
         self.send_data(0)
@@ -328,7 +327,8 @@ class EPD:
         for i in range(0, int(self.width * self.height / 8)):
             self.send_data(~image[i])
         epdconfig.delay_ms(10)
-          
+        
+        self.SetPartReg()
         self.TurnOnDisplay()
         
     def Clear(self, color):

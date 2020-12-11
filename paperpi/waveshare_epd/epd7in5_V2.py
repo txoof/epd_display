@@ -139,7 +139,7 @@ class EPD:
     def display(self, image):
         self.send_command(0x13)
         for i in range(0, int(self.width * self.height / 8)):
-            self.send_data(~image[i]);
+            self.send_data(~image[i])
                 
         self.send_command(0x12)
         epdconfig.delay_ms(100)

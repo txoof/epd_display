@@ -154,7 +154,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(5)
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
@@ -282,6 +282,9 @@ class EPD:
         
         self.send_command(0x30) # PLL_CONTROL
         self.send_data(0x3A) # 3A 100HZ   29 150Hz 39 200HZ    31 171HZ
+    
+        self.send_command(0X50)			#VCOM AND DATA INTERVAL SETTING			
+        self.send_data(0x57)
         
         self.send_command(0x82) # VCM_DC_SETTING_REGISTER
         self.send_data(0x12)
@@ -355,7 +358,7 @@ class EPD:
         self.send_data (0x12)
 
         self.send_command(0X50)			#VCOM AND DATA INTERVAL SETTING			
-        self.send_data(0x97)
+        self.send_data(0x57)
 
     def getbuffer(self, image):
         # logging.debug("bufsiz = ",int(self.width/8) * self.height)

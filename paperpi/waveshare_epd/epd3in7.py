@@ -112,7 +112,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(5)
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
@@ -172,7 +172,7 @@ class EPD:
 
         self.send_command(0x3C) # set border 
         self.send_data(0x00)
-
+        
         self.send_command(0x0C) # set booster strength
         self.send_data(0xAE)
         self.send_data(0xC7)
@@ -185,7 +185,7 @@ class EPD:
          
         self.send_command(0x2C) # set vcom value
         self.send_data(0x44)
-    
+        
         if(mode == 0):   #4Gray
             self.send_command(0x37) # set display option, these setting turn on previous function
             self.send_data(0x00)

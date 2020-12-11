@@ -1,11 +1,11 @@
 # *****************************************************************************
-# * | File        :	  epd7in5bc.py
+# * | File        :	  epd7in5b_V2.py
 # * | Author      :   Waveshare team
 # * | Function    :   Electronic paper driver
 # * | Info        :
 # *----------------
-# * | This version:   V4.0
-# * | Date        :   2019-06-20
+# * | This version:   V4.1
+# * | Date        :   2020-11-30
 # # | Info        :   python demo
 # -----------------------------------------------------------------------------
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,8 +32,8 @@ import logging
 from . import epdconfig
 
 # Display resolution
-EPD_WIDTH       = 640
-EPD_HEIGHT      = 384
+EPD_WIDTH       = 800
+EPD_HEIGHT      = 480
 
 class EPD:
     def __init__(self):
@@ -49,7 +49,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(5)
+        epdconfig.delay_ms(4)
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
@@ -67,53 +67,54 @@ class EPD:
         
     def ReadBusy(self):
         logging.debug("e-Paper busy")
-        while(epdconfig.digital_read(self.busy_pin) == 0):      # 0: idle, 1: busy
-            epdconfig.delay_ms(100)
-        logging.debug("e-Paper busy release")
+        self.send_command(0x71)
+        busy = epdconfig.digital_read(self.busy_pin)
+        while(busy == 0):
+            self.send_command(0x71)
+            busy = epdconfig.digital_read(self.busy_pin)
+        epdconfig.delay_ms(200)
             
     def init(self):
         if (epdconfig.module_init() != 0):
             return -1
             
         self.reset()
-
-        self.send_command(0x01) # POWER_SETTING
-        self.send_data(0x37)
-        self.send_data(0x00)
         
-        self.send_command(0x00) # PANEL_SETTING
-        self.send_data(0xCF)
-        self.send_data(0x08)
-        
-        self.send_command(0x30) # PLL_CONTROL
-        self.send_data(0x3A) # PLL:  0-15:0x3C, 15+:0x3A
-        
-        self.send_command(0x82) # VCM_DC_SETTING
-        self.send_data(0x28) #all temperature  range
+        self.send_command(0x01);			#POWER SETTING
+        self.send_data(0x07);
+        self.send_data(0x07);    #VGH=20V,VGL=-20V
+        self.send_data(0x3f);		#VDH=15V
+        self.send_data(0x3f);		#VDL=-15V
 
-        self.send_command(0x06) # BOOSTER_SOFT_START
-        self.send_data(0xc7)
-        self.send_data(0xcc)
-        self.send_data(0x15)
+        self.send_command(0x04); #POWER ON
+        epdconfig.delay_ms(100);
+        self.ReadBusy();
 
-        self.send_command(0x50) # VCOM AND DATA INTERVAL SETTING
-        self.send_data(0x77)
+        self.send_command(0X00);			#PANNEL SETTING
+        self.send_data(0x0F);   #KW-3f   KWR-2F	BWROTP 0f	BWOTP 1f
 
-        self.send_command(0x60) # TCON_SETTING
-        self.send_data(0x22)
+        self.send_command(0x61);        	#tres
+        self.send_data(0x03);		#source 800
+        self.send_data(0x20);
+        self.send_data(0x01);		#gate 480
+        self.send_data(0xE0);
 
-        self.send_command(0x65) # FLASH CONTROL
-        self.send_data(0x00)
+        self.send_command(0X15);
+        self.send_data(0x00);
 
-        self.send_command(0x61) # TCON_RESOLUTION
-        self.send_data(self.width >> 8) # source 640
-        self.send_data(self.width & 0xff)
-        self.send_data(self.height >> 8) # gate 384
-        self.send_data(self.height & 0xff)
+        self.send_command(0X50);			#VCOM AND DATA INTERVAL SETTING
+        self.send_data(0x11);
+        self.send_data(0x07);
 
-        self.send_command(0xe5) # FLASH MODE
-        self.send_data(0x03)
-        
+        self.send_command(0X60);			#TCON SETTING
+        self.send_data(0x22);
+
+        self.send_command(0x65);
+        self.send_data(0x00);
+        self.send_data(0x00);
+        self.send_data(0x00);
+        self.send_data(0x00);
+    
         return 0
 
     def getbuffer(self, image):
@@ -142,50 +143,27 @@ class EPD:
 
     def display(self, imageblack, imagered):
         self.send_command(0x10)
-        for i in range(0, int(self.width / 8 * self.height)):
-            temp1 = imageblack[i]
-            temp2 = imagered[i]
-            j = 0
-            while (j < 8):
-                if ((temp2 & 0x80) == 0x00):
-                    temp3 = 0x04                #red
-                elif ((temp1 & 0x80) == 0x00):
-                    temp3 = 0x00                #black
-                else:
-                    temp3 = 0x03                #white
-					
-                temp3 = (temp3 << 4) & 0xFF
-                temp1 = (temp1 << 1) & 0xFF
-                temp2 = (temp2 << 1) & 0xFF
-                j += 1
-                if((temp2 & 0x80) == 0x00):
-                    temp3 |= 0x04              #red
-                elif ((temp1 & 0x80) == 0x00):
-                    temp3 |= 0x00              #black
-                else:
-                    temp3 |= 0x03              #white
-                temp1 = (temp1 << 1) & 0xFF
-                temp2 = (temp2 << 1) & 0xFF
-                self.send_data(temp3)
-                j += 1
-                
-        self.send_command(0x04) # POWER ON
-        self.ReadBusy()
-        self.send_command(0x12) # display refresh
+        for i in range(0, int(self.width * self.height / 8)):
+            self.send_data(imageblack[i]);
+        
+        self.send_command(0x13)
+        for i in range(0, int(self.width * self.height / 8)):
+            self.send_data(~imagered[i]);
+        
+        self.send_command(0x12)
         epdconfig.delay_ms(100)
         self.ReadBusy()
         
     def Clear(self):
         self.send_command(0x10)
-        for i in range(0, int(self.width / 8 * self.height)):
-            self.send_data(0x33)
-            self.send_data(0x33)
-            self.send_data(0x33)
-            self.send_data(0x33)
+        for i in range(0, int(self.width * self.height / 8)):
+            self.send_data(0xff)
             
-        self.send_command(0x04) # POWER ON
-        self.ReadBusy()
-        self.send_command(0x12) # display refresh
+        self.send_command(0x13)
+        for i in range(0, int(self.width * self.height / 8)):
+            self.send_data(0x00)
+                
+        self.send_command(0x12)
         epdconfig.delay_ms(100)
         self.ReadBusy()
 

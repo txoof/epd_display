@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 # *****************************************************************************
-# * | File        :	  epd5in65f.py
+# * | File        :	  epd4in01f.py
 # * | Author      :   Waveshare team
 # * | Function    :   Electronic paper driver
 # * | Info        :
 # *----------------
 # * | This version:   V1.0
-# * | Date        :   2020-03-02
+# * | Date        :   2020-11-06
 # # | Info        :   python demo
 # -----------------------------------------------------------------------------
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,8 +33,8 @@ import logging
 from . import epdconfig
 
 # Display resolution
-EPD_WIDTH       = 600
-EPD_HEIGHT      = 448
+EPD_WIDTH       = 640
+EPD_HEIGHT      = 400
 
 class EPD:
     def __init__(self):
@@ -56,7 +56,7 @@ class EPD:
     # Hardware reset
     def reset(self):
         epdconfig.digital_write(self.reset_pin, 1)
-        epdconfig.delay_ms(600) 
+        epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
         epdconfig.delay_ms(2)
         epdconfig.digital_write(self.reset_pin, 1)
@@ -77,7 +77,7 @@ class EPD:
     def ReadBusyHigh(self):
         logging.debug("e-Paper busy")
         while(epdconfig.digital_read(self.busy_pin) == 0):      # 0: idle, 1: busy
-            epdconfig.delay_ms(100)    
+            epdconfig.delay_ms(100)
         logging.debug("e-Paper busy release")
         
     def ReadBusyLow(self):
@@ -93,39 +93,34 @@ class EPD:
         self.reset()
         
         self.ReadBusyHigh()
-        self.send_command(0x00)
-        self.send_data(0xEF)
-        self.send_data(0x08)
-        self.send_command(0x01)
-        self.send_data(0x37)
-        self.send_data(0x00)
-        self.send_data(0x23)
-        self.send_data(0x23)
-        self.send_command(0x03)
-        self.send_data(0x00)
-        self.send_command(0x06)
-        self.send_data(0xC7)
-        self.send_data(0xC7)
-        self.send_data(0x1D)
-        self.send_command(0x30)
-        self.send_data(0x3c)
-        self.send_command(0x40)
-        self.send_data(0x00)
-        self.send_command(0x50)
-        self.send_data(0x37)
-        self.send_command(0x60)
-        self.send_data(0x22)
-        self.send_command(0x61)
-        self.send_data(0x02)
-        self.send_data(0x58)
-        self.send_data(0x01)
-        self.send_data(0xC0)
-        self.send_command(0xE3)
-        self.send_data(0xAA)
+        self.send_command(0x00);
+        self.send_data(0x2f);
+        self.send_data(0x00);
+        self.send_command(0x01);
+        self.send_data(0x37);
+        self.send_data(0x00);
+        self.send_data(0x05);
+        self.send_data(0x05);
+        self.send_command(0x03);
+        self.send_data(0x00);
+        self.send_command(0x06);
+        self.send_data(0xC7);
+        self.send_data(0xC7);
+        self.send_data(0x1D);
+        self.send_command(0x41);
+        self.send_data(0x00);
+        self.send_command(0x50);
+        self.send_data(0x37);
+        self.send_command(0x60);
+        self.send_data(0x22);
+        self.send_command(0x61);
+        self.send_data(0x02);
+        self.send_data(0x80);
+        self.send_data(0x01);
+        self.send_data(0x90);
+        self.send_command(0xE3);
+        self.send_data(0xAA);
         
-        epdconfig.delay_ms(100)
-        self.send_command(0x50)
-        self.send_data(0x37)
         # EPD hardware init end
         return 0
 
@@ -188,9 +183,9 @@ class EPD:
     def display(self,image):
         self.send_command(0x61)#Set Resolution setting
         self.send_data(0x02)
-        self.send_data(0x58)
+        self.send_data(0x80)
         self.send_data(0x01)
-        self.send_data(0xC0)
+        self.send_data(0x90)
         self.send_command(0x10)
         for i in range(0, int(EPD_HEIGHT)):
             for j in range(0, int(EPD_WIDTH/2)):
@@ -206,9 +201,9 @@ class EPD:
     def Clear(self):
         self.send_command(0x61)#Set Resolution setting
         self.send_data(0x02)
-        self.send_data(0x58)
+        self.send_data(0x80)
         self.send_data(0x01)
-        self.send_data(0xC0)
+        self.send_data(0x90)
         self.send_command(0x10)
         for i in range(0, int(EPD_HEIGHT)):
             for j in range(0, int(EPD_WIDTH/2)):
@@ -233,7 +228,6 @@ class EPD:
         epdconfig.delay_ms(500)
         self.send_command(0x07) # DEEP_SLEEP
         self.send_data(0XA5)
-        epdconfig.digital_write(self.reset_pin, 0)
 
     def Dev_exit(self):
         epdconfig.module_exit()      

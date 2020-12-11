@@ -88,7 +88,7 @@ class EPD:
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200) 
         epdconfig.digital_write(self.reset_pin, 0)
-        epdconfig.delay_ms(10)
+        epdconfig.delay_ms(5)
         epdconfig.digital_write(self.reset_pin, 1)
         epdconfig.delay_ms(200)   
 
@@ -264,10 +264,10 @@ class EPD:
                 self.send_data(image[i + j * linewidth])   
                 
                 
-        # self.send_command(0x26)
-        # for j in range(0, self.height):
-            # for i in range(0, linewidth):
-                # self.send_data(~image[i + j * linewidth])  
+        self.send_command(0x26)
+        for j in range(0, self.height):
+            for i in range(0, linewidth):
+                self.send_data(~image[i + j * linewidth])  
         self.TurnOnDisplayPart()
 
     def displayPartBaseImage(self, image):
@@ -298,7 +298,13 @@ class EPD:
         self.send_command(0x24)
         for j in range(0, self.height):
             for i in range(0, linewidth):
-                self.send_data(color)   
+                self.send_data(color)
+                
+        # self.send_command(0x26)
+        # for j in range(0, self.height):
+            # for i in range(0, linewidth):
+                # self.send_data(color)   
+                
         self.TurnOnDisplay()
 
     def sleep(self):
@@ -307,7 +313,7 @@ class EPD:
         # self.send_command(0x20)
 
         self.send_command(0x10) #enter deep sleep
-        self.send_data(0x01)
+        self.send_data(0x03)
         epdconfig.delay_ms(100)
 
     def Dev_exit(self):
