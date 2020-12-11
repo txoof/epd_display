@@ -35,6 +35,7 @@ function install_config {
 function install_unit {
   echo "installing unit file to $systemd_unit_path"
   cp $systemd_unit_file_src $systemd_unit_path
+  systemctl daemon-reload
   if [ $? -ne 0 ]
   then
     echo "failed to copy $systemd_unit_file_src to $systemd_unit_path"
