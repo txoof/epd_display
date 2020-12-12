@@ -32,7 +32,7 @@ function check_env {
 function update_waveshare {
   ws_version=$(grep ws_version $project_path/constants.py)
   echo "Waveshare EPD Library version: $ws_version"
-  read -p "would you like to pull the latest version? [y/N] " -n 1 -r
+  read -t 8 -p "would you like to pull the latest version? [y/N] " -n 1 -r
   if [[ ! $REPLY =~ [^Yy]$ ]]
   then
     bash ./update_waveshare.sh
