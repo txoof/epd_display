@@ -66,7 +66,7 @@ def clean_up(cache=None, screen=None):
     except AttributeError:
         logging.debug('no cache passed, skipping')
     try:
-        screen.initEPD()
+#         screen.initEPD()
         screen.clearEPD()
     except AttributeError:
         logging.debug('no screen passed, skipping')
@@ -231,14 +231,16 @@ def setup_splash(config, resolution):
     if 'splash' in config['main']:
         logging.debug('checking splash screen settings')
         if config['main']['splash']:
+            logging.debug('splash enabled in confg file')
             splash = True
         else:
-            logging
+            logging.debug('splash disabled in config file')
             splash = False
     else:
         splash = True
 
     if splash:
+        logging.debug('splash screen enabled')
         from plugins.splash_screen import splash_screen
         splash_config = { 
             'name': 'Splash Screen',
@@ -246,9 +248,10 @@ def setup_splash(config, resolution):
             'update_function': splash_screen.update_function,
             'resolution': resolution
         } 
-        logging.debug('configuring and displaying splash screen')
+        logging.debug(f'configuring splash screen: {splash_config}')
         splash = Plugin(**splash_config)
-        splash.update(constants.app_name, constants.version, constants.url)    
+        splash.update(constants.app_name, constants.version, constants.url)
+        logging.debug(f'splash screen image type: {type(splash.image)}')
     return splash
 
 
@@ -392,6 +395,7 @@ def update_loop(plugins, screen):
         '''run through all active plugins and update while recording the priority'''
         my_list = []
         logging.info('*'*15)
+        logging.info(f'My PID: {os.getppid()}')
         logging.info(f'updating {len(plugins)} plugins')
         for plugin in plugins:
             plugin.update()
@@ -424,7 +428,7 @@ def update_loop(plugins, screen):
         if plugin.priority <= max_priority:
             this_hash = plugin.hash
             logging.info(f'**** displaying {plugin.name} ****')
-            screen.initEPD()
+#             screen.initEPD()
             screen.writeEPD(plugin.image)
             break
     
@@ -465,7 +469,8 @@ def update_loop(plugins, screen):
                 if this_hash != this_plugin.hash:
                     logging.debug('data refreshed, refreshing screen')
                     this_hash = this_plugin.hash
-                    screen.initEPD()
+#                     screen.initEPD()
+                    logging.debug(f'image type: {type(this_plugin.image)}')
                     if screen.writeEPD(this_plugin.image):
                         logging.debug('successfully wrote image')
                     else:
@@ -535,6 +540,8 @@ def main():
     logger.setLevel(config['main']['log_level'])
     logging.root.setLevel(config['main']['log_level'])
     
+    logging.debug(f'********** PaperPi {constants.version} Starting **********')
+    
     # configure screen
     screen_return = setup_display(config)
     if screen_return['obj']:
@@ -543,11 +550,14 @@ def main():
         clean_up(None, None)
         logging.error(f'config files used: {config_files.config_files}')
         do_exit(**screen_return)
-        
-    splash = setup_splash(config, screen.resolution)    
-    screen.initEPD()
-
+    
+    # try to set up the splash screen several times here -- this may solve the None image problem.
+    splash = setup_splash(config, screen.resolution)
+    
     if splash:
+        
+        logging.debug('displaying splash screen')
+        logging.debug(f'image type: {type(splash.image)}')
         screen.writeEPD(splash.image)
         
     
