@@ -1,5 +1,6 @@
 # PaperPi
 ![PaperPi Demo](./documentation/images/PaperPi_Demo_fast.gif)
+
 E-Paper display with multiple, rotating display plugins. 
 
 PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
