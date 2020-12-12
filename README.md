@@ -1,6 +1,5 @@
 # PaperPi
-![lms_client plugin](./paperpi/plugins/splash_screen/splash_screen_sample.png)
-
+![PaperPi Demo](./documentation/images/PaperPi_Demo_fast.gif)
 E-Paper display with multiple, rotating display plugins. 
 
 PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
@@ -8,6 +7,7 @@ PaperPi is designed run as a daemon process to display a vairety of plugins to S
 PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
 
 To get started, jump to the **[Setup Instructions](#setup)**
+
 
 ## Plugins
 PaperPi supports many different plugins and layouts for each plugin. The plugin structure is open and documented to allow building your own plugins or customizing existing plugins.
