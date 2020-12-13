@@ -1,5 +1,9 @@
 # PaperPi
-![Splash Screen](./paperpi/plugins/splash_screen/splash_screen_sample.png)
+
+
+|     |     |
+|:---:|:---:|
+|<img src=./paperpi/plugins/splash_screen/splash_screen_sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/paperpi_playing.jpg alt="PaperPi Playing" width=400 /> PaperPi LMS-Client Plugin|
 
 E-Paper display with multiple, rotating display plugins. 
 
@@ -9,13 +13,12 @@ PaperPi rotates through a user-configured selection of plugins each represented 
 
 To get started, jump to the **[Setup Instructions](#setup)**
 
-
 ## Plugins
 PaperPi supports many different plugins and layouts for each plugin. The plugin structure is open and documented to allow building your own plugins or customizing existing plugins.
 
 ![PaperPi Demo](./documentation/images/PaperPi_Demo_fast.gif)
  
-###[Complete Plugins List](./documentation/Plugins.md)
+### [Complete Plugins List](./documentation/Plugins.md)
 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
