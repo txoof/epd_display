@@ -26,8 +26,8 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 ## Requirements
 
 ### Required Hardware
-* Raspberry Pi 4B
-    - A Pi3 and possibly a Pi Zero are likely sufficient, but are untested at this time (Nov 2020)
+* Raspberry Pi 4B, Pi3
+    - A Pi Zero is likely sufficient, but is untested at this time (Nov 2020)
 * [WaveShare EPD SPI-only Screen](https://www.waveshare.com/product/displays/e-paper.htm) with PiHat
     - see the full list of currently [supported screens](#supportedScreens)
     - UART, SPI/USB/I80 screens are **not supported** as there is no python library for diving these boards
@@ -57,14 +57,12 @@ The WaveShare displays require use of the SPI interface. SPI can be enabled thro
     - `$ sudo raspi-config` > Interface Options > SPI > Yes
 2. Reboot
     - `$ sudo shutdown -r now`
-   
 | |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
-
-
+3. Check the [Hardware Setup](./documentation/Hardware_Setup.md) documentation for more details
 
 ### Userland Setup
 PaperPi can be run directly on-demand from a user account such as the default "pi" user. Any other user will work as well, but the user must be a member of the spi group.
@@ -101,6 +99,7 @@ PaperPi is designed to run
     - See the list of [supported screens](#supportedScreens) for more information
 3. Start PaperPi: `$ sudo systemctl restart paperpi` 
     - PaperPi will now start and restart at boot as a systemd service
+    - PaperPi may fail to display the splash screen after boot -- see the [Known Issues](#knownIssues) section for more details
 
 
 ## Building PaperPi
@@ -128,7 +127,7 @@ See [this gist](https://gist.github.com/txoof/ed4319db317f813b9e500ff190ca4a87) 
 ## Supported Screens
 All supported waveshare screens are only supported in 1 bit (black and white) mode. Grayscale and color output is not supported at this time.
 
-Some WaveShare screens that support color output will also work with with the non-colored driver. Using the 1 bit driver can yield significantly better update speeds. For example: the `epd2in7b` screen takes around 15 seconds to update, but can be driven by the `epd2in7` driver  in 1-bit mode which takes less than 2 seconds to update.
+Some WaveShare screens that support color output will also work with with the non-colored driver. Using the 1 bit driver can yield significantly better update speeds. For example: the `epd2in7b` screen takes around 15 seconds to update even when refreshing a 1 bit image, but can be run using the `epd2in7` driver in 1-bit mode which takes less than 2 seconds to update.
 
 | WaveShare Screen |
 |:-|
@@ -144,28 +143,38 @@ Some WaveShare screens that support color output will also work with with the no
 | epd2in13bc  |
 | epd2in13d  |
 | epd2in66  |
+| epd2in66b  |
 | epd2in7  |
 | epd2in7b  |
+| epd2in7b_V2  |
 | epd2in9  |
-| epd2in9b_V2  |
+| epd2in9_V2  |
+| epd2in9b_V3  |
 | epd2in9bc  |
 | epd2in9d  |
 | epd3in7  |
+| epd4in01f  |
 | epd4in2  |
 | epd4in2b_V2  |
 | epd4in2bc  |
 | epd5in65f  |
 | epd5in83  |
+| epd5in83_V2  |
 | epd5in83b_V2  |
 | epd5in83bc  |
 | epd7in5  |
 | epd7in5_HD  |
 | epd7in5_V2  |
 | epd7in5b_HD  |
+| epd7in5b_V2  |
 | epd7in5bc  |
-| epd7in5bc_V2  |
 | epdconfig  |
 
+<a name="knownIssues"> </a>
+## Known Isuses
+* When starting as a daemon process from systemd, PaperPi may fail to show the splash screen image and the first module. 
+    - After the first module's minimum display time elapses and it is refreshed, the problem appears to be rectified. 
+    - See [this issue](https://github.com/txoof/epd_display/issues/1#issue-765246248) on github for more details
 
 
 
