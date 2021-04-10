@@ -132,6 +132,8 @@ All supported waveshare screens are only supported in 1 bit (black and white) mo
 
 Some WaveShare screens that support color output will also work with with the non-colored driver. Using the 1 bit driver can yield significantly better update speeds. For example: the `epd2in7b` screen takes around 15 seconds to update even when refreshing a 1 bit image, but can be run using the `epd2in7` driver in 1-bit mode which takes less than 2 seconds to update.
 
+* *~~struck through~~ screens are not currently compatible with PaperPi (as of 2020.04.10)*
+
 | WaveShare Screen |
 |:-|
 | epd1in02  |
@@ -147,7 +149,7 @@ Some WaveShare screens that support color output will also work with with the no
 | epd2in13d  |
 | epd2in66  |
 | epd2in66b  |
-| epd2in7  |
+| * ~~epd2in7~~  |
 | epd2in7b  |
 | epd2in7b_V2  |
 | epd2in9  |
@@ -155,9 +157,9 @@ Some WaveShare screens that support color output will also work with with the no
 | epd2in9b_V3  |
 | epd2in9bc  |
 | epd2in9d  |
-| epd3in7  |
+| * ~~epd3in7~~  |
 | epd4in01f  |
-| epd4in2  |
+| * ~~epd4in2~~  |
 | epd4in2b_V2  |
 | epd4in2bc  |
 | epd5in65f  |
