@@ -75,6 +75,8 @@ LAYOUTS AVAILABLE:
   layout
   test
   three_column_icon_wind_temp_precip
+  three_column_icon_wind_temp_time
+  three_row_icon_wind_temp
   two_column_icon_wind_temp_precip
  
 
