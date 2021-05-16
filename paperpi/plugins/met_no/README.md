@@ -2,7 +2,7 @@
 ![sample image for plugin met_no](./met_no_sample.png)
 ```
  
-PLUGIN: met_no v:0.1.1
+PLUGIN: met_no v:0.1.2
 
  
 FUNCTION: get_coord
@@ -75,7 +75,6 @@ LAYOUTS AVAILABLE:
   layout
   test
   three_column_icon_wind_temp_precip
-  three_column_icon_wind_temp_time
   three_row_icon_wind_temp
   two_column_icon_wind_temp_precip
  
