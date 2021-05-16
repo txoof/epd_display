@@ -19,6 +19,187 @@ test = {
     }, 
 }
 
+three_row_icon_wind_temp = {
+    'forecast_location' : { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 5/7,
+        'height': 3/30,
+        'hcenter': False,
+        'vcenter': True,
+        'abs_coordinates': (0, 0),
+        'relative': False,
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
+    },
+    'time_updated_local': {
+        'image': None,
+        'padding': 0,
+        'width': 2/7,
+        'height': 3/30,
+        'hcenter': False,
+        'vcenter': True,
+        'abs_coordinates': (None, 0),
+        'relative': ['forecast_location', 'time_updated_local'],
+        'max_lines': 2,
+        'font': dir_path+'/../../fonts/Montserrat/Montserrat-Regular.ttf'
+    },
+    # row 0
+    '000_forecast_time_local': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': False,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['000_forecast_time_local', 'forecast_location'],
+        'max_lines': 2,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    },
+    '000_data_next_1_hours_summary_symbol_code_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['000_forecast_time_local', 'forecast_location'],
+    },    
+    '000_data_instant_details_wind_barb_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['000_data_next_1_hours_summary_symbol_code_image', 'forecast_location'],
+    },
+    '000_data_instant_details_air_temperature': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['000_data_instant_details_wind_barb_image', 'forecast_location'],
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    },    
+    
+    # row 1
+    '006_forecast_time_local': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': False,
+        'vcenter': True,
+        'inverse': True,
+        'abs_coordinates': (0, None),
+        'relative': ['006_forecast_time_local', '000_forecast_time_local'],
+        'max_lines': 2,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    }, 
+    '006_data_next_1_hours_summary_symbol_code_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'inverse': True,
+        'abs_coordinates': (None, None),
+        'relative': ['006_forecast_time_local', '000_data_next_1_hours_summary_symbol_code_image'],
+    },
+    '006_data_instant_details_wind_barb_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'inverse': True,
+        'abs_coordinates': (None, None),
+        'relative': ['006_data_next_1_hours_summary_symbol_code_image', '000_data_instant_details_wind_barb_image'],
+    },
+    '006_data_instant_details_air_temperature': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'inverse': True,
+        'abs_coordinates': (None, None),
+        'relative': ['006_data_instant_details_wind_barb_image', '000_data_instant_details_air_temperature'],
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    },
+    
+    # row 2
+    '012_forecast_time_local': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': False,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['012_forecast_time_local', '006_forecast_time_local'],
+        'max_lines': 2,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    }, 
+    '012_data_next_1_hours_summary_symbol_code_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['012_forecast_time_local', '006_data_next_1_hours_summary_symbol_code_image'],
+    },
+    '012_data_instant_details_wind_barb_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['012_data_next_1_hours_summary_symbol_code_image', '006_data_instant_details_wind_barb_image'],
+    },
+    '012_data_instant_details_air_temperature': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/4,
+        'height': 9/30,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['012_data_instant_details_wind_barb_image', '006_data_instant_details_air_temperature'],
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    },    
+}
+
 three_column_icon_wind_temp_precip = {
     'forecast_location' : { 
         'image': None,
@@ -266,6 +447,85 @@ three_column_icon_wind_temp_precip = {
     },    
 }
 
+three_column_icon_wind_temp_time = {
+    'forecast_location' : { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1,
+        'height': 3/32,
+        'hcenter': False,
+        'vcenter': True,
+        'abs_coordinates': (0, 0),
+        'relative': False,
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
+    },
+    # Column 0
+    '000_data_next_1_hours_summary_symbol_code_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/3,
+        'height': 9/32,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['000_data_next_1_hours_summary_symbol_code_image', 'forecast_location'],
+    },  
+    '000_data_instant_details_wind_barb_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/3,
+        'height': 9/32,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['000_data_instant_details_wind_barb_image', '000_data_next_1_hours_summary_symbol_code_image'],
+    },
+    '000_data_instant_details_air_temperature': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/3,
+        'height': 8/32,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['000_data_instant_details_air_temperature', '000_data_instant_details_wind_barb_image'],
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf'
+    },
+    '000_forecast_time_local': { 
+        'image': None,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/3,
+        'height': 3/32,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (0, None),
+        'relative': ['000_forecast_time_local', '000_data_instant_details_air_temperature'],
+        'max_lines': 1,
+        'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
+    },    
+    
+    
+    # Column 1
+    '006_data_next_1_hours_summary_symbol_code_image': { 
+        'image': True,
+        'inverse': False,
+        'padding': 0,
+        'width': 1/3,
+        'height': 8/32,
+        'hcenter': True,
+        'vcenter': True,
+        'abs_coordinates': (None, None),
+        'relative': ['000_data_next_1_hours_summary_symbol_code_image', 'forecast_location'],
+    },
+}
+
 two_column_icon_wind_temp_precip = {
     '000_data_next_1_hours_summary_symbol_code_image': { 
         'image': True,
@@ -382,4 +642,4 @@ two_column_icon_wind_temp_precip = {
 }
 
 # default layout
-layout = three_column_icon_wind_temp_precip
+layout = three_row_icon_wind_temp
