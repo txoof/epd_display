@@ -410,7 +410,7 @@ class EPD:
             for x in range(imwidth):
                 for y in range(imheight):
                     newx = y
-                    newy = x
+                    newy = self.height - x - 1
                     if(pixels[x, y] == 0xC0):
                         pixels[x, y] = 0x80
                     elif (pixels[x, y] == 0x80):
@@ -501,13 +501,13 @@ class EPD:
         self.ReadBusy()
         # pass
         
-    def Clear(self, color):
+    def Clear(self, color=0xFF):
         self.send_command(0x10)
         for i in range(0, int(self.width * self.height / 8)):
-            self.send_data(0xFF)
+            self.send_data(color)
         self.send_command(0x13)
         for i in range(0, int(self.width * self.height / 8)):
-            self.send_data(0xFF)
+            self.send_data(color)
         self.send_command(0x12) 
         self.ReadBusy()
 
@@ -518,7 +518,7 @@ class EPD:
         self.send_command(0X07)
         self.send_data(0xA5)
         
-    def Dev_exit(self):
+        epdconfig.delay_ms(2000)
         epdconfig.module_exit()
 ### END OF FILE ###
 

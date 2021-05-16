@@ -134,7 +134,7 @@ class EPD:
     def ReadBusy(self):
         logging.debug("e-Paper busy")
         while(epdconfig.digital_read(self.busy_pin) == 1):      #  0: idle, 1: busy
-            epdconfig.delay_ms(200) 
+            epdconfig.delay_ms(10) 
         logging.debug("e-Paper busy release") 
 
 
@@ -171,7 +171,7 @@ class EPD:
         self.send_data(0x03)
 
         self.send_command(0x3C) # set border 
-        self.send_data(0x00)
+        self.send_data(0x03)
         
         self.send_command(0x0C) # set booster strength
         self.send_data(0xAE)
@@ -401,7 +401,7 @@ class EPD:
             for i in range(0, int(self.width / 8)):
                 self.send_data(image[i + j * int(self.width / 8)])   
 
-        self.load_lut(self.lut_1Gray_DU)
+        self.load_lut(self.lut_1Gray_A2)
         self.send_command(0x20)
         self.ReadBusy()   
         
@@ -443,7 +443,7 @@ class EPD:
         self.send_command(0X07) #deep sleep
         self.send_data(0xA5)
 
-    def Dev_exit(self):
+        epdconfig.delay_ms(2000)
         epdconfig.module_exit()
 
 ### END OF FILE ###

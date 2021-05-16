@@ -67,21 +67,19 @@ class EPD:
     def ReadBusy(self):
         logging.debug("e-Paper busy")
         while(epdconfig.digital_read(self.busy_pin) == 1):
-            epdconfig.delay_ms(100)
+            epdconfig.delay_ms(20)
         logging.debug("e-Paper busy release")
 
     def TurnOnDisplay(self):
         self.send_command(0x22) # DISPLAY_UPDATE_CONTROL_2
         self.send_data(0xF7)
         self.send_command(0x20) # MASTER_ACTIVATION
-        
         self.ReadBusy()
     
     def TurnOnDisplayPart(self):
         self.send_command(0x22) # DISPLAY_UPDATE_CONTROL_2
         self.send_data(0xFF)
         self.send_command(0x20) # MASTER_ACTIVATION
-        
         self.ReadBusy()
 
     def init(self):
@@ -210,7 +208,7 @@ class EPD:
         self.send_command(0x10) # DEEP_SLEEP_MODE
         self.send_data(0x01)
         
-    def Dev_exit(self):
+        epdconfig.delay_ms(2000)
         epdconfig.module_exit()
 
 ### END OF FILE ###
