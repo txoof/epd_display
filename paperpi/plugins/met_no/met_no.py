@@ -191,7 +191,7 @@ def process_data(data, meta_data_flat, cache_path):
     
     
     # create a dict of all the symbol_code files with a dict comprehension
-    symbol_dict = {i.stem: i for i in Path(constants.symbol_codes_path).glob("*")}
+    symbol_dict = {i.stem: i for i in Path(constants.symbol_codes_path).glob("*.jpeg")}
     
     # work through each time series
     for index, each_time in enumerate(out): 
@@ -462,24 +462,6 @@ def update_function(self):
         
     
     
-#     if not self.config:
-#         for k, v in required_config_options.items():
-#             if not k in self.config:
-#                 logging.debug(f'missing configuration value: {k}')
-#                 logging.debug(f'using default value: {v}')
-#                 self.config[k] = v
-
-#     if hasattr(self, 'config'):
-#         try:
-#             self.config['user_agent'] = f'{constants.name}, v{constants.version} -- {self.config["email"]}'
-#         except KeyError:
-#             logging.
-#             self.config['email'] = None
-#     else:
-#         logging.warning(f'no email address is set for this plugin -- cannot create user_agent string')
-#         self.config = {}
-#         self.config['user_agent'] = None
-    
     # build a header see: https://api.met.no/weatherapi/locationforecast/2.0/documentation#AUTHENTICATION
     if self.config['user_agent']:
         user_agent = self.config['user_agent']
@@ -535,7 +517,7 @@ def update_function(self):
 # from CacheFiles import CacheFiles
 # from SelfDummy import SelfDummy
 
-# logging.root.setLevel('DEBUG')
+# logging.root.setLevel('WARNING')
 # coord = get_coord('Den Haag, Netherlands')
 # self = SelfDummy()
 # self.config = {'lat': coord[0], 
@@ -548,6 +530,10 @@ def update_function(self):
 #               }
 # self.cache = CacheFiles()
 
+# from epdlib import Screen
+# from epdlib import Layout
+# logging.root.setLevel('WARNING')
+
 
 
 
@@ -555,34 +541,18 @@ def update_function(self):
 
 # i, d, p = update_function(self)
 
-# print(i, p)
+# l = Layout(resolution=(300, 200))
 
-
-
-
-
-
-# s = Screen(resolution=(800, 600))
-# l = Layout(resolution=(800, 600))
-# l.layout = layout.three_column_icon_wind_temp_precip
-
-
-
-
-
+# import layout
+# # l.layout = layout.two_column_icon_wind_temp_precip
+# l.layout = layout.layout
+# # l.layout = layout.two_column_icon_wind_temp_time
+# # l.layout = layout.three_row
 
 
 # l.update_contents(d)
 
 # l.concat()
-
-
-
-
-
-
-# from epdlib import Screen
-# from epdlib import Layout
 
 
 
