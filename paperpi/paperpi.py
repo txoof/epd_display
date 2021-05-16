@@ -430,12 +430,14 @@ def update_loop(plugins, screen):
             screen.writeEPD(plugin.image)
             break
     
+    
     with InterruptHandler() as h:
         while True:    
             if h.interrupted:
                 logging.info('caught interrupt -- stoping execution')
                 exit_code = 0
                 break
+
             priority_list = update_plugins()
 
             # priority increases as it gets lower; 0 is considered the bottom,
@@ -581,6 +583,13 @@ if __name__ == "__main__":
         sys.argv.extend(sys.argv[3:])
     exit_code = main()
     sys.exit(exit_code)
+
+
+
+
+
+
+
 
 
 
