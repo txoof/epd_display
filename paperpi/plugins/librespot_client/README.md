@@ -2,7 +2,7 @@
 ![sample image for plugin librespot_client](./librespot_client_sample.png)
 ```
  
-PLUGIN: librespot_client v:0.1.0
+PLUGIN: librespot_client v:0.1.1
 
  
 FUNCTION: update_function
@@ -62,6 +62,7 @@ idle_timeout = 10
 LAYOUTS AVAILABLE:
   layout
   threeRowLarge
+  three_rows_text_only
   twoColumn
   twoColumnThreeRows
   twoRowSmall

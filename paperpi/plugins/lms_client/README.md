@@ -2,7 +2,7 @@
 ![sample image for plugin lms_client](./lms_client_sample.png)
 ```
  
-PLUGIN: lms_client v:0.1.0
+PLUGIN: lms_client v:0.1.1
 
  
 FUNCTION: scan_servers
@@ -88,6 +88,7 @@ idle_timeout = 15
 LAYOUTS AVAILABLE:
   layout
   threeRowLarge
+  three_rows_text_only
   twoColumn
   twoColumnThreeRows
   twoRowSmall
