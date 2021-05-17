@@ -1,6 +1,43 @@
-# lms_client layouts
+# librespot_client/lms_client layouts
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+three_rows_text_only = {
+    'title': {
+        'image': False,
+        'max_lines': 2,
+        'padding': 0,
+        'width': 1,
+        'height': 3/7,
+        'abs_coordinates': (0, 0),
+        'hcenter': True,
+        'vcenter': True,
+        'relative': False,
+        'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf'
+    },
+    'artist': {
+        'image': False,
+        'max_lines': 2,
+        'width': 1,
+        'height': 3/7,
+        'abs_coordinates': (0, None),     
+        'hcenter': True,
+        'vcenter': True,
+        'relative': ['artist', 'title'],
+        'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf'
+    },
+    'album': {
+        'image': False,
+        'max_lines': 1,
+        'width': 1,
+        'height': 1/7,
+        'abs_coordinates': (0, None),
+        'hcenter': True,
+        'vcenter': True,
+        'relative': ['album', 'artist'],
+        'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf'
+    },     
+}
 
 twoColumnThreeRows = {
       'coverart': {

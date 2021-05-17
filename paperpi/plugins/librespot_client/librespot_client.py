@@ -4,6 +4,8 @@
 
 
 
+
+
 import logging
 
 
@@ -191,6 +193,25 @@ def update_function(self):
 
 
 
+# # use this for testing
+# from SelfDummy import SelfDummy
+# from CacheFiles import CacheFiles
+# from epdlib import Layout
+# logger.root.setLevel('DEBUG')
+# logging.debug('foo')
+
+# self = SelfDummy()
+# self.max_priority = 0
+# self.config = {'player_name': 'Spocon-Spotify',
+#                'idle_timeout': 5}
+# self.cache = CacheFiles()
+
+
+
+
+
+
+# # test layouts with this code snip
 # u, d, p = update_function(self)
 # # if u != self.data:
 # self.data = d
@@ -201,21 +222,20 @@ def update_function(self):
 # # print(self.data)
 
 
+# logging.root.setLevel('WARNING')
+# l = Layout(resolution=(800, 600))
+
+# l.layout = layout.three_rows_text
+
+# l.update_contents(d)
+# l.concat()
 
 
 
 
-# from SelfDummy import SelfDummy
-# from CacheFiles import CacheFiles
 
-# logger.root.setLevel('DEBUG')
-# logging.debug('foo')
 
-# self = SelfDummy()
-# self.max_priority = 0
-# self.config = {'player_name': 'Spocon-Spotify',
-#                'idle_timeout': 5}
-# self.cache = CacheFiles()
+
 
 
 

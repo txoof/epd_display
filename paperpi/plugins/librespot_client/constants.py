@@ -1,5 +1,5 @@
 name = 'librespot_client'
-version = '0.1.0'
+version = '0.1.1'
 data = {
         'title': 'Err: no data',
         'artist': 'Err: no data',
