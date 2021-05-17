@@ -58,13 +58,15 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 The WaveShare displays require use of the SPI interface. SPI can be enabled through the `raspi-config` command.
 1. Enable SPI (see images below)
     - `$ sudo raspi-config` > Interface Options > SPI > Yes
-2. Reboot
-    - `$ sudo shutdown -r now`
-| |
+
+|Enable SPI|
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
+
+2. Reboot
+    - `$ sudo shutdown -r now`
 3. Check the [Hardware Setup](./documentation/Hardware_Setup.md) documentation for more details
 
 ### Userland Setup
