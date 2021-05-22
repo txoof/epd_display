@@ -67,6 +67,7 @@ function add_user {
 }
 
 function install_bin {
+  sudo systemctl stop paperpi-daemon.service
   cp $bin_file_src $bin_install_path
   if [ $? -ne 0 ]
   then
@@ -106,7 +107,7 @@ function finish_install {
   at minimum you must specify the appropriate display_type.
   $app_name will now start on boot. To start $app_name immediately, use:
 
-  $ sudo systemctl start $system_unit_file_name
+  $ sudo systemctl start $systemd_unit_file_name
   "
 }
 
