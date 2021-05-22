@@ -102,7 +102,7 @@ PaperPi is designed to run
     - `$ sudo nano /etc/defaults/paperpi.ini`
     - At minimum you must specify the `display_type`
     - See the list of [supported screens](#supportedScreens) for more information
-3. Start PaperPi: `$ sudo systemctl restart paperpi` 
+3. Start PaperPi: `$ sudo systemctl restart paperpi-daemon.service` 
     - PaperPi will now start and restart at boot as a systemd service
     - PaperPi may fail to display the splash screen after boot -- see the [Known Issues](#knownIssues) section for more details
 
