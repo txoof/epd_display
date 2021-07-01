@@ -104,9 +104,15 @@ def get_cmd_line_args():
                          dest='main__daemon', action='store_true', 
                          help='run in daemon mode (ignore user configuration if found)')
     
+    cmd_args.add_argument('-R', '--max_refresh', required=False, default=3, 
+                          dest='main__max_refresh',
+                          help='maximum number of refreshes between complete screen refresh')    
+    
     cmd_args.add_argument('-V', '--version', required=False, default=False, ignore_false=True,
                           action='store_true',
                           help='display version and exit')
+    
+
     
    
     cmd_args.parse_args()    
@@ -178,45 +184,94 @@ Edit the configu file with "$ nano {constants.config_user}"'''
 
 
 
+# def sanitize_vals(config):
+#     '''attempt to convert all the strings into appropriate formats
+#         integer/float like strings ('7', '100', '-1.3') -> int
+#         boolean like strings (yes, no, Y, t, f, on, off) -> 0 or 1
+#     Args:
+#         config(`dict`): nested config.ini style dictionary
+    
+#     Returns:
+#         `dict`'''
+    
+#     def convert(d, func, exceptions):
+#         '''convert values in nested dictionary using a specified function
+#             values that raise an exception are left unchanged
+        
+#         Args:
+#             d(`dict`): nested dictionary {'Section': {'key': 'value'}}
+#             func(`function`): function such as int() or strtobool()
+#             exceptions(`tuple`): 
+            
+#         Returns:
+#             `dict`'''
+#         for section, values in d.items():
+#             for key, value in values.items():
+#                 if isinstance(value, str):
+#                     try:
+#                         sanitized = func(value)
+#                     except exceptions:
+#                         sanitized = value
+#                     d[section][key] = sanitized
+#         return d
+    
+#     #attempt to convert any string that looks like int into the proper value
+#     # convert strings to float if possible
+#     str_to_float = convert(config, float, (ValueError))
+#     str_to_ints = convert(str_to_float, int, (ValueError))
+#     # attempt to convert any string that looks like a bool into a bool
+#     str_to_bool = convert(str_to_ints, strtobool, (ValueError, AttributeError))
+    
+#     config = str_to_bool
+    
+    
+        
+#     return config
+
+
+
+
+
+
 def sanitize_vals(config):
     '''attempt to convert all the strings into appropriate formats
-        integer/float like strings ('7', '100', '-1.3') -> int
-        boolean like strings (yes, no, Y, t, f, on, off) -> 0 or 1
-    Args:
-        config(`dict`): nested config.ini style dictionary
-    
-    Returns:
-        `dict`'''
-    
-    def convert(d, func, exceptions):
-        '''convert values in nested dictionary using a specified function
-            values that raise an exception are left unchanged
-        
-        Args:
-            d(`dict`): nested dictionary {'Section': {'key': 'value'}}
-            func(`function`): function such as int() or strtobool()
-            exceptions(`tuple`): 
-            
-        Returns:
-            `dict`'''
+             integer/float like strings ('7', '100', '-1.3') -> int or float
+             boolean like strings (yes, no, Y, t, f, on, off) -> 0 or 1
+         Args:
+             config(`dict`): nested config.ini style dictionary
+
+         Returns:
+             `dict`'''    
+    def strtofloat(s):
+        '''strings to float if possible'''
+        retval = s
+        if isinstance(s, str):
+            if '.' in s:
+                try:
+                    retval = float(s)
+                except ValueError:
+                    pass
+
+        return retval
+
+    def convert(d, new_type, exceptions):
         for section, values in d.items():
             for key, value in values.items():
-                try:
-                    sanitized = func(value)
-                except exceptions:
-                    sanitized = value
-                d[section][key] = sanitized
+                if isinstance(value, str):
+                    try:
+                        sanitized = new_type(value)
+                    except exceptions:
+                        sanitized = value
+
+                    d[section][key] = sanitized
+                else:
+                    d[section][key] = value
         return d
+
+    convert(config, strtofloat, ValueError)
+    convert(config, int, (ValueError))
+    convert(config, strtobool, (ValueError, AttributeError))
     
-    #attempt to convert any string that looks like an int/float into a string
-    str_to_ints = convert(config, int, (ValueError))
-    # attempt to convert any string that looks like a bool into a bool
-    str_to_bool = convert(str_to_ints, strtobool, (ValueError, AttributeError))
-    
-    config = str_to_bool
-    
-    
-        
     return config
 
 
@@ -264,29 +319,31 @@ def setup_display(config):
 
     moduleNotFoundError_fmt = 'could not load module: {} -- error: {}'
     
-    try:
-        logging.debug('setting display type')
-        epd_module = '.'.join([constants.waveshare_epd, config['main']['display_type']])
-        epd = import_module(epd_module)
-    except KeyError as e:
-        return_val = ret_obj(obj=None, status=1, message=keyError_fmt.format('main', 'display_type'))
-        logging.error(return_val['message'])
-        return return_val
-    except ModuleNotFoundError as e:
-        logging.error('Check your config files and ensure a known waveshare_epd display is specified!')
-        return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
-        return return_val
-    except FileNotFoundError as e:
-        msg = f''''Error loading waveshare_epd module: {e}
-        This is typically due to SPI not being enabled, or the current user is 
-        not a member of the SPI group.
-        "$ sudo raspi-config nonint get_spi" will return 0 if SPI is enabled
-        Try enabling SPI and run this program again. '''
-        logging.error(msg)
-        return_val = ret_obj(obj=None, status=1, message=msg)
-        return return_val
-        
-    screen = Screen()
+#     try:
+#         logging.debug('setting display type')
+#         epd_module = '.'.join([constants.waveshare_epd, config['main']['display_type']])
+#         epd = import_module(epd_module)
+#     except KeyError as e:
+#         return_val = ret_obj(obj=None, status=1, message=keyError_fmt.format('main', 'display_type'))
+#         logging.error(return_val['message'])
+#         return return_val
+#     except ModuleNotFoundError as e:
+#         logging.error('Check your config files and ensure a known waveshare_epd display is specified!')
+#         return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
+#         return return_val
+#     except FileNotFoundError as e:
+#         msg = f''''Error loading waveshare_epd module: {e}
+#         This is typically due to SPI not being enabled, or the current user is 
+#         not a member of the SPI group.
+#         "$ sudo raspi-config nonint get_spi" will return 0 if SPI is enabled
+#         Try enabling SPI and run this program again. '''
+#         logging.error(msg)
+#         return_val = ret_obj(obj=None, status=1, message=msg)
+#         return return_val
+    
+    epd = config['main']['display_type']
+    vcom = config['main']['vcom']
+    screen = Screen(epd=epd, vcom=vcom)
     try:
         screen.epd = epd
     except PermissionError as e:
@@ -384,7 +441,7 @@ def build_plugin_list(config, resolution, cache):
 
 
 
-def update_loop(plugins, screen):
+def update_loop(plugins, screen, max_refresh=2):
     exit_code = 1
     logging.info('starting update loop')
     
@@ -419,9 +476,13 @@ def update_loop(plugins, screen):
     # record for comparison
     last_priority = max_priority
     
+    # count the number of refreshes for HD Screens
+    refresh_count = 0    
+    
     logging.info(f'max_priority: {max_priority}')
     
-
+    
+    
     for plugin in plugins:
         if plugin.priority <= max_priority:
             this_hash = plugin.hash
@@ -430,6 +491,8 @@ def update_loop(plugins, screen):
             screen.writeEPD(plugin.image)
             break
     
+    
+
     
     with InterruptHandler() as h:
         while True:    
@@ -471,8 +534,17 @@ def update_loop(plugins, screen):
                     this_hash = this_plugin.hash
 #                     screen.initEPD()
                     logging.debug(f'image type: {type(this_plugin.image)}')
+    
+                    # wipe screen if the max_refresh count is exceeded
+                    if refresh_count > max_refresh:
+                        refresh_count = 0
+                        if screen.HD:
+                            logging.info('max_refresh exceeded, wiping screen prior to next update')
+                            screen.clearEPD()
+    
                     if screen.writeEPD(this_plugin.image):
                         logging.debug('successfully wrote image')
+                        refresh_count += 1
                     else:
                         logging.warning('#=#=# failed to write image #=#=#')
                         logging.info('trying next plugin')
@@ -536,6 +608,8 @@ def main():
     
     # make sure all the integer-like strings are converted into integers
     config = sanitize_vals(config)
+#     return config
+    
     
     logger.setLevel(config['main']['log_level'])
     logging.root.setLevel(config['main']['log_level'])
@@ -591,6 +665,7 @@ if __name__ == "__main__":
 
 
 
-
+logger = logging.getLogger(__name__)
+logger.root.setLevel('DEBUG')
 
 

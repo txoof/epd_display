@@ -53,7 +53,7 @@ word_clock = {
           'width': 1,
           'height': 1/7,
           'abs_coordinates': (0, None),
-          'vcenter': True,
+          'vcenter': False,
           'inverse': True,
           'rand': True,
           'relative': ['time', 'wordtime'],

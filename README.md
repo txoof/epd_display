@@ -58,15 +58,13 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 The WaveShare displays require use of the SPI interface. SPI can be enabled through the `raspi-config` command.
 1. Enable SPI (see images below)
     - `$ sudo raspi-config` > Interface Options > SPI > Yes
-
-|Enable SPI|
+2. Reboot
+    - `$ sudo shutdown -r now`
+| |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
-
-2. Reboot
-    - `$ sudo shutdown -r now`
 3. Check the [Hardware Setup](./documentation/Hardware_Setup.md) documentation for more details
 
 ### Userland Setup
@@ -89,20 +87,21 @@ PaperPi can be run directly on-demand from a user account such as the default "p
     - Waveshare recommends clearing pannels to a blank state prior to long-term storage
 
 ### Daemon Setup
-PaperPi is designed to run 
+PaperPi is designed to run as an unattended daemon process that starts at system boot.
+
 1. [Download the tarball](https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz)
     - `$ wget https://github.com/txoof/epd_display/raw/master/paperpi_latest.tgz`
 2. Decompress the archive: `tar xvzf paperpi.tgz`
-2. Install PaperPi as a service, run the install script: `$ sudo ./install.sh` 
+3. Install PaperPi as a service, run the install script: `$ sudo ./install.sh` 
     - This will:
         * add the necessary service users and groups
         * add a configuration file to `/etc/defaults/paperpi.ini`
         * install PaperPi as a systemd service
-2. Edit `/etc/defaults/paperpi.ini` to configure a `display_type` and enable any plugins
+4. Edit `/etc/defaults/paperpi.ini` to configure a `display_type` and enable any plugins
     - `$ sudo nano /etc/defaults/paperpi.ini`
     - At minimum you must specify the `display_type`
     - See the list of [supported screens](#supportedScreens) for more information
-3. Start PaperPi: `$ sudo systemctl restart paperpi-daemon.service` 
+5. Start PaperPi: `$ sudo systemctl restart paperpi` 
     - PaperPi will now start and restart at boot as a systemd service
     - PaperPi may fail to display the splash screen after boot -- see the [Known Issues](#knownIssues) section for more details
 
@@ -117,7 +116,7 @@ If you would like to develop [plugins](./documentation/Plugins.md) for PaperPi, 
 1. Clone the repo: `https://github.com/txoof/epd_display.git`
 2. Run `build.sh` to create a build environment
     - The build script will create a pipenv environment and prompt you to install necessary libraries
-    - if pipenv fails to install Pillow, manually install pillow with `pipenv install Pillow`
+    - if pipenv fails to install Pillow, try deleting Pipenv.lock and manually install pillow with `pipenv install Pillow`
 3. The build script will then attempt to build a binary of PaperPi using pyintsaller 
     - executables are stored in `./dist/`
 
@@ -130,58 +129,66 @@ See [this gist](https://gist.github.com/txoof/ed4319db317f813b9e500ff190ca4a87) 
 
 <a name="supportedScreens"> </a>
 ## Supported Screens
-All supported waveshare screens are only supported in 1 bit (black and white) mode. Grayscale and color output is not supported at this time.
+Most NON-IT8951 screens are only supported in 1 bit (black and white) mode. Color output is not supported at this time. Some waveshare drivers do not provide 'standard' `display` and `Clear` methods; these displays are not supported at this time.
 
-Some WaveShare screens that support color output will also work with with the non-colored driver. Using the 1 bit driver can yield significantly better update speeds. For example: the `epd2in7b` screen takes around 15 seconds to update even when refreshing a 1 bit image, but can be run using the `epd2in7` driver in 1-bit mode which takes less than 2 seconds to update.
+All IT8951 Screens now support 8 bit grayscale output.
 
-* *~~struck through~~ screens are not currently compatible with PaperPi (as of 2020.04.10)*
+Some WaveShare screens that support color output will also work with with the non-colored driver. Using the 1 bit driver can yield significantly better update speeds. For example: the `epd2in7b` screen takes around 15 seconds to update even when refreshing a 1 bit image, but can be run using the `epd2in7` module in 1-bit mode which takes less than 2 seconds to update.
 
-| WaveShare Screen |
-|:-|
-| epd1in02  |
-| epd1in54  |
-| epd1in54_V2  |
-| epd1in54b  |
-| epd1in54b_V2  |
-| epd1in54c  |
-| epd2in13  |
-| epd2in13_V2  |
-| epd2in13b_V3  |
-| epd2in13bc  |
-| epd2in13d  |
-| epd2in66  |
-| epd2in66b  |
-| * ~~epd2in7~~  |
-| epd2in7b  |
-| epd2in7b_V2  |
-| epd2in9  |
-| epd2in9_V2  |
-| epd2in9b_V3  |
-| epd2in9bc  |
-| epd2in9d  |
-| * ~~epd3in7~~  |
-| epd4in01f  |
-| * ~~epd4in2~~  |
-| epd4in2b_V2  |
-| epd4in2bc  |
-| epd5in65f  |
-| epd5in83  |
-| epd5in83_V2  |
-| epd5in83b_V2  |
-| epd5in83bc  |
-| epd7in5  |
-| epd7in5_HD  |
-| epd7in5_V2  |
-| epd7in5b_HD  |
-| epd7in5b_V2  |
-| epd7in5bc  |
-| epdconfig  |
+**WaveShare Screen**
+
+NN. Board        Supported:
+---------------------------
+00. epd1in02     False
+    - Issues:
+     * AttributeError: module does not support `EPD.display()`
+01. epd1in54     True
+02. epd1in54_V2  True
+03. epd1in54b    True
+04. epd1in54b_V2 True
+05. epd1in54c    True
+06. epd2in13     True
+07. epd2in13_V2  True
+08. epd2in13b_V3 True
+09. epd2in13bc   True
+10. epd2in13d    True
+11. epd2in66     True
+12. epd2in66b    True
+13. epd2in7      True
+14. epd2in7b     True
+15. epd2in7b_V2  True
+16. epd2in9      True
+17. epd2in9_V2   True
+18. epd2in9b_V3  True
+19. epd2in9bc    True
+20. epd2in9d     True
+21. epd3in7      False
+    - Issues:
+     * Non-standard, unsupported `EPD.Clear()` function
+     * AttributeError: module does not support `EPD.display()`
+22. epd4in01f    True
+23. epd4in2      True
+24. epd4in2b_V2  True
+25. epd4in2bc    True
+26. epd5in65f    True
+27. epd5in83     True
+28. epd5in83_V2  True
+29. epd5in83b_V2 True
+30. epd5in83bc   True
+31. epd7in5      True
+32. epd7in5_HD   True
+33. epd7in5_V2   True
+34. epd7in5b_HD  True
+35. epd7in5b_V2  True
+36. epd7in5bc    True
+37. All IT8951 Based Panels
 
 <a name="knownIssues"> </a>
 ## Known Isuses
 * When starting as a daemon process from systemd, PaperPi may fail to show the splash screen image and the first module. 
     - After the first module's minimum display time elapses and it is refreshed, the problem appears to be rectified. 
     - See [this issue](https://github.com/txoof/epd_display/issues/1#issue-765246248) on github for more details
+
 
 
 
