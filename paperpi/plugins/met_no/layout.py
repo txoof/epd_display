@@ -69,6 +69,7 @@ three_row_icon_wind_temp = {
         'vcenter': True,
         'abs_coordinates': (None, None),
         'relative': ['000_forecast_time_local', 'forecast_location'],
+        'mode': 'L',
     },    
     '000_data_instant_details_wind_barb_image': { 
         'image': True,
@@ -121,6 +122,7 @@ three_row_icon_wind_temp = {
         'inverse': True,
         'abs_coordinates': (None, None),
         'relative': ['006_forecast_time_local', '000_data_next_1_hours_summary_symbol_code_image'],
+        'mode': 'L',
     },
     '006_data_instant_details_wind_barb_image': { 
         'image': True,
@@ -173,6 +175,7 @@ three_row_icon_wind_temp = {
         'vcenter': True,
         'abs_coordinates': (None, None),
         'relative': ['012_forecast_time_local', '006_data_next_1_hours_summary_symbol_code_image'],
+        'mode': 'L',        
     },
     '012_data_instant_details_wind_barb_image': { 
         'image': True,

@@ -45,35 +45,36 @@ twoColumnThreeRows = {
             'max_lines': None,
             'padding': 5,
             'width': 1/3,
-            'height': 3/5,
+            'height': 4/7,
             'abs_coordinates': (0, 0),
             'hcenter': True,
             'vcenter': True,
             'relative': False,
+            'mode': 'L',          
       },
       'title': {
             'image': None,
-            'max_lines': 3,
+            'max_lines': 2,
             'padding': 4,
             'width': 2/3,
-            'height': 3/5,
+            'height': 4/7,
             'abs_coordinates': (None, 0),
             'relative': ['coverart', 'title'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+            'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
       },
       'artist': {
             'image': None,
-            'max_lines': 1,
+            'max_lines': 2,
             'padding': 4,
             'width': 1,
-            'height': 1/5,
+            'height': 2/7,
             'abs_coordinates': (0, None),
             'relative': ['artist', 'title'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+            'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
             #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
       },
       'album': {
@@ -81,12 +82,12 @@ twoColumnThreeRows = {
             'max_lines': 1,
             'padding': 4,
             'width': 1,
-            'height': 1/5,
+            'height': 1/7,
             'abs_coordinates': (0, None),
             'relative': ['album', 'artist'],
             'hcenter': True,
             'vcenter': True,
-            'font': dir_path+'/../../fonts/Economica/Economica-Regular.ttf',
+            'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
             #'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
       },
 
@@ -106,7 +107,8 @@ twoColumn = {
                 'vcenter': True, # vertically center-align the contents
                 'relative': False, # False if position is absolute
                 'font': dir_path+'/../../fonts/Open_Sans/OpenSans-Regular.ttf',
-                'font_size': None # font size to use for text
+                'font_size': None, # font size to use for text
+                'mode': 'L',            
     },
     'title': { # track title
                 'image': None, # none if no image is needed
@@ -179,7 +181,8 @@ threeRowLarge = {
              'vcenter': True,
              'relative': ['coverart', 'title'],
              'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
-             'font_size': None},
+             'font_size': None,
+             'mode': 'L',},
 
     'artist':
             {'image': None,
@@ -213,7 +216,7 @@ threeRowLarge = {
              'abs_coordinates': (None, None),
              'hcenter': False,
              'vcenter': True,
-             'rand': True,
+             'rand': False,
              'relative': ['coverart', 'album'],
              'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
              'font_size': None}
