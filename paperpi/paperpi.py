@@ -665,7 +665,7 @@ if __name__ == "__main__":
 
 
 
-logger = logging.getLogger(__name__)
-logger.root.setLevel('DEBUG')
+# logger = logging.getLogger(__name__)
+# logger.root.setLevel('DEBUG')
 
 

@@ -35,7 +35,7 @@ logging_config = f'{config_path}/logging.cfg'
 plugins = 'plugins'
 
 ## WaveShare Information
-ws_version = '83a6cff 2021-05-13 16:10:00 +0800'
+ws_version = '337fa63 2021-06-22 20:12:03 +0800'
 
 # local version of waveshare library
 waveshare_epd = 'waveshare_epd'
