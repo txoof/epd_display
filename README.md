@@ -76,10 +76,13 @@ PaperPi can be run directly on-demand from a user account such as the default "p
     - On the first run PaperPi will create a configuration file in `~/.config/com.txoof.paperpi/paperpi.ini` and then exit
 4. Edit the configuration file to match your needs. The default configuration will provide a reasonable starting point
     - `$ nano ~/.config/com.txoof.paperpi/paperpi.ini`
-        - At minimum you must specify the `display_type` 
+        - At minimum you must specify the `display_type`
+        - If you are using an HD IT8951 display, you must also set the `vcom` value which can be found on the ribon cable.
         ```
         # choose the display type that matches your e-paper pannel 
         display_type = epd2in7
+        # vcom value for HDIT8951 displays
+        vcom = 0.0
         ```
         - See the list of [supported screens](#supportedScreens) for more information
 5. Launch PaperPi again -- you should immediately see a splash screen followed shortly by the first active plugin.
@@ -139,48 +142,46 @@ Some WaveShare screens that support color output will also work with with the no
 
 NN. Board        Supported:
 ---------------------------
-00. epd1in02     False
-    - Issues:
-     * AttributeError: module does not support `EPD.display()`
-01. epd1in54     True
-02. epd1in54_V2  True
-03. epd1in54b    True
-04. epd1in54b_V2 True
-05. epd1in54c    True
-06. epd2in13     True
-07. epd2in13_V2  True
-08. epd2in13b_V3 True
-09. epd2in13bc   True
-10. epd2in13d    True
-11. epd2in66     True
-12. epd2in66b    True
-13. epd2in7      True
-14. epd2in7b     True
-15. epd2in7b_V2  True
-16. epd2in9      True
-17. epd2in9_V2   True
-18. epd2in9b_V3  True
-19. epd2in9bc    True
-20. epd2in9d     True
-21. epd3in7      False
-    - Issues:
-     * Non-standard, unsupported `EPD.Clear()` function
-     * AttributeError: module does not support `EPD.display()`
-22. epd4in01f    True
-23. epd4in2      True
-24. epd4in2b_V2  True
-25. epd4in2bc    True
-26. epd5in65f    True
-27. epd5in83     True
-28. epd5in83_V2  True
-29. epd5in83b_V2 True
-30. epd5in83bc   True
-31. epd7in5      True
-32. epd7in5_HD   True
-33. epd7in5_V2   True
-34. epd7in5b_HD  True
-35. epd7in5b_V2  True
-36. epd7in5bc    True
+00. epd1in02     supported: False
+ * AttributeError: module does not support `EPD.display()`
+01. epd1in54     supported: True
+02. epd1in54_V2  supported: True
+03. epd1in54b    supported: True
+04. epd1in54b_V2 supported: True
+05. epd1in54c    supported: True
+06. epd2in13     supported: True
+07. epd2in13_V2  supported: True
+08. epd2in13b_V3 supported: True
+09. epd2in13bc   supported: True
+10. epd2in13d    supported: True
+11. epd2in66     supported: True
+12. epd2in66b    supported: True
+13. epd2in7      supported: True
+14. epd2in7b     supported: True
+15. epd2in7b_V2  supported: True
+16. epd2in9      supported: True
+17. epd2in9_V2   supported: True
+18. epd2in9b_V3  supported: True
+19. epd2in9bc    supported: True
+20. epd2in9d     supported: True
+21. epd3in7      supported: False
+ * unsupported `EPD.Clear()` function
+ * AttributeError: module does not support `EPD.display()`
+22. epd4in01f    supported: True
+23. epd4in2      supported: True
+24. epd4in2b_V2  supported: True
+25. epd4in2bc    supported: True
+26. epd5in65f    supported: True
+27. epd5in83     supported: True
+28. epd5in83_V2  supported: True
+29. epd5in83b_V2 supported: True
+30. epd5in83bc   supported: True
+31. epd7in5      supported: True
+32. epd7in5_HD   supported: True
+33. epd7in5_V2   supported: True
+34. epd7in5b_HD  supported: True
+35. epd7in5b_V2  supported: True
+36. epd7in5bc    supported: True
 37. All IT8951 Based Panels
 
 <a name="knownIssues"> </a>
@@ -188,7 +189,6 @@ NN. Board        Supported:
 * When starting as a daemon process from systemd, PaperPi may fail to show the splash screen image and the first module. 
     - After the first module's minimum display time elapses and it is refreshed, the problem appears to be rectified. 
     - See [this issue](https://github.com/txoof/epd_display/issues/1#issue-765246248) on github for more details
-
 
 
 
