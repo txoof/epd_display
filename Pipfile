@@ -16,6 +16,8 @@ gpiozero = "*"
 python-dateutil = "*"
 querylms = "*"
 "rpi.gpio" = "*"
+it8951 = {git = "https://github.com/GregDMeyer/IT8951.git"}
+waveshare-epd = {subdirectory = "RaspberryPi_JetsonNano/python", editable = true, git = "https://github.com/waveshare/e-Paper.git"}
 epdlib = "*"
 
 [requires]
