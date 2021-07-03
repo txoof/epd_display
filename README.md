@@ -141,7 +141,7 @@ Some WaveShare screens that support color output will also work with with the no
 **WaveShare Screen**
 
 NN. Board        Supported:
----------------------------
+--  -----        ----------
 00. epd1in02     supported: False
  * AttributeError: module does not support `EPD.display()`
 01. epd1in54     supported: True
