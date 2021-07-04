@@ -1,3 +1,4 @@
+*.pyo
 Pipfile.lock
 */build/*
 */dist/*
