@@ -16,7 +16,6 @@ hidden_imports = [
   'spidev',
   'RPi',
   'RPi.GPIO',
-  'waveshare_epd',
 ]
 
 # data files and directories to include
@@ -27,8 +26,8 @@ datas = [
   ('./fonts', './fonts'),
   ('./library', './library'),
   ('./plugins', './plugins'),
+  ('./waveshare_epd', './waveshare_epd'),
 ]
-#  ('./waveshare_epd', './waveshare_epd'),
 
 # modules to exclude
 exclude = [
