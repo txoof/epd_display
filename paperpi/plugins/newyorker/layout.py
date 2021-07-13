@@ -5,7 +5,7 @@ default = {
     'comic': {
         'image': True,
         'width': 1,
-        'height': .8,
+        'height': .75,
         'abs_coordinates': (0, 0),
         'padding': 5,
         'hcenter': True,
@@ -15,7 +15,7 @@ default = {
     'caption': {
         'image': False,
         'width': 1,
-        'height': .15,
+        'height': .2,
         'padding': 5,
         'abs_coordinates': (0, None),
         'relative': ['caption', 'comic'],
@@ -35,6 +35,7 @@ default = {
         'vcenter': False,
         'rand': False,
         'mode': 'L',
+        'padding': 5,
         'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf'
     }
     
