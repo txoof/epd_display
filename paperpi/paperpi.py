@@ -454,9 +454,9 @@ def update_loop(plugins, screen, max_refresh=2):
         logging.info(f'updating {len(plugins)} plugins')
         for plugin in plugins:
             plugin.update()
-            logging.info(f'update: [{plugin.name}]-p: {plugin.priority}')
+            logging.debug(f'update: [{plugin.name}]-p: {plugin.priority}')
             my_list.append(plugin.priority)
-        logging.info(f'priorities: {my_list}')
+        logging.debug(f'priorities: {my_list}')
         return my_list
         
     # use itertools cycle to move between list elements
