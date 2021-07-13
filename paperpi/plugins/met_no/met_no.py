@@ -9,6 +9,7 @@
 
 from copy import deepcopy
 import requests
+from requests import RequestException
 import logging
 from urllib.parse import quote
 # import constants
