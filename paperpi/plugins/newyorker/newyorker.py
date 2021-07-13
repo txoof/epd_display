@@ -48,7 +48,14 @@ except ImportError:
 
 
 
-def update_function(self, day_range=5, **kwargs):
+logger = logging.getLogger(__name__)
+
+
+
+
+
+
+def update_function(self, **kwargs):
     '''update function for newyorker provides a New Yorker comic of the day
     
     This plugin provides an image and text pulled from the New Yorker 
@@ -79,7 +86,7 @@ def update_function(self, day_range=5, **kwargs):
             
         Returns:
             tuple: (bool, dict) - True if successful, dictionary of comic, caption and time'''
-       # set up the feed parser and fetch the feed
+        # set up the feed parser and fetch the feed
         feed = feedparser.parse(constants.feed_url)
         if feed.has_key('bozo_exception'):
             logging.warning(f'could not fetch feed for {constants.feed_url}')
@@ -90,6 +97,7 @@ def update_function(self, day_range=5, **kwargs):
             day_range = len(feed.entries)
             logging.warning(f'day_range set to a value larger than the number of entries returned by the feed. Setting to: {day_range} ')        
 
+        logging.debug(f'choosing a comic from the last {day_range} days')
         choice = randrange(0, day_range)
 
         try:
@@ -108,16 +116,25 @@ def update_function(self, day_range=5, **kwargs):
         return(True, {'comic': comic_image, 
                       'caption': comic_caption, 
                       'time': time_now()})    
+            
     
-    
+    success = False
     is_updated = True
+    
     data = {'comic': Path(constants.images_path)/'shruggy.jpg',
             'caption': f'Could not load a comic. Are the Inter-Tubes clogged?',
             'time': time_now()
             }
+    try:
+        day_range = self.config['day_range']
+    except KeyError as e:
+        logging.warning(f'module is not properly configured and is missing keys: {e}')
+        data['caption'] = f'The New Yorker plugin configuration is missing "{e.args[0]}" setting'
+    else:
+        success, my_data = fetch_comic(day_range)  
+
     priority = self.max_priority
     
-    success, my_data = fetch_comic(day_range)
     if success:
         data.update(my_data)
     
@@ -131,7 +148,7 @@ def update_function(self, day_range=5, **kwargs):
 
 
 # logger = logging.getLogger(__name__)
-# logger.root.setLevel('INFO')
+# logger.root.setLevel('DEBUG')
 
 
 
@@ -147,7 +164,7 @@ def update_function(self, day_range=5, **kwargs):
 # test_plugin = Plugin(resolution=(1200, 800))
 # # this is pulled from the configuration file; the appropriate section is passed
 # # to this plugin by PaperPi during initial configuration
-# test_plugin.config = {'your_name': 'Aaron', 'favorite_color': 'pink'}
+# test_plugin.config = {'day_range': 20}
 # test_plugin.layout = layout.layout
 # # this is done automatically by PaperPi when loading the plugin
 # test_plugin.cache = CacheFiles()
