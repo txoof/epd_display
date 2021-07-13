@@ -1,5 +1,4 @@
-Copyright (c) 2012, Vicente Lamonaca (produccion.taller@gmail.com www.tipografia-montevideo.info www.tipotype.com),
-with Reserved Font Name Economica.
+Copyright 2012 The Libre Caslon Text Project Authors (https://github.com/impallari/Libre-Caslon-Text)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
