@@ -31,6 +31,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (0, 0),
         'relative': False,
         'max_lines': 1,
+        'mode': 'L',
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
     },
     'time_updated_local': {
@@ -43,6 +44,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (None, 0),
         'relative': ['forecast_location', 'time_updated_local'],
         'max_lines': 2,
+        'mode': 'L',
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-Regular.ttf'
     },
     # row 0
@@ -57,6 +59,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (0, None),
         'relative': ['000_forecast_time_local', 'forecast_location'],
         'max_lines': 2,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     },
     '000_data_next_1_hours_summary_symbol_code_image': { 
@@ -93,6 +96,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (None, None),
         'relative': ['000_data_instant_details_wind_barb_image', 'forecast_location'],
         'max_lines': 1,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     },    
     
@@ -109,6 +113,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (0, None),
         'relative': ['006_forecast_time_local', '000_forecast_time_local'],
         'max_lines': 2,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     }, 
     '006_data_next_1_hours_summary_symbol_code_image': { 
@@ -148,6 +153,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (None, None),
         'relative': ['006_data_instant_details_wind_barb_image', '000_data_instant_details_air_temperature'],
         'max_lines': 1,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     },
     
@@ -163,6 +169,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (0, None),
         'relative': ['012_forecast_time_local', '006_forecast_time_local'],
         'max_lines': 2,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     }, 
     '012_data_next_1_hours_summary_symbol_code_image': { 
@@ -199,6 +206,7 @@ three_row_icon_wind_temp = {
         'abs_coordinates': (None, None),
         'relative': ['012_data_instant_details_wind_barb_image', '006_data_instant_details_air_temperature'],
         'max_lines': 1,
+        'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf'
     },    
 }
