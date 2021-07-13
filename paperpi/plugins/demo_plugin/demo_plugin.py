@@ -91,6 +91,7 @@ def update_function(self, *args, **kwargs):
         f'Your name spelled backwards is "{name[::-1]}"',
         f'If you sort your favorite color alphabetically, you get: {("").join(sorted(color))}',
         f'If you sort your name alphabetically, you get: {("").join(sorted(name))}',
+        f'My temporary cache path is: {self.cache.path}'
     ]
     
     # define the components of the data that will be returned
@@ -107,7 +108,7 @@ def update_function(self, *args, **kwargs):
         extra_string = 'The minute is EVEN! I will raise the priority!'
     else:
         priority = self.max_priority
-        extra_string = ':[ nothing :['
+        extra_string = f'The minute is odd; this is my file cache: {self.cache.path}'
     
     # build the output
     is_updated = True
@@ -131,15 +132,19 @@ def update_function(self, *args, **kwargs):
 
 
 
+# from library.CacheFiles import CacheFiles
 # def test_plugin():
 #     '''This code snip is useful for testing a plugin from within Jupyter Notebook'''
 #     from library import Plugin
 #     from IPython.display import display
-
-#     test_plugin = Plugin(resolution=(640, 448))
-#     # customize this to the configuration for your plugin
+#     # this is set by PaperPi based on the configured schreen
+#     test_plugin = Plugin(resolution=(1200, 800))
+#     # this is pulled from the configuration file; the appropriate section is passed
+#     # to this plugin by PaperPi during initial configuration
 #     test_plugin.config = {'your_name': 'Aaron', 'favorite_color': 'pink'}
 #     test_plugin.layout = layout.layout
+#     # this is done automatically by PaperPi when loading the plugin
+#     test_plugin.cache = CacheFiles()
 #     test_plugin.update_function = update_function
 #     test_plugin.update()
 #     display(test_plugin.image)
@@ -151,7 +156,14 @@ def update_function(self, *args, **kwargs):
 
 
 
-# This cell will produce the output from your plugin
+# this simulates calling the plugin from PaperPi
 # my_plugin()
+
+
+
+
+
+
+
 
 
