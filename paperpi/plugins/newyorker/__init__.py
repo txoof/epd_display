@@ -1,1 +1,1 @@
-from .default import update_function
+from .newyorker import update_function

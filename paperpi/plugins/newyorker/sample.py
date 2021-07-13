@@ -1,3 +1,4 @@
 config = {
-        'layout': 'layout'
+        'layout': 'layout',
+        'day_range': 5
 }

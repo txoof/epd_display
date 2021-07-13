@@ -1,33 +1,43 @@
-# default
-![sample image for plugin default](./default_sample.png)
+# newyorker
+![sample image for plugin newyorker](./newyorker_sample.png)
 ```
  
-PLUGIN: default v:0.1.0
+PLUGIN: newyorker v:0.0.1
 
  
 FUNCTION: update_function
-update function for default provides time string and message
+update function for newyorker provides a New Yorker comic of the day
     
-    This plugin is designed to display if all other plugins fail to load
+    This plugin provides an image and text pulled from the New Yorker 
+    
+    Requirments:
+        self.config(dict): {
+            'day_range': 'number of days to pull comics from (default: 5)',
+        }    
     
     Args:
         self(`namespace`)
-        msg(`str`): string to display
+        day_range(`int`): number of days in the past to pull radom comic and text from
+            use 1 to only pull from today
+        
+    Returns:
+        tuple: (is_updated(bool), data(dict), priority(int))    
     
 ___________________________________________________________________________
  
  
 
-SAMPLE CONFIGURATION FOR paperpi.plugins.default.default
-no sample configuration provided in paperpi.plugins.default.default.constants
+SAMPLE CONFIGURATION FOR paperpi.plugins.newyorker.newyorker
+no sample configuration provided in paperpi.plugins.newyorker.newyorker.constants
  
 LAYOUTS AVAILABLE:
   default
   layout
  
 
-DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.default.default:
-   digit_time
-   msg
+DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.newyorker.newyorker:
+   comic
+   text
+   time
 ```
 
