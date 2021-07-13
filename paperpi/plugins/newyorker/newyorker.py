@@ -48,14 +48,7 @@ except ImportError:
 
 
 
-
-
-
-
-
-
-
-def update_function(self, day_range=5):
+def update_function(self, day_range=5, **kwargs):
     '''update function for newyorker provides a New Yorker comic of the day
     
     This plugin provides an image and text pulled from the New Yorker 
