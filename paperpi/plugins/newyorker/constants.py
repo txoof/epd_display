@@ -14,3 +14,5 @@ data = {
 feed_url = 'https://www.newyorker.com/feed/cartoons/daily-cartoon'
 
 images_path = dir_path + '/./images/'
+
+private_cache = 'newyorker'

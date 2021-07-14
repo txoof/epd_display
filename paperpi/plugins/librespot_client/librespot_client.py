@@ -119,7 +119,11 @@ def update_function(self):
     # use the token to fetch player information from spotify
     logging.debug('fetch player status from Spotify')
     if 'Authorization' in headers:
-        player_status = requests.get(constants.spot_player_url, headers=headers)
+        try:
+            player_status = requests.get(constants.spot_player_url, headers=headers)
+        except requests.exceptions.RequestException as e:
+            logging.info(f'failed to get player status: {e}')
+            player_stats = None
     else:
         logging.error(f'cannot proceed: no valid Authroization token found in response from librespot: {headers}')
         return failure    
@@ -146,7 +150,10 @@ def update_function(self):
         data[key] = dictor(player_json, constants.spot_map[key])
 
     if 'artwork_url' in data and 'id' in data:
-        data['coverart'] = self.cache.cache_file(url=data['artwork_url'], file_id=data['id'])
+        # set the file_id to use the private cache
+        file_id = f'{constants.private_cache}/{data["id"]}'
+#         data['coverart'] = self.cache.cache_file(url=data['artwork_url'], file_id=data['id'])
+        data['coverart'] = self.cache.cache_file(url=data['artwork_url'], file_id=file_id)
 
     playing = dictor(player_status.json(), 'is_playing')
     if playing is True:
@@ -185,8 +192,19 @@ def update_function(self):
         priority = 2**15
         is_updated = False
     
+    # clean stale data out of cache
+#     self.cache.remove_stale(d=constants.expire_cache)
+    self.cache.remove_stale(d=constants.expire_cache, path=constants.private_cache)
+    
     logging.info(f'priority set to: {priority}')
     return is_updated, data, priority
+
+
+
+
+
+
+# logging.root.setLevel('DEBUG')
 
 
 
@@ -197,14 +215,66 @@ def update_function(self):
 # from SelfDummy import SelfDummy
 # from CacheFiles import CacheFiles
 # from epdlib import Layout
-# logger.root.setLevel('DEBUG')
-# logging.debug('foo')
-
 # self = SelfDummy()
 # self.max_priority = 0
 # self.config = {'player_name': 'Spocon-Spotify',
 #                'idle_timeout': 5}
 # self.cache = CacheFiles()
+
+
+
+
+
+
+# dir_path = '.'
+# my_l = {
+#     'title': {
+#         'image': False,
+#         'max_lines': 3,
+#         'padding': 0,
+#         'width': 1,
+#         'height': .70,
+#         'abs_coordinates': (0, 0),
+#         'hcenter': True,
+#         'vcenter': True,
+#         'align': 'left',
+#         'relative': False,
+#         'mode': 'L',
+#         'font': dir_path+'/../../fonts/Oswald/static/Oswald-Medium.ttf'
+#     },
+#     'artist': {
+#         'image': False,
+#         'max_lines': 2,
+#         'width': 1,
+#         'height': .20,
+#         'abs_coordinates': (0, None),     
+#         'hcenter': True,
+#         'vcenter': True,
+#         'relative': ['artist', 'title'],
+#         'mode': 'L',
+#         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
+#     },
+#     'album': {
+#         'image': False,
+#         'max_lines': 1,
+#         'width': 1,
+#         'height': .1,
+#         'abs_coordinates': (0, None),
+#         'hcenter': True,
+#         'vcenter': True,
+#         'relative': ['album', 'artist'],
+#         'mode': 'L',
+#         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
+#     },     
+# }
+
+
+
+
+
+
+# l = Layout(resolution=(1200, 800))
+# l.layout = my_l
 
 
 
@@ -222,20 +292,11 @@ def update_function(self):
 # # print(self.data)
 
 
-# logging.root.setLevel('WARNING')
-# l = Layout(resolution=(800, 600))
+# logging.root.setLevel('DEBUG')
 
-# l.layout = layout.three_rows_text
 
 # l.update_contents(d)
 # l.concat()
-
-
-
-
-
-
-
 
 
 

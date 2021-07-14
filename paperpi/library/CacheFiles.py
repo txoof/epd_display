@@ -11,28 +11,7 @@ from pathlib import Path
 import tempfile
 import shutil
 import requests
-
-
-
-
-
-
-import sys
-sys.path.append(Path('../').resolve())
-
-
-
-
-
-
-sys.path
-
-
-
-
-
-
-
+import time
 
 
 
@@ -116,7 +95,9 @@ class CacheFiles:
         
         Args:
             url(`str`): url to remote file
-            file_id(`str`): name to use for local file
+            file_id(`str`): path and name to use for local file 
+                * `124353465Hb7Asr33v` <- cached in root of cache
+                * `LMS_artwork/12Hb2455slqrp.jpg`) <- cached in LMS_artwork/ within cache
             force(`bool`): force a download ignoring local files with the same name'''
         file_id = str(file_id)
         local_file = Path(self.path/file_id).absolute()
@@ -126,6 +107,8 @@ class CacheFiles:
         if local_file.exists() and force is False:
             logging.debug(f'file previously cached')
             return local_file
+        else:
+            local_file.parent.mkdir(parents=True, exist_ok=True)
         
         try:
             r = requests.get(url, stream=True)
@@ -134,7 +117,7 @@ class CacheFiles:
             return None
         
         if r.status_code == 200:
-            logging.debug(f'writing file to file{local_file}')
+            logging.debug(f'writing file to file {local_file}')
             
             try:
                 with open(local_file, 'wb') as file:
@@ -158,6 +141,110 @@ class CacheFiles:
             return None
             
         return local_file
+
+    def remove_stale(self, d=0, h=0, m=0, s=0, path='./', force=False):
+        '''remove stale items from the cache based on modification time in seconds
+
+        Args:
+            d, h, m, s (int): days, hours, minutes, seconds
+                items older than d:h:m:s will be removed
+            path('str'): path within cache to expire items from (default is `./`)
+
+        Returns:
+            list: list of files removed
+        '''
+        def time_to_seconds(d=0, h=0, m=0, s=0):
+            total = d * 86400
+            total += h * 3600
+            total += m * 60
+            total += s
+            return total    
+
+
+        expire = []
+        expire_time = time_to_seconds(d, h, m, s)
+        
+        logging.info(f'removing stale files in {self.path/path} older than {expire_time} seconds')
+        if expire_time < 1 and not force:
+            logging.warning(f'use `force=True` to expire all files in {self.path/path} older than {expire_time} seconds')
+        for file in Path(self.path/path).glob('*'):
+            if not file.is_file():
+                continue
+            age = time.time() - file.stat().st_mtime
+            if age > time_to_seconds(d, h, m, s):
+                expire.append(file)
+
+        expire.sort()
+        logging.debug(f'located {len(expire)} files to expire')
+        for file in expire:
+            try:
+                logging.debug(f'removing: {file}')
+                file.unlink()
+            except FileNotFoundError:
+                pass
+            except Exception as e:
+                logging.warning(f'could not remove file in cache: {file}; {e}')
+
+        return expire    
+
+
+
+
+
+
+# def remove_stale(self, d=0, h=0, m=0, s=0, path='./'):
+#     '''remove stale items from the cache based on modification time in seconds
+    
+#     Args:
+#         d, h, m, s (int): days, hours, minutes, seconds
+#             items older than d:h:m:s will be removed
+#         path('str'): path within cache to expire items from (default is `./`)
+    
+#     Returns:
+        
+        
+#     '''
+#     def time_to_seconds(d=0, h=0, m=0, s=0):
+#         total = d * 86400
+#         total += h * 3600
+#         total += m * 60
+#         total += s
+#         return total    
+    
+#     expire = []
+
+#     for file in Path(self.path/path).glob('*'):
+#         if not file.is_file():
+#             continue
+#         age = time.time() - file.stat().st_mtime
+#         if age > time_to_seconds(d, h, m, s):
+#             expire.append(file)
+    
+#     expire.sort()
+#     for file in expire:
+#         try:
+#             file.unlink()
+#         except FileNotFoundError:
+#             pass
+#         except Exception as e:
+#             logging.warning(f'could not remove file in cache: {file}; {e}')
+    
+#     return expire
+
+
+
+
+
+
+# make a bunch of files to play with in cache
+# def touch(path):
+#     with open(path, 'a'):
+#         os.utime(path, None)
+
+# for i in range(100, 200):
+#     touch(c.path/f'{i}.txt')
+#     time.sleep(.1)
+    
 
 
 
