@@ -541,14 +541,19 @@ def update_loop(plugins, screen, max_refresh=2):
                         if screen.HD:
                             logging.info('max_refresh exceeded, wiping screen prior to next update')
                             screen.clearEPD()
-    
-                    if screen.writeEPD(this_plugin.image):
-                        logging.debug('successfully wrote image')
-                        refresh_count += 1
-                    else:
-                        logging.warning('#=#=# failed to write image #=#=#')
-                        logging.info('trying next plugin')
-                        plugin_is_active = False
+                        else:
+                            logging.debug(f'{max_refresh - refresh_count} refreshes remain before full wipe')
+                    
+                    logging.debug('writing image to screen')
+                    screen.writeEPD(this_plugin.image)
+                    refresh_count += 1
+#                     if screen.writeEPD(this_plugin.image):
+#                         logging.debug('successfully wrote image')
+#                         refresh_count += 1
+#                     else:
+#                         logging.warning('#=#=# failed to write image #=#=#')
+#                         logging.info('trying next plugin')
+#                         plugin_is_active = False
                         
                     
                 else:
