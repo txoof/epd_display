@@ -3,7 +3,7 @@ from pathlib import Path
 app_name = 'PaperPi'
 contact = 'aaron.ciuffo@gmail.com'
 devel_name = f'com.txoof.{app_name.lower()}'
-version = '0.2.00'
+version = '0.2.01_20210801_1845'
 url = 'https://github.com/ txoof/epd_display'
 
 ## configuration

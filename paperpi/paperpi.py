@@ -27,6 +27,7 @@ import waveshare_epd
 import ArgConfigParse
 from epdlib import Screen
 from epdlib.Screen import Update
+from epdlib.Screen import ScreenError
 from library.CacheFiles import CacheFiles
 from library.Plugin import Plugin
 from library.InterruptHandler import InterruptHandler
@@ -317,7 +318,7 @@ def setup_display(config):
         return{'obj': obj, 'status': status, 'message': message}    
     keyError_fmt = 'configuration KeyError: section[{}], key: {}'
 
-    moduleNotFoundError_fmt = 'could not load module: {} -- error: {}'
+    moduleNotFoundError_fmt = 'could not load epd module: {} -- error: {}'
     
 #     try:
 #         logging.debug('setting display type')
@@ -343,14 +344,22 @@ def setup_display(config):
     
     epd = config['main']['display_type']
     vcom = config['main']['vcom']
-    screen = Screen(epd=epd, vcom=vcom)
     try:
-        screen.epd = epd
+        screen = Screen(epd=epd, vcom=vcom)
+    except ScreenError as e:
+        logging.critical('Error loading epd from configuration')
+        return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(epd, e))
+        return return_val
     except PermissionError as e:
         logging.critical(f'Error initializing EPD: {e}')
         logging.critical(f'The user executing {constants.app_name} does not have access to the SPI device.')
         return_val = ret_obj(None, 1, 'This user does not have access to the SPI group\nThis can typically be resolved by running:\n$ sudo groupadd <username> spi')
         return return_val
+    except FileNotFoundError as e:
+        logging.critical(f'Error initializing EPD: {e}')
+        logging.critical(f'It appears that SPI is not enabled on this Pi. See: https://github.com/txoof/epd_display/tree/testing#hardwareos-setup')
+        return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(epd, e))
+        return return_val        
 
     try:
         config['main']['rotation'] = int(config['main']['rotation'])
