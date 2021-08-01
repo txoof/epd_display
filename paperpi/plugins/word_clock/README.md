@@ -2,7 +2,7 @@
 ![sample image for plugin word_clock](./word_clock_sample.png)
 ```
  
-PLUGIN: word_clock v:0.1.0
+PLUGIN: word_clock v:0.1.1
 
  
 FUNCTION: update_function

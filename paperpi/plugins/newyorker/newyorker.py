@@ -24,15 +24,6 @@ from pathlib import Path
 
 
 
-import constants
-import feedparser
-import requests
-
-
-
-
-
-
 # two different import modes for development or distribution
 try:
     # import from other modules above this level
@@ -42,6 +33,14 @@ except ImportError:
     import constants
     # development in jupyter notebook
     import layout
+
+
+
+
+
+
+import feedparser
+import requests
 
 
 
@@ -106,18 +105,18 @@ def update_function(self, **kwargs):
             comic_id = feed.entries[choice].id
         except IndexError as e:
             logging.warning(f'no valid data was returned in the feed: {e}')        
-            return(False, {})
+            return(False, {}, day_range)
         except KeyError as e:
             logging.warning(f'no url was found under the `media_thumbnail`: {e}')
-            return(False, ())
+            return(False, {}, day_range)
 
-        comic_image = self.cache.cache_file(comic_url, comic_id)
+        comic_id = f'{constants.private_cache}/{comic_id}'
+        comic_image = self.cache.cache_file(url=comic_url, file_id=comic_id)
 
         return(True, {'comic': comic_image, 
                       'caption': comic_caption, 
-                      'time': time_now()})    
+                      'time': time_now()}, day_range)    
             
-    
     success = False
     is_updated = True
     
@@ -131,12 +130,14 @@ def update_function(self, **kwargs):
         logging.warning(f'module is not properly configured and is missing keys: {e}')
         data['caption'] = f'The New Yorker plugin configuration is missing "{e.args[0]}" setting'
     else:
-        success, my_data = fetch_comic(day_range)  
+        success, my_data, day_range = fetch_comic(day_range)  
 
     priority = self.max_priority
     
     if success:
         data.update(my_data)
+    
+    self.cache.remove_stale(d=day_range, path=constants.private_cache)
     
     return (is_updated, data, priority) 
 

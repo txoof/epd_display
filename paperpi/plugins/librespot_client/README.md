@@ -2,7 +2,7 @@
 ![sample image for plugin librespot_client](./librespot_client_sample.png)
 ```
  
-PLUGIN: librespot_client v:0.1.1
+PLUGIN: librespot_client v:0.2.1
 
  
 FUNCTION: update_function
@@ -61,11 +61,9 @@ idle_timeout = 10
  
 LAYOUTS AVAILABLE:
   layout
-  threeRowLarge
   three_rows_text_only
-  twoColumn
-  twoColumnThreeRows
-  twoRowSmall
+  two_column_three_row
+  two_rows_text_only
  
 
 DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.librespot_client.librespot_client:

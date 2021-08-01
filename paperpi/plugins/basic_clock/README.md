@@ -2,7 +2,7 @@
 ![sample image for plugin basic_clock](./basic_clock_sample.png)
 ```
  
-PLUGIN: basic_clock v:0.1.0
+PLUGIN: basic_clock v:0.1.1
 
  
 FUNCTION: update_function
