@@ -62,6 +62,13 @@ class Plugin:
         '''Create a plugin object that provides consistent methods for providing an image and querying
         various services
         
+        Properties:
+            hash('str'): unique identifier for this plugin in its current state (used for checking for changes)
+            image(PIL image): image generated for this plugin
+            data(dict): data returned by this plugin to be used in the Layout
+            priority(int): current priority for this plugin (lower numbers are more important in display loop)
+            last_ask(float): time in seconds since this plugin was last asked for an update -- used for throttling
+        
         Args:
             resolution(`tuple` of `int`): resolution of the epd or similar screen: (Length, Width)
             name(`str`): human readable name of the function for logging and reference
