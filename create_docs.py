@@ -22,6 +22,7 @@ import paperpi.constants as paperpi_constants
 import logging
 from IPython.display import Image 
 import argparse
+import sys
 
 
 
@@ -189,18 +190,23 @@ def update_plugin_docs(plugin_docs, doc_path):
         plugin_docs(dict): dictionary provided by create_readme'''
     doc_path = Path(doc_path)
     plugin_readme_source = Path(doc_path/'source/Plugins.md')
+    plugin_readme_post_source = Path(doc_path/'source/Plugins_post.md')
     plugin_readme_final = Path(doc_path/plugin_readme_source.name)
     print('updating Plugins.md...')
     print(f'using: {plugin_readme_source}')
+    print(f'using postscript file: {plugin_readme_post_source}')
     with open(plugin_readme_source, 'r') as file:
         source = file.read()
+        
+    with open(plugin_readme_post_source, 'r') as file:
+        post = file.read()
     
     with open(plugin_readme_final, 'w') as file:
         file.write(source)
         for plugin, values in plugin_docs.items():
             file.write(f'### [{plugin}]({Path("..")/values["readme"]})\n')
             file.write(f'![{plugin} sample Image]({Path("..")/values["image"]})\n\n')
-        
+        file.write(post)        
 
 
 
@@ -237,6 +243,10 @@ def main():
 
 
 if __name__ == "__main__":
+    if '-f' in sys.argv:
+        logging.debug('looks like this is running in a Jupyter notebook')
+        idx = sys.argv.index('-f')
+        del sys.argv[idx:idx+2]    
     logger.setLevel('DEBUG')
     logging.root.setLevel('DEBUG')
     print('updating documents...')
