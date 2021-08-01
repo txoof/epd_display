@@ -1,7 +1,7 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-version = "0.1.2"
+version = "0.1.4"
 name = "PaperPi Met No Weather plugin"
 
 # open street maps location lookup

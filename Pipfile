@@ -8,7 +8,6 @@ verify_ssl = true
 [packages]
 ipykernel = "*"
 requests = "*"
-pillow = "*"
 dictor = "*"
 pyinstaller = "*"
 argconfigparse = "*"
@@ -16,6 +15,9 @@ gpiozero = "*"
 python-dateutil = "*"
 querylms = "*"
 "rpi.gpio" = "*"
+it8951 = {git = "https://github.com/GregDMeyer/IT8951.git"}
+feedparser = "*"
+pillow = "*"
 epdlib = "*"
 
 [requires]

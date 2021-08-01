@@ -31,5 +31,5 @@ datas = [
 
 # modules to exclude
 exclude = [
-  ''
+  'IPython'
 ]

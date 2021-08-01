@@ -15,6 +15,7 @@ word_clock_lg = {
           'inverse': True,
           'relative': False,
           'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
+          'mode': 'L',
           'font_size': None},
   'time':
          {'image': None,
@@ -23,11 +24,12 @@ word_clock_lg = {
           'width': 1,
           'height': 1/10,
           'abs_coordinates': (0, None),
-          'vcenter': True,
+          'vcenter': False,
           'inverse': True,
           'rand': True,
           'relative': ['time', 'wordtime'],
           'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
+          'mode': 'L',       
           'font_size': None},
 }
 
@@ -45,6 +47,7 @@ word_clock = {
           'inverse': True,
           'relative': False,
           'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
+          'mode': 'L',
           'font_size': None},
   'time':
          {'image': None,
@@ -53,11 +56,12 @@ word_clock = {
           'width': 1,
           'height': 1/7,
           'abs_coordinates': (0, None),
-          'vcenter': True,
+          'vcenter': False,
           'inverse': True,
           'rand': True,
           'relative': ['time', 'wordtime'],
           'font': dir_path+'/../../fonts/Anton/Anton-Regular.ttf',
+          'mode': 'L',          
           'font_size': None},
 }
 

@@ -2,7 +2,7 @@
 ![sample image for plugin lms_client](./lms_client_sample.png)
 ```
  
-PLUGIN: lms_client v:0.1.1
+PLUGIN: lms_client v:0.1.2
 
  
 FUNCTION: scan_servers
@@ -87,11 +87,9 @@ idle_timeout = 15
  
 LAYOUTS AVAILABLE:
   layout
-  threeRowLarge
   three_rows_text_only
-  twoColumn
-  twoColumnThreeRows
-  twoRowSmall
+  two_column_three_row
+  two_rows_text_only
  
 
 DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.lms_client.lms_client:

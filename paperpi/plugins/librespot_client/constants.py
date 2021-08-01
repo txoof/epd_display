@@ -1,14 +1,18 @@
 name = 'librespot_client'
-version = '0.1.1'
+version = '0.2.1'
 data = {
-        'title': 'Err: no data',
-        'artist': 'Err: no data',
-        'album': 'Err: no data',
+        'title': 'Error: No Data!',
+        'artist': 'Is SpoCon working?',
+        'album': 'Check Logs!',
         'artwork_url': 'Err: no data',
         'duration': 0,
         'player': 'Err: no data',
         'mode': 'None'}
 
+#  path for private cache with the temp directory
+private_cache = f'{name}/'
+# days worth of album images to retain in cache
+expire_cache = 3
 
 # Spotify Constants
 # API V1 -- https://developer.spotify.com/documentation/general/guides/scopes/

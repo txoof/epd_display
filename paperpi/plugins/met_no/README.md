@@ -2,7 +2,7 @@
 ![sample image for plugin met_no](./met_no_sample.png)
 ```
  
-PLUGIN: met_no v:0.1.2
+PLUGIN: met_no v:0.1.4
 
  
 FUNCTION: get_coord

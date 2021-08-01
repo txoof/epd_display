@@ -80,6 +80,6 @@ check_packages
 
 check_env
 
-update_waveshare
+#update_waveshare
 
 build_binary

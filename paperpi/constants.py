@@ -3,7 +3,7 @@ from pathlib import Path
 app_name = 'PaperPi'
 contact = 'aaron.ciuffo@gmail.com'
 devel_name = f'com.txoof.{app_name.lower()}'
-version = '0.1.93'
+version = '0.2.00'
 url = 'https://github.com/ txoof/epd_display'
 
 ## configuration
@@ -35,7 +35,7 @@ logging_config = f'{config_path}/logging.cfg'
 plugins = 'plugins'
 
 ## WaveShare Information
-ws_version = '83a6cff 2021-05-13 16:10:00 +0800'
+ws_version = '337fa63 2021-06-22 20:12:03 +0800'
 
 # local version of waveshare library
 waveshare_epd = 'waveshare_epd'

@@ -1,5 +1,10 @@
-version = '0.1.1'
+version = '0.1.2'
 name = 'lms_client'
+#  path for private cache with the temp directory
+private_cache = f'{name}/'
+# days worth of album images to retain in cache
+expire_cache = 3
+
 data = {
         'id': 0,
         'title': 'Err: No Player',
