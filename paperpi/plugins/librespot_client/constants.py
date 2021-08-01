@@ -10,7 +10,7 @@ data = {
         'mode': 'None'}
 
 #  path for private cache with the temp directory
-private_cache = 'librespot_client/'
+private_cache = f'{name}/'
 # days worth of album images to retain in cache
 expire_cache = 3
 

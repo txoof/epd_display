@@ -164,7 +164,9 @@ def update_function(self):
         data = now_playing
         try:
             data['coverart'] = self.cache.cache_file(now_playing['artwork_url'], 
-                                                     now_playing['album_id'])
+                                                     f"{constants.private_cache}/{now_playing['album_id']}")
+            
+            
         except KeyError as e:
             logging.warning(f'failed to cache file -- now_playing data did not contain complete data: {e}')
     else:
@@ -201,6 +203,9 @@ def update_function(self):
         priority = 2**15
         is_updated = False
     logging.info(f'priority set to: {priority}')
+    
+    # clean stale cache files
+    self.cache.remove_stale(d=constants.expire_cache, path=constants.private_cache)
     return (is_updated, data, priority)
 
 
@@ -208,8 +213,10 @@ def update_function(self):
 
 
 
-# from library.SelfDummy import SelfDummy
-# from library.CacheFiles import CacheFiles
+# # use this for testing
+# from SelfDummy import SelfDummy
+# from CacheFiles import CacheFiles
+# from epdlib import Layout
 
 
 # logger.root.setLevel('DEBUG')
@@ -218,7 +225,8 @@ def update_function(self):
 # self = SelfDummy()
 # self.max_priority = 0
 # self.config = {'player_name': 'MacPlay',
-#                'idle_timeout': 5}
+#                'idle_timeout': 5,
+#                'layout': 'two_columns_album_art'}
 # self.cache = CacheFiles()
 
 
@@ -226,12 +234,94 @@ def update_function(self):
 
 
 
+# dir_path = '.'
+# my_l =  {
+#     'coverart': {
+#         'image': True,
+#         'mode': 'L',
+#         'padding': 5,
+#         'width':.4,
+#         'height': .5,
+#         'vcenter': True,
+#         'hcenter': True,
+#         'relative': False,
+#         'abs_coordinates': (0, 0)
+#     },
+#     'artist': {
+#         'image': False,
+#         'max_lines': 3,
+#         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
+#         'mode': 'L',
+#         'vcenter': True,
+#         'hcenter': False,
+#         'align': 'left',
+#         'padding': 5,
+#         'width': .6,
+#         'height': .40,
+#         'relative': ['coverart', 'artist'],
+#         'abs_coordinates': (None, 0),
+        
+#     },
+#     'album': {
+#         'image': False,
+#         'max_lines': 2,
+#         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
+#         'mode': 'L',
+#         'vcenter': True,
+#         'hcenter': False,
+#         'align': 'left',
+#         'padding': 5,
+#         'width': .6,
+#         'height': .1,
+#         'relative': ['coverart', 'artist'],
+#         'abs_coordinates': (None, 0),
+        
+#     },
+#     'title': {
+#         'image': False,
+#         'max_lines': 2,
+#         'font': dir_path+'/../../fonts/Oswald/static/Oswald-Medium.ttf',
+#         'mode': 'L',
+#         'vcenter': True,
+#         'hcenter': True,
+#         'align': 'left',
+#         'padding': 5,
+#         'width': 1,
+#         'height': .5,
+#         'relative': ['title', 'album'],
+#         'abs_coordinates': (0, None)
+#     },
+# }
+
+
+
+
+
+
+# l = Layout(resolution=(800, 600))
+# l.layout = my_l
+
+
+
+
+
+
+# # test layouts with this code snip
 # u, d, p = update_function(self)
-# if u != self.data:
-#     self.data = d
+# # if u != self.data:
+# self.data = d
 # print(f'idle timer: {self.idle_timer.last_updated}, idle_timeout {self.config["idle_timeout"]}')
 # print(p)
 # print(d)
+# # print('*'*50)
+# # print(self.data)
+
+
+# logging.root.setLevel('DEBUG')
+
+
+# l.update_contents(d)
+# l.concat()
 
 
 

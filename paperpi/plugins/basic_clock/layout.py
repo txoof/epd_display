@@ -12,6 +12,7 @@ basic_clock = {
         'abs_coordinates': (0, 0),
         'rand': True,
         'font': dir_path+'/../../fonts/Kanit/Kanit-Medium.ttf',
+        'mode': 'L'
     },
 }
 
