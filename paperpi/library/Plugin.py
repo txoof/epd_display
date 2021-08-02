@@ -58,6 +58,7 @@ class Plugin:
                  min_display_time=30, 
                  config={},
                  cache=None,
+                 force_onebit=False,
                  **kwargs):
         '''Create a plugin object that provides consistent methods for providing an image and querying
         various services
@@ -82,9 +83,11 @@ class Plugin:
             min_display_time(`int`): minimum time in seconds plugin should be allowed to display in the loop
             config(`dict`): any kwargs that update function requires
             cache(`CacheFiles` obj): object that can be used for downloading remote files and caching
+            force_onebit(`bool`): force layouts to 1bit mode
             kwargs(): any additional kwargs will be ignored
             '''
         self.name = name
+        self.force_onebit = force_onebit
         if resolution:
             self.resolution = resolution
         
@@ -121,6 +124,17 @@ class Plugin:
     @name.setter
     def name(self, name):
         self._name = str(name)
+    
+    @property
+    def force_onebit(self):
+        '''force layout to 1bit mode
+        force_onebit(`bool`)'''
+        return self._force_onebit
+    
+    @force_onebit.setter
+    @strict_enforce(bool)
+    def force_onebit(self, force_onebit):
+        self._force_onebit = force_onebit
         
     @property
     def resolution(self):
@@ -142,7 +156,7 @@ class Plugin:
     @layout.setter
     @strict_enforce(dict)
     def layout(self, layout):
-        self.layout_obj = Layout(resolution=self.resolution, layout=layout)
+        self.layout_obj = Layout(resolution=self.resolution, layout=layout, force_onebit=self.force_onebit)
         
     
     @property
