@@ -23,7 +23,7 @@ default = {
         'vcenter': True,
         'max_lines': 3,
         'mode': 'L',
-        'font': dir_path+'/../../fonts/LibreCaslonText/LibreCaslonText-Italic.ttf'  
+        'font': dir_path+'/../../fonts/LibreCaslonText/LibreCaslonText-Regular.ttf'  
     },
     'time': {
         'image': False,
