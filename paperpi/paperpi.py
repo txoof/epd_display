@@ -185,55 +185,6 @@ Edit the configu file with "$ nano {constants.config_user}"'''
 
 
 
-# def sanitize_vals(config):
-#     '''attempt to convert all the strings into appropriate formats
-#         integer/float like strings ('7', '100', '-1.3') -> int
-#         boolean like strings (yes, no, Y, t, f, on, off) -> 0 or 1
-#     Args:
-#         config(`dict`): nested config.ini style dictionary
-    
-#     Returns:
-#         `dict`'''
-    
-#     def convert(d, func, exceptions):
-#         '''convert values in nested dictionary using a specified function
-#             values that raise an exception are left unchanged
-        
-#         Args:
-#             d(`dict`): nested dictionary {'Section': {'key': 'value'}}
-#             func(`function`): function such as int() or strtobool()
-#             exceptions(`tuple`): 
-            
-#         Returns:
-#             `dict`'''
-#         for section, values in d.items():
-#             for key, value in values.items():
-#                 if isinstance(value, str):
-#                     try:
-#                         sanitized = func(value)
-#                     except exceptions:
-#                         sanitized = value
-#                     d[section][key] = sanitized
-#         return d
-    
-#     #attempt to convert any string that looks like int into the proper value
-#     # convert strings to float if possible
-#     str_to_float = convert(config, float, (ValueError))
-#     str_to_ints = convert(str_to_float, int, (ValueError))
-#     # attempt to convert any string that looks like a bool into a bool
-#     str_to_bool = convert(str_to_ints, strtobool, (ValueError, AttributeError))
-    
-#     config = str_to_bool
-    
-    
-        
-#     return config
-
-
-
-
-
-
 def sanitize_vals(config):
     '''attempt to convert all the strings into appropriate formats
              integer/float like strings ('7', '100', '-1.3') -> int or float
@@ -380,6 +331,15 @@ def setup_display(config):
 
 
 def build_plugin_list(config, resolution, cache):
+    '''Build a dictionary of configured plugin objects
+    
+    Args:
+        config(dict): configuration dictionary 
+        resolution(tuple): X, Y resolution of screen
+        cache(obj: Cache): cache object for managing downloads of images
+        
+    Returns:
+        dict of Plugin'''
     # get the expected key-word args from the Plugin() spec
     spec_kwargs = getfullargspec(Plugin).args
 
@@ -405,6 +365,9 @@ def build_plugin_list(config, resolution, cache):
             my_config['resolution'] = resolution
             my_config['config'] = plugin_kwargs
             my_config['cache'] = cache
+            # force layout to one-bit mode for non-HD screens
+            my_config['force_onebit'] = config['main']['force_onebit']
+            
             try:
                 module = import_module(f'{constants.plugins}.{values["plugin"]}')
                 my_config['update_function'] = module.update_function
@@ -632,6 +595,7 @@ def main():
     
     # configure screen
     screen_return = setup_display(config)
+
     if screen_return['obj']:
         screen = screen_return['obj']
     else:
@@ -643,14 +607,20 @@ def main():
     splash = setup_splash(config, screen.resolution)
     
     if splash:
-        
         logging.debug('displaying splash screen')
         logging.debug(f'image type: {type(splash.image)}')
         screen.writeEPD(splash.image)
-        
+    
     
     cache = CacheFiles(path_prefix=constants.app_name)
-    plugins = build_plugin_list(config, screen.resolution, cache)
+    
+    # force one bit mode if screen is NOT HD
+    if screen.HD:
+        config['main']['force_onebit'] = False
+    else:
+        config['main']['force_onebit'] = True
+
+    plugins = build_plugin_list(config=config, resolution=screen.resolution, cache=cache)
     
     exit_code = update_loop(plugins, screen)
 
