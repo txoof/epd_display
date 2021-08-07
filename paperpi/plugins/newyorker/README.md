@@ -28,7 +28,15 @@ ___________________________________________________________________________
  
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.newyorker.newyorker
-no sample configuration provided in paperpi.plugins.newyorker.newyorker.constants
+
+[Plugin: New Yorker Comic]
+layout = layout
+plugin = newyorker
+day_range = 5 # number of past days to choose from
+refresh_rate = 120
+min_display_time = 60
+max_priority = 2
+
  
 LAYOUTS AVAILABLE:
   default

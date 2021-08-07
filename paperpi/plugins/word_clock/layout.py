@@ -3,7 +3,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 word_clock_lg = {
   'wordtime':
-         {'image': None,
+         {'type': 'TextBlock', 
+          'image': None,
           'max_lines': 3,
           'padding': 5,
           'width': 1,
@@ -18,7 +19,8 @@ word_clock_lg = {
           'mode': 'L',
           'font_size': None},
   'time':
-         {'image': None,
+         {'type': 'TextBlock', 
+          'image': None,
           'max_lines': 1,
           'padding': 10,
           'width': 1,
@@ -35,7 +37,8 @@ word_clock_lg = {
 
 word_clock = {
   'wordtime':
-         {'image': None,
+         {'type': 'TextBlock', 
+          'image': None,
           'max_lines': 3,
           'padding': 10,
           'width': 1,
@@ -50,7 +53,8 @@ word_clock = {
           'mode': 'L',
           'font_size': None},
   'time':
-         {'image': None,
+         {'type': 'TextBlock', 
+          'image': None,
           'max_lines': 1,
           'padding': 10,
           'width': 1,

@@ -4,7 +4,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 two_rows_text_only = {
     'title':
-            {'image': None,
+            {'type': 'TextBlock',
+             'image': None,
              'max_lines': 2,
              'padding': 10,
              'width': 1,
@@ -18,7 +19,8 @@ two_rows_text_only = {
              'font_size': None},
 
     'artist':
-            {'image': None,
+            {'type': 'TextBlock',
+             'image': None,
              'max_lines': 2,
              'padding': 10,
              'width': 1,
@@ -34,6 +36,7 @@ two_rows_text_only = {
 
 three_rows_text_only = {
     'title': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 2,
         'padding': 5,
@@ -48,6 +51,7 @@ three_rows_text_only = {
         'font': dir_path+'/../../fonts/Oswald/static/Oswald-Medium.ttf'
     },
     'artist': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 2,
         'width': 1,
@@ -60,6 +64,7 @@ three_rows_text_only = {
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
     },
     'album': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 1,
         'width': 1,
@@ -75,6 +80,7 @@ three_rows_text_only = {
 
 two_column_three_row = {
     'coverart': {
+        'type': 'ImageBlock',
         'image': True,
         'mode': 'L',
         'padding': 5,
@@ -86,6 +92,7 @@ two_column_three_row = {
         'abs_coordinates': (0, 0)
     },
     'artist': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 3,
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
@@ -101,6 +108,7 @@ two_column_three_row = {
         
     },
     'album': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 2,
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
@@ -116,6 +124,7 @@ two_column_three_row = {
         
     },
     'title': {
+        'type': 'TextBlock',
         'image': False,
         'max_lines': 2,
         'font': dir_path+'/../../fonts/Oswald/static/Oswald-Medium.ttf',
@@ -130,66 +139,4 @@ two_column_three_row = {
         'abs_coordinates': (0, None)
     },
 }
-
-# two_column_three_row = {
-#       'coverart': {
-#             'image': True,
-#             'max_lines': None,
-#             'padding': 8,
-#             'width': 1/3,
-#             'height': .6,
-#             'abs_coordinates': (0, 0),
-#             'hcenter': True,
-#             'vcenter': True,
-#             'relative': False,
-#             'mode': 'L',
-#       },
-#       'title': {
-#             'image': None,
-#             'max_lines': 3,
-#             'padding': 1,
-#             'width': 2/3,
-#             'height': .6,
-#             'abs_coordinates': (None, 0),
-#             'relative': ['coverart', 'title'],
-#             'hcenter': False,
-#             'vcenter': True,
-#             'mode': 'L',
-#             'font': dir_path+'/../../fonts/Oswald/static/Oswald-Regular.ttf',
-          
-#       },
-#       'artist': {
-#             'image': None,
-#             'max_lines': 2,
-#             'padding': 4,
-#             'width': 1,
-#             'height': .31,
-#             'abs_coordinates': (0, None),
-#             'relative': ['artist', 'title'],
-#             'hcenter': True,
-#             'vcenter': True,
-#             'align': 'center',
-#             'mode': 'L',
-# #             'font': dir_path+'/../../fonts/Open_Sans/OpenSans-SemiBold.ttf',
-#             'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
-#       },
-#       'album': {
-#             'image': None,
-#             'max_lines': 1,
-#             'padding': 4,
-#             'width': 1,
-#             'height': .09,
-#             'abs_coordinates': (0, None),
-#             'relative': ['album', 'artist'],
-#             'hcenter': True,
-#             'vcenter': True,
-#             'align': 'center',
-#             'mode': 'L',
-#             'font': dir_path+'/../../fonts/Open_Sans/OpenSans-SemiBold.ttf',
-#             'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',          
-#       }
-# }
-
-
-# default layout
 layout = two_column_three_row

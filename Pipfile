@@ -18,7 +18,7 @@ querylms = "*"
 it8951 = {git = "https://github.com/GregDMeyer/IT8951.git"}
 feedparser = "*"
 pillow = "*"
-epdlib = "*"
+epdlib = {editable = true, path = "./../epdlib"}
 
 [requires]
 python_version = "3.7"

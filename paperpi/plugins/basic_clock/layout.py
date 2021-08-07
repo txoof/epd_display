@@ -5,6 +5,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 basic_clock = {
     'digit_time': {
+        'type': 'TextBlock',
         'image': None,
         'max_lines': 2,
         'width': 1,

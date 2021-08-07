@@ -3,6 +3,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 test = {
     'text' : {
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -22,11 +23,12 @@ test = {
 
 three_row_icon_wind_temp = {
     'forecast_location' : { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
-        'width': 5/7,
-        'height': 3/30,
+        'padding': 10,
+        'width': .6,
+        'height': .1,
         'hcenter': False,
         'vcenter': True,
         'abs_coordinates': (0, 0),
@@ -37,26 +39,28 @@ three_row_icon_wind_temp = {
         'mode': 'L'
     },
     'time_updated_local': {
+        'type': 'TextBlock',
         'image': None,
-        'padding': 0,
-        'width': 2/7,
-        'height': 3/30,
+        'padding': 10,
+        'width': .4,
+        'height': .1,
         'hcenter': False,
         'vcenter': True,
+        'align': 'right',
         'abs_coordinates': (None, 0),
         'relative': ['forecast_location', 'time_updated_local'],
         'max_lines': 2,
         'mode': 'L',
         'font': dir_path+'/../../fonts/Montserrat/Montserrat-Regular.ttf',
-        'mode': 'L'
     },
     # row 0
     '000_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': False,
         'vcenter': True,
         'abs_coordinates': (0, None),
@@ -64,38 +68,44 @@ three_row_icon_wind_temp = {
         'max_lines': 2,
         'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf',
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },
     '000_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
         'relative': ['000_forecast_time_local', 'forecast_location'],
         'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },    
     '000_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
         'relative': ['000_data_next_1_hours_summary_symbol_code_image', 'forecast_location'],
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },
     '000_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
@@ -103,76 +113,83 @@ three_row_icon_wind_temp = {
         'max_lines': 1,
         'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf',
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },    
     
     # row 1
     '006_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': False,
         'vcenter': True,
-        'inverse': True,
+        'inverse': False,
         'abs_coordinates': (0, None),
         'relative': ['006_forecast_time_local', '000_forecast_time_local'],
         'max_lines': 2,
         'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf',
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     }, 
     '006_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
-        'inverse': True,
         'abs_coordinates': (None, None),
         'relative': ['006_forecast_time_local', '000_data_next_1_hours_summary_symbol_code_image'],
         'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },
     '006_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
-        'inverse': True,
         'abs_coordinates': (None, None),
         'relative': ['006_data_next_1_hours_summary_symbol_code_image', '000_data_instant_details_wind_barb_image'],
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },
     '006_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
-        'inverse': True,
         'abs_coordinates': (None, None),
         'relative': ['006_data_instant_details_wind_barb_image', '000_data_instant_details_air_temperature'],
         'max_lines': 1,
         'mode': 'L',        
         'font': dir_path+'/../../fonts/Economica/Economica-Bold.ttf',
-        'mode': 'L'
+        'mode': 'L',
+        'border_config': {'fill': 0, 'width': 3, 'sides': ['bottom']},
     },
     
     # row 2
     '012_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': False,
         'vcenter': True,
         'abs_coordinates': (0, None),
@@ -183,11 +200,12 @@ three_row_icon_wind_temp = {
         'mode': 'L'
     }, 
     '012_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
@@ -195,11 +213,12 @@ three_row_icon_wind_temp = {
         'mode': 'L',        
     },
     '012_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
@@ -207,11 +226,12 @@ three_row_icon_wind_temp = {
         'mode': 'L'
     },
     '012_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
-        'padding': 0,
+        'padding': 10,
         'width': 1/4,
-        'height': 9/30,
+        'height': .3,
         'hcenter': True,
         'vcenter': True,
         'abs_coordinates': (None, None),
@@ -225,6 +245,7 @@ three_row_icon_wind_temp = {
 
 three_column_icon_wind_temp_precip = {
     'forecast_location' : { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -240,6 +261,7 @@ three_column_icon_wind_temp_precip = {
     },
     # Column 0
     '000_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -252,6 +274,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -264,6 +287,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_instant_details_wind_speed': {
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -278,6 +302,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -293,6 +318,7 @@ three_column_icon_wind_temp_precip = {
     },
 
     '000_data_next_1_hours_details_precipitation_amount': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -307,6 +333,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -323,6 +350,7 @@ three_column_icon_wind_temp_precip = {
 
     # Column 1
     '006_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -335,6 +363,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '006_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -347,6 +376,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '006_data_instant_details_wind_speed': {
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -361,6 +391,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '006_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -376,6 +407,7 @@ three_column_icon_wind_temp_precip = {
     },
 
     '000_data_next_6_hours_details_precipitation_amount': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -390,6 +422,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '006_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -407,6 +440,7 @@ three_column_icon_wind_temp_precip = {
 
     # Column 2
     '012_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -419,6 +453,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '012_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -431,6 +466,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '012_data_instant_details_wind_speed': {
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -445,6 +481,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '012_data_instant_details_air_temperature': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -460,6 +497,7 @@ three_column_icon_wind_temp_precip = {
     },
 
     '011_data_next_1_hours_details_precipitation_amount': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -474,6 +512,7 @@ three_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '012_forecast_time_local': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -492,6 +531,7 @@ three_column_icon_wind_temp_precip = {
 
 two_column_icon_wind_temp_precip = {
     '000_data_next_1_hours_summary_symbol_code_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -503,6 +543,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_instant_details_wind_barb_image': { 
+        'type': 'ImageBlock',
         'image': True,
         'inverse': False,
         'padding': 0,
@@ -515,6 +556,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     'forecast_location': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -529,6 +571,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     't_max': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -543,6 +586,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     't_min': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -557,6 +601,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_next_6_hours_details_air_temperature_min': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -571,6 +616,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_next_6_hours_details_air_temperature_max': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -585,6 +631,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     't_precipitation': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,
@@ -599,6 +646,7 @@ two_column_icon_wind_temp_precip = {
         'mode': 'L'
     },
     '000_data_next_1_hours_details_precipitation_amount': { 
+        'type': 'TextBlock',
         'image': None,
         'inverse': False,
         'padding': 0,

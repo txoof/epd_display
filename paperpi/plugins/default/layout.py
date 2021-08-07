@@ -4,6 +4,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 default = {
     'digit_time': {
+        'type': 'TextBlock',
         'image': None,
         'max_lines': 3,
         'width': 1,
@@ -13,6 +14,7 @@ default = {
         'font': dir_path+'/../../fonts/Kanit/Kanit-Medium.ttf',
     },
     'msg': {
+        'type': 'TextBlock',
         'image': None,
         'max_lines': 4,
         'width': 1,
