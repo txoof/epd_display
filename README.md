@@ -55,7 +55,9 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 ## Setup
 
 ### Hardware/OS Setup
-The WaveShare displays require use of the SPI interface. SPI can be enabled through the `raspi-config` command.
+**All Waveshare Screens**
+
+The WaveShare displays require the SPI interface. SPI can be enabled through the `raspi-config` command.
 1. Enable SPI (see images below)
     - `$ sudo raspi-config` > Interface Options > SPI > Yes
 2. Reboot
@@ -65,7 +67,9 @@ The WaveShare displays require use of the SPI interface. SPI can be enabled thro
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
-3. Check the [Hardware Setup](./documentation/Hardware_Setup.md) documentation for more details
+
+**IT8951 HD Screens**
+*  Install the Broadcom BCM 2835 library ccording to the directions found on [Mike McCauley's site](http://www.airspayce.com/mikem/bcm2835/)
 
 ### Userland Setup
 PaperPi can be run directly on-demand from a user account such as the default "pi" user. Any other user will work as well, but the user must be a member of the spi group.
@@ -104,7 +108,7 @@ PaperPi is designed to run as an unattended daemon process that starts at system
     - `$ sudo nano /etc/defaults/paperpi.ini`
     - At minimum you must specify the `display_type`
     - See the list of [supported screens](#supportedScreens) for more information
-5. Start PaperPi: `$ sudo systemctl restart paperpi-daemon.service` 
+5. Start PaperPi: `$ sudo systemctl restart paperpi` 
     - PaperPi will now start and restart at boot as a systemd service
     - PaperPi may fail to display the splash screen after boot -- see the [Known Issues](#knownIssues) section for more details
 

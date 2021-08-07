@@ -3,6 +3,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 layout =  {
   'app_name': {
+            'type': 'TextBlock',
             'image': None,
             'max_lines': 1,
             'padding': 10,
@@ -19,7 +20,9 @@ layout =  {
             'font_size': None},
 
   'version':
-          {'image': None,
+          {
+           'type': 'TextBlock',
+           'image': None,
            'max_lines': 1,
            'padding': 10,
            'width': 1,
@@ -35,7 +38,9 @@ layout =  {
            'mode': '1'},
 
   'url':
-          {'image': None,
+          {
+           'type': 'TextBlock',              
+           'image': None,
            'max_lines': 2,
            'padding': 10,
            'width': 1,

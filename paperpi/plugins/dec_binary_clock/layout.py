@@ -4,7 +4,8 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 dec_binary_clock = {
     'bin_img':
-            {'image': True,
+            {'type': 'ImageBlock',
+             'image': True,
              'max_lines': None,
              'padding': 5,
              'width': 1,
@@ -17,7 +18,8 @@ dec_binary_clock = {
              'relative': False
             },
     'time':
-          {'image': None,
+          {'type': 'TextBlock',
+           'image': None,
            'max_lines': 1,
            'padding': 5,
            'width': 1,

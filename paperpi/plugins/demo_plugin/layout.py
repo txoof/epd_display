@@ -10,6 +10,8 @@ my_layout_one = {
       # each "block" of the screen is defined as a keyword 
       # that matches a keyword from the data returned by the plugin
       'string': {
+          # this block is of a TextBlock type
+          'type': 'TextBlock',
           # this block does not contain an image
           'image': False,
           # number of lines of text to display before word-wrapping
@@ -30,6 +32,7 @@ my_layout_one = {
       },
       # this block will contain the string provided by  data['time']
       'time': {
+          'type': 'TextBlock',          
           'image': False,
           'max_lines': 1,
           'width': 1/2,
@@ -42,6 +45,7 @@ my_layout_one = {
           'relative': ['time', 'string'],
       },
       'extra': {
+          'type': 'TextBlock',          
           'image': False,
           'max_lines': 3,
           'width': 1/2,
@@ -53,6 +57,7 @@ my_layout_one = {
           'relative': ['extra', 'time']
       },
       'image': {
+          'type': 'ImageBlock',         
           'image': True,
           'width': 1/2,
           'height': 1/2,

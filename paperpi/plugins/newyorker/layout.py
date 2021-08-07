@@ -3,6 +3,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 default = {
     'comic': {
+        'type': 'ImageBlock',
         'image': True,
         'width': 1,
         'height': .75,
@@ -13,6 +14,7 @@ default = {
         'mode': 'L'
     },
     'caption': {
+        'type': 'TextBlock',        
         'image': False,
         'width': 1,
         'height': .2,
@@ -26,9 +28,11 @@ default = {
         'font': dir_path+'/../../fonts/LibreCaslonText/LibreCaslonText-Regular.ttf'  
     },
     'time': {
+        'type': 'TextBlock',
         'image': False,
         'width': 1,
         'height': .05,
+        'padding': 5,
         'abs_coordinates': (0, None),
         'relative': ['time', 'caption'],
         'hcenter': False,
