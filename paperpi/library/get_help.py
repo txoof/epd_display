@@ -221,8 +221,8 @@ def get_help(module=None, print_help=True, plugin_path='./plugins'):
         mls.string = 'PLUGINS AVAILABLE:'
         for i in get_modules(plugin_path):
             mls.string = f'  {i}'
-            if print_help:
-                print(mls.string)
+        if print_help:
+            print(mls.string)
         return mls.string
     
     my_module = module.split('.')

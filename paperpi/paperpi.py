@@ -576,7 +576,7 @@ def main():
         return
     
     if cmd_args.options.list_plugins:
-        print(get_help.get_help())
+        get_help.get_help()
         return
     
     if cmd_args.options.run_plugin_func:
@@ -591,7 +591,7 @@ def main():
     logger.setLevel(config['main']['log_level'])
     logging.root.setLevel(config['main']['log_level'])
     
-    logging.debug(f'********** PaperPi {constants.version} Starting **********')
+    logging.info(f'********** PaperPi {constants.version} Starting **********')
     
     # configure screen
     screen_return = setup_display(config)
