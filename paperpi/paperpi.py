@@ -572,7 +572,7 @@ def main():
         return
     
     if cmd_args.options.plugin_info:
-        print(get_help.get_help(cmd_args.options.plugin_info))
+        get_help.get_help(cmd_args.options.plugin_info)
         return
     
     if cmd_args.options.list_plugins:
