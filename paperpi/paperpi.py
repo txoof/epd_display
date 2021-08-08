@@ -127,58 +127,59 @@ def get_cmd_line_args():
 
 def get_config_files(cmd_args):
     '''read config.ini style file(s)
+    
     Args:
-        cmd_args(`ArgConfigParse.CmdArgs()` object)
+        cmd_args(`ArgConfigParse.CmdArgs` obj)
     
     Returns:
-        `ArgConfigParse.ConfigFile`'''
-    config_files_list = [constants.config_base, constants.config_system, constants.config_user]
+        ArgConfigParse.ConfigFile'''
     
-    daemon = False
+    logging.debug('gathering configuration files')
     
-    config_exists = True
+    config_files_dict = {'base': constants.config_base,
+                         'system': constants.config_system,
+                         'user': constants.config_user,
+                         'cmd_line': cmd_args.options.user_config}
     
-    if hasattr(cmd_args.options, "main__daemon"):
-        logging.debug('-d specified on command line')
-        if cmd_args.options.main__daemon:
-            logging.debug('excluding user config files')
-            config_files_list.pop()
-            daemon = True
+    config_files_list = [config_files_dict['base']]
+    
+    if cmd_args.options.main__daemon:
+        logging.debug(f'using daemon configuration: {constants.config_system}')
+        config_files_list.append(config_files_dict['system'])
+    else:
+        if constants.config_user.exists():
+            config_files_list.append(config_files_dict['user'])
         else:
-            daemon = False
-    else: 
-        daemon = False
-    
-    if not daemon:
-        # create a user config directory
-        if not constants.config_user.exists():
-            config_exists = False
-            logging.info('creating user config directory and inserting config file')
             try:
                 constants.config_user.parent.mkdir(parents=True, exist_ok=True)
             except PermissionError as e:
-                logging.warning(f'could not create {constants.config_user}: {e}')
-        if not constants.config_user.exists():
+                msg=f'could not create user configuration directory: {constants.config_user.parent}'
+                logging.critical(msg)
+                do_exit(1, msg)
             try:
                 shutil.copy(constants.config_base, constants.config_user)
             except Exception as e:
-                logging.critical(f'could not copy configuration file to {constants.config_user}: {e}')
-    
-    if not config_exists:
-        msg = f'''This appears to be the first time PaperPi has been run.
+                msg=f'could not copy user configuration file to {constants.config_user}'
+                logging.critical(1, msg)
+                do_exit(1, msg)
+            msg = f'''This appears to be the first time PaperPi has been run.
 A user configuration file created: {constants.config_user}
-At minimum you edit this file and add a display_type
+At minimum you edit this file and add a display_type and enable one plugin.
         
-Edit the configu file with "$ nano {constants.config_user}"'''
-        do_exit(0, msg)
+Edit the configuration file with:
+   $ nano {constants.config_user}'''
+            do_exit(0, msg)
+            
     
-    logging.debug(f'using configuration files to configure PaperPi: {config_files_list}')
+    
+            
+    logging.info(f'using configuration files to configure PaperPi: {config_files_list}')
     config_files = ArgConfigParse.ConfigFile(config_files_list, ignore_missing=True)
     config_files.parse_config()
 
-                    
-    
     return config_files
+        
+        
 
 
 

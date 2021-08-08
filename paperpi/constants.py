@@ -3,7 +3,7 @@ from pathlib import Path
 app_name = 'PaperPi'
 contact = 'aaron.ciuffo@gmail.com'
 devel_name = f'com.txoof.{app_name.lower()}'
-version = '0.2.03'
+version = '0.2.04'
 url = 'https://github.com/ txoof/epd_display'
 
 ## configuration
@@ -15,7 +15,7 @@ config_path = Path('./config')
 # default name for configuration file
 config_filename = f'{app_name.lower()}.ini'
 #config_base = Path(config_path/config_filename).resolve()
-config_base = f'{config_path}/{config_filename}'
+config_base = Path(f'{config_path}/{config_filename}')
 
 # path for user config file
 config_user = Path(f'~/.config/{devel_name}/{config_filename}').expanduser().resolve()
