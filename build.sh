@@ -72,7 +72,7 @@ function check_packages {
 function build_binary {
   echo "building binary using pyinstaller"
 
-  pipenv run python build_bin.py
+  pipenv run python3 build_bin.py
 
 }
 

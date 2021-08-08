@@ -2,6 +2,7 @@
 base_path = './paperpi'
 # entrance script for program
 base_script = 'paperpi.py'
+#base_script = 'foo.py'
 
 plugin_path = './paperpi/plugins'
 
@@ -22,7 +23,7 @@ hidden_imports = [
 # tuples (source, dest)
 datas = [
   ('./config', './config'),
-  ('./constants.py', './' ),
+  ('./my_constants.py', './' ),
   ('./fonts', './fonts'),
   ('./library', './library'),
   ('./plugins', './plugins'),

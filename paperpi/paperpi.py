@@ -33,7 +33,7 @@ from library.Plugin import Plugin
 from library.InterruptHandler import InterruptHandler
 from library import get_help
 from library import run_module
-import constants
+import my_constants as constants
 
 
 
