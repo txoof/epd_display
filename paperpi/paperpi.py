@@ -375,9 +375,14 @@ def build_plugin_list(config, resolution, cache):
                 my_config['layout'] = getattr(module.layout, values['layout'])
             except KeyError as e:
                 logging.info('no module specified; skipping update_function and layout')
+                continue
             except ModuleNotFoundError as e:
                 logging.warning(f'error: {e} while loading module {constants.plugins}.{values["plugin"]}')
-                logging.warning(f'skipping module')
+                logging.warning(f'skipping plugin')
+                continue
+            except AttributeError as e:
+                logging.warning(f'could not find layout "{my_config["layout"]}" in {my_config["name"]}')
+                logging.warning(f'skipping plugin')
                 continue
             my_plugin = Plugin(**my_config)
             try:
