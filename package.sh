@@ -1,7 +1,7 @@
 #!/bin/bash
 appName="paperpi"
 
-version=`cat $appName/version.py | sed -ne 's/^__version__\W\{0,\}=\W\{0,\}\(.*\)["'"'"']/\1/p'`
+version=`cat $appName/my_constants.py | sed -ne 's/^version\W\{0,\}=\W\{0,\}\(.*\)["'"'"']/\1/p'`
 echo version number is $version
 filename=$appName\_$version.tgz
 latestName=$appName\_latest.tgz
