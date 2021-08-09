@@ -1,9 +1,12 @@
 from pathlib import Path
 
+from version import __version__
+
 app_name = 'PaperPi'
 contact = 'aaron.ciuffo@gmail.com'
 devel_name = f'com.txoof.{app_name.lower()}'
-version = '0.2.05'
+#version = '0.2.05'
+version = __version__
 url = 'https://github.com/ txoof/epd_display'
 
 ## Runtime Constants
