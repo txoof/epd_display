@@ -466,7 +466,10 @@ def update_loop(plugins, screen, max_refresh=2):
             this_hash = plugin.hash
             logging.info(f'**** displaying {plugin.name} ****')
 #             screen.initEPD()
-            screen.writeEPD(plugin.image)
+            try:
+                screen.writeEPD(plugin.image)
+            except ScreenError as e:
+                logging.critical(f'could not write to EPD: {e}')
             break
     
     
@@ -615,7 +618,10 @@ def main():
     if splash:
         logging.debug('displaying splash screen')
         logging.debug(f'image type: {type(splash.image)}')
-        screen.writeEPD(splash.image)
+        try:
+            screen.writeEPD(splash.image)
+        except ScreenError as e:
+            logging.critical(f'Could not write to EPD: {e}')
     
     
     cache = CacheFiles(path_prefix=constants.app_name)
