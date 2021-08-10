@@ -432,18 +432,20 @@ def update_loop(plugins, screen, max_refresh=2):
         logging.info(f'updating {len(plugins)} plugins')
         for plugin in plugins:
             plugin.update()
-            logging.debug(f'update: [{plugin.name}]-p: {plugin.priority}')
+            logging.info(f'update: [{plugin.name}]-p: {plugin.priority}')
             my_list.append(plugin.priority)
         logging.debug(f'priorities: {my_list}')
         return my_list
     
-    def write_display(refresh_count):
-        logging.debug('writing image to screen')
-        try:
-            screen.writeEPD(this_plugin.image)
-            refresh_count += 1
-        except ScreenError as e:
-            logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
+#     def write_display(refresh_count):
+#         logging.debug('writing image to screen')
+#         try:
+#             screen.writeEPD(this_plugin.image)
+#             refresh_count += 1
+#             this_plugin = next(plugin_cycle)
+#             this_plugin_timer.update()
+#         except ScreenError as e:
+#             logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
     
         
     # use itertools cycle to move between list elements
@@ -479,7 +481,16 @@ def update_loop(plugins, screen, max_refresh=2):
             this_hash = plugin.hash
             this_plugin = plugin
             break
-    write_display(refresh_count)
+            
+        logging.debug('writing image to screen')
+        try:
+            screen.writeEPD(this_plugin.image)
+            refresh_count += 1
+            this_plugin = next(plugin_cycle)
+            this_plugin_timer.update()
+        except ScreenError as e:
+            logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
+    
     
 #             logging.info(f'**** displaying {plugin.name} ****')
 # #             screen.initEPD()
@@ -545,7 +556,16 @@ def update_loop(plugins, screen, max_refresh=2):
                         else:
                             logging.debug(f'{max_refresh - refresh_count} refreshes remain before full wipe')
                     
-                    write_display(refresh_count)
+#                     write_display(refresh_count)
+                    logging.debug('writing image to screen')
+                    try:
+                        screen.writeEPD(this_plugin.image)
+                        refresh_count += 1
+                        this_plugin = next(plugin_cycle)
+                        this_plugin_timer.update()
+                    except ScreenError as e:
+                        logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
+                    
 #                     logging.debug('writing image to screen')
 #                     try:
 #                         screen.writeEPD(this_plugin.image)
