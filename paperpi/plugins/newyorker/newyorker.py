@@ -90,7 +90,7 @@ def update_function(self, **kwargs):
         if feed.has_key('bozo_exception'):
             logging.warning(f'could not fetch feed for {constants.feed_url}')
             # bail out if there was an error
-            return(False, {})
+            return(False, {}, 0)
 
         if day_range > len(feed.entries):
             day_range = len(feed.entries)
@@ -128,7 +128,8 @@ def update_function(self, **kwargs):
         day_range = self.config['day_range']
     except KeyError as e:
         logging.warning(f'module is not properly configured and is missing keys: {e}')
-        data['caption'] = f'The New Yorker plugin configuration is missing "{e.args[0]}" setting'
+        data['caption'] = f'The New Yorker plugin configuration is missing a "{e.args[0]}" setting'
+        day_range = constants.expire_cache
     else:
         success, my_data, day_range = fetch_comic(day_range)  
 
@@ -139,7 +140,7 @@ def update_function(self, **kwargs):
         
     logging.debug(f'data: {data}')
     
-    self.cache.remove_stale(d=day_range, path=constants.private_cache)
+    self.cache.remove_stale(d=day_range + 1, path=constants.private_cache)
     
     return (is_updated, data, priority) 
 
