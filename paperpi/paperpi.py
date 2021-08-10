@@ -419,25 +419,176 @@ def build_plugin_list(config, resolution, cache):
 
 
 
-def update_loop(plugins, screen, max_refresh=2):
-    exit_code = 1
-    logging.info('starting update loop')
-    
-    
-    def update_plugins(): 
-        '''run through all active plugins and update while recording the priority'''
-        my_list = []
-        logging.info('*'*15)
-        logging.info(f'My PID: {os.getppid()}')
-        logging.info(f'updating {len(plugins)} plugins')
+def update_loop(plugins, screen, max_refresh=5):
+    def update_plugins():
+        logging.info(f'[[..........UPDATING PLUGINS..........]]')
+        logging.debug(f'{len(plugins)} plugins in list')
+        my_priority_list = [2**15]
         for plugin in plugins:
+            logging.info(f"{'_'*10}{plugin.name}{'_'*10}")
             plugin.update()
-            logging.info(f'update: [{plugin.name}]-p: {plugin.priority}')
-            my_list.append(plugin.priority)
-        logging.debug(f'priorities: {my_list}')
-        return my_list
+            logging.info(f'PRIORTITY: {plugin.priority} of {plugin.max_priority}')
+            my_priority_list.append(plugin.priority)
+        return my_priority_list
     
-#     def write_display(refresh_count):
+    logging.info('starting update loop')
+    exit_code = 1
+    priority_list = []
+    priority_list = update_plugins()
+    plugin_cycle = cycle(plugins)
+    current_plugin = next(plugin_cycle)
+    refresh_count = 0
+    current_hash = ''
+
+    
+    # lower numbers are of greater importance
+    max_priority = min(priority_list)
+    
+    last_priority = max_priority
+    
+    
+    for i in range(0, len(plugins)):
+        if current_plugin.priority <= max_priority:
+            current_timer = Update()
+            current_plugin_active = True
+            logging.info(f'FIRST DISPLAY PLUGIN: {current_plugin.name}')
+            break
+        else:
+            current_plugin = next(plugin_cycle)
+    
+    with InterruptHandler() as h:
+        while True:
+            if h.interrupted:
+                logging.info('caught interrupt, stopping execution')
+                exit_code = 0
+                break
+                
+            logging.info(f'{current_plugin.name} time remaining: {current_plugin.min_display_time-current_timer.last_updated:.1f} of {current_plugin.min_display_time}')
+        
+            priority_list = update_plugins()
+            last_priority = max_priority
+            max_priority = min(priority_list)
+
+
+            # if the timer has expired or the priority has increased, display a different plugin
+            if current_timer.last_updated > current_plugin.min_display_time:
+                logging.info(f'display_time elapsed, cycling to next active plugin')
+                current_plugin_active = False
+    
+            if max_priority > last_priority:
+                logging.info(f'priority level has increased, cycling to higher priority plugin')
+                current_plugin_active = False
+            
+            # cycle no more than once through plugins looking for next active plugin
+            if not current_plugin_active:
+                logging.debug('searching for next active plugin')
+                for attempt in range(0, len(plugins)):
+                    current_plugin = next(plugin_cycle)
+                    logging.debug(f'checking plugin: {current_plugin.name}')
+                    if current_plugin.priority <= max_priority:
+                        current_plugin_active = True
+                        logging.debug(f'using pluign: {current_plugin.name}')
+                        current_timer.update()
+                        break
+            
+            if current_hash != current_plugin.hash:
+                logging.debug('screen refresh required')
+                current_hash = current_plugin.hash
+                
+                if refresh_count > max_refresh:
+                    logging.debug('complete screen refresh required')
+                    refresh_count = 0
+                    screen.clearEPD()
+                    
+                try:
+                    screen.writeEPD(current_plugin.image)
+                    refresh_count += 1
+                except ScreenError as e:
+                    logging.critical(f'{current_plugin.name} returned invalid image data; screen update skipped')
+                    current_plugin_active = False
+            else:
+                logging.debug('plugin data not refreshed, skipping screen update')
+        
+
+            sleep(2)
+    
+    return exit_code
+
+
+
+
+
+
+# update_loop(plugins, screen, 2)
+
+
+
+
+
+
+# def xupdate_loop(plugins, screen, max_refresh=2):
+#     exit_code = 1
+#     logging.info('starting update loop')
+    
+    
+#     def update_plugins(): 
+#         '''run through all active plugins and update while recording the priority'''
+#         my_list = []
+#         logging.info('*'*15)
+#         logging.info(f'My PID: {os.getppid()}')
+#         logging.info(f'updating {len(plugins)} plugins')
+#         for plugin in plugins:
+#             plugin.update()
+#             logging.info(f'update: [{plugin.name}]-p: {plugin.priority}')
+#             my_list.append(plugin.priority)
+#         logging.debug(f'priorities: {my_list}')
+#         return my_list
+    
+# #     def write_display(refresh_count):
+# #         logging.debug('writing image to screen')
+# #         try:
+# #             screen.writeEPD(this_plugin.image)
+# #             refresh_count += 1
+# #             this_plugin = next(plugin_cycle)
+# #             this_plugin_timer.update()
+# #         except ScreenError as e:
+# #             logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
+    
+        
+#     # use itertools cycle to move between list elements
+#     plugin_cycle = cycle(plugins)
+#     plugin_is_active = False
+#     # current plugin for display
+#     this_plugin = next(plugin_cycle)
+#     # track time plugin is displayed for
+#     this_plugin_timer = Update()
+#     # each plugin generates a unique hash whenever it is updated
+#     this_hash = ''
+    
+#     # update all the plugins and record priority
+#     priority_list = update_plugins()
+#     # this var name is confusing -- it's actually the lowest number to indicate **maximum** priority
+#     max_priority = min(priority_list)
+#     # record for comparison
+#     last_priority = max_priority
+    
+#     # count the number of refreshes for HD Screens
+#     refresh_count = 0    
+    
+#     logging.info(f'max_priority: {max_priority}')
+    
+  
+
+    
+#     # find the first active plugin and update immediately
+#     update_plugins()
+#     logging.debug('#### Writing first plugin')
+#     for plugin in plugins:
+#         if plugin.priority <= max_priority:
+#             this_hash = plugin.hash
+#             this_plugin = plugin
+#             break
+            
 #         logging.debug('writing image to screen')
 #         try:
 #             screen.writeEPD(this_plugin.image)
@@ -447,148 +598,104 @@ def update_loop(plugins, screen, max_refresh=2):
 #         except ScreenError as e:
 #             logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
     
-        
-    # use itertools cycle to move between list elements
-    plugin_cycle = cycle(plugins)
-    plugin_is_active = False
-    # current plugin for display
-    this_plugin = next(plugin_cycle)
-    # track time plugin is displayed for
-    this_plugin_timer = Update()
-    # each plugin generates a unique hash whenever it is updated
-    this_hash = ''
     
-    # update all the plugins and record priority
-    priority_list = update_plugins()
-    # this var name is confusing -- it's actually the lowest number to indicate **maximum** priority
-    max_priority = min(priority_list)
-    # record for comparison
-    last_priority = max_priority
-    
-    # count the number of refreshes for HD Screens
-    refresh_count = 0    
-    
-    logging.info(f'max_priority: {max_priority}')
-    
-  
-
-    
-    # find the first active plugin and update immediately
-    update_plugins()
-    logging.debug('#### Writing first plugin')
-    for plugin in plugins:
-        if plugin.priority <= max_priority:
-            this_hash = plugin.hash
-            this_plugin = plugin
-            break
-            
-        logging.debug('writing image to screen')
-        try:
-            screen.writeEPD(this_plugin.image)
-            refresh_count += 1
-            this_plugin = next(plugin_cycle)
-            this_plugin_timer.update()
-        except ScreenError as e:
-            logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-    
-    
-#             logging.info(f'**** displaying {plugin.name} ****')
-# #             screen.initEPD()
-#             try:
-#                 screen.writeEPD(plugin.image)
-#             except ScreenError as e:
-#                 logging.critical(f'could not write to EPD: {e}')
-    try:
-        screen.writeEPD(this_plugin.image)
-    except ScreenError as e:
-        logging.critical('')
+# #             logging.info(f'**** displaying {plugin.name} ****')
+# # #             screen.initEPD()
+# #             try:
+# #                 screen.writeEPD(plugin.image)
+# #             except ScreenError as e:
+# #                 logging.critical(f'could not write to EPD: {e}')
+#     try:
+#         screen.writeEPD(this_plugin.image)
+#     except ScreenError as e:
+#         logging.critical('')
     
     
 
-    # loop for updating plugins
-    with InterruptHandler() as h:
-        while True:    
-            if h.interrupted:
-                logging.info('caught interrupt -- stoping execution')
-                exit_code = 0
-                break
+#     # loop for updating plugins
+#     with InterruptHandler() as h:
+#         while True:    
+#             if h.interrupted:
+#                 logging.info('caught interrupt -- stoping execution')
+#                 exit_code = 0
+#                 break
 
-            priority_list = update_plugins()
+#             priority_list = update_plugins()
 
-            # priority increases as it gets lower; 0 is considered the bottom,
-            # but some modules may temporarily have a negative priority to indicate a critical
-            # update 
-            last_priority = max_priority
-            max_priority = min(priority_list)
+#             # priority increases as it gets lower; 0 is considered the bottom,
+#             # but some modules may temporarily have a negative priority to indicate a critical
+#             # update 
+#             last_priority = max_priority
+#             max_priority = min(priority_list)
             
-            logging.debug(f'{this_plugin.name}: last updated: {this_plugin_timer.last_updated}, min_display_time: {this_plugin.min_display_time}')
+#             logging.debug(f'{this_plugin.name}: last updated: {this_plugin_timer.last_updated}, min_display_time: {this_plugin.min_display_time}')
             
             
-            # if the timer has expired OR a module has changed the priority setting begin the update procedure
-            if this_plugin_timer.last_updated > this_plugin.min_display_time or max_priority < last_priority:
-                logging.info(f'plugin expired -- switching plugin')
-                plugin_is_active = False
+#             # if the timer has expired OR a module has changed the priority setting begin the update procedure
+#             if this_plugin_timer.last_updated > this_plugin.min_display_time or max_priority < last_priority:
+#                 logging.info(f'plugin expired -- switching plugin')
+#                 plugin_is_active = False
                 
-                # cycle through plugins, looking for the next plugin that has high priority
-                while not plugin_is_active:
-                    this_plugin = next(plugin_cycle)
-                    logging.debug(f'checking priority of {this_plugin.name}')
-                    if this_plugin.priority <= max_priority:
-                        plugin_is_active = True
-                    else:
-                        logging.debug('trying next plugin')
-                        pluggin_is_active = False
+#                 # cycle through plugins, looking for the next plugin that has high priority
+#                 while not plugin_is_active:
+#                     this_plugin = next(plugin_cycle)
+#                     logging.debug(f'checking priority of {this_plugin.name}')
+#                     if this_plugin.priority <= max_priority:
+#                         plugin_is_active = True
+#                     else:
+#                         logging.debug('trying next plugin')
+#                         pluggin_is_active = False
                         
-                logging.info(f'displaying {this_plugin.name} -- priority: {this_plugin.priority}/{max_priority}')
+#                 logging.info(f'displaying {this_plugin.name} -- priority: {this_plugin.priority}/{max_priority}')
                 
-                if this_hash != this_plugin.hash:
-                    logging.debug('data refreshed, refreshing screen')
-                    this_hash = this_plugin.hash
-#                     screen.initEPD()
-                    logging.debug(f'image type: {type(this_plugin.image)}')
+#                 if this_hash != this_plugin.hash:
+#                     logging.debug('data refreshed, refreshing screen')
+#                     this_hash = this_plugin.hash
+# #                     screen.initEPD()
+#                     logging.debug(f'image type: {type(this_plugin.image)}')
     
-                    # wipe screen if the max_refresh count is exceeded
-                    if refresh_count > max_refresh:
-                        refresh_count = 0
-                        if screen.HD:
-                            logging.info('max_refresh exceeded, wiping screen prior to next update')
-                            screen.clearEPD()
-                        else:
-                            logging.debug(f'{max_refresh - refresh_count} refreshes remain before full wipe')
+#                     # wipe screen if the max_refresh count is exceeded
+#                     if refresh_count > max_refresh:
+#                         refresh_count = 0
+#                         if screen.HD:
+#                             logging.info('max_refresh exceeded, wiping screen prior to next update')
+#                             screen.clearEPD()
+#                         else:
+#                             logging.debug(f'{max_refresh - refresh_count} refreshes remain before full wipe')
                     
-#                     write_display(refresh_count)
-                    logging.debug('writing image to screen')
-                    try:
-                        screen.writeEPD(this_plugin.image)
-                        refresh_count += 1
-                        this_plugin = next(plugin_cycle)
-                        this_plugin_timer.update()
-                    except ScreenError as e:
-                        logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-                    
+# #                     write_display(refresh_count)
 #                     logging.debug('writing image to screen')
 #                     try:
 #                         screen.writeEPD(this_plugin.image)
 #                         refresh_count += 1
+#                         this_plugin = next(plugin_cycle)
+#                         this_plugin_timer.update()
 #                     except ScreenError as e:
 #                         logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
+                    
+# #                     logging.debug('writing image to screen')
+# #                     try:
+# #                         screen.writeEPD(this_plugin.image)
+# #                         refresh_count += 1
+# #                     except ScreenError as e:
+# #                         logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
 
-#                     if screen.writeEPD(this_plugin.image):
-#                         logging.debug('successfully wrote image')
-#                         refresh_count += 1
-#                     else:
-#                         logging.warning('#=#=# failed to write image #=#=#')
-#                         logging.info('trying next plugin')
-#                         plugin_is_active = False
+# #                     if screen.writeEPD(this_plugin.image):
+# #                         logging.debug('successfully wrote image')
+# #                         refresh_count += 1
+# #                     else:
+# #                         logging.warning('#=#=# failed to write image #=#=#')
+# #                         logging.info('trying next plugin')
+# #                         plugin_is_active = False
                         
                     
-                else:
-                    logging.debug('plugin data not refreshed -- skipping screen refresh')
-                this_plugin_timer.update()    
+#                 else:
+#                     logging.debug('plugin data not refreshed -- skipping screen refresh')
+#                 this_plugin_timer.update()    
                     
         
-            sleep(1)
-    return exit_code
+#             sleep(1)
+#     return exit_code
 
 
 
@@ -678,8 +785,10 @@ def main():
         config['main']['force_onebit'] = True
 
     plugins = build_plugin_list(config=config, resolution=screen.resolution, cache=cache)
+
+#     return plugins, screen, cache
     
-    exit_code = update_loop(plugins, screen)
+    exit_code = update_loop(plugins, screen, config['main']['max_refresh'])
 
     logging.info('caught terminate signal -- cleaning up and exiting')
     clean_up(cache, screen)
@@ -706,7 +815,7 @@ if __name__ == "__main__":
 
 
 
-# logger = logging.getLogger(__name__)
-# logger.root.setLevel('DEBUG')
+logger = logging.getLogger(__name__)
+logger.root.setLevel('DEBUG')
 
 

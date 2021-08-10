@@ -138,7 +138,7 @@ def update_function(self, **kwargs):
     if success:
         data.update(my_data)
         
-    logging.debug(f'data: {data}')
+    logging.info(f'returned data: {data}')
     
     self.cache.remove_stale(d=day_range + 1, path=constants.private_cache)
     
@@ -152,7 +152,7 @@ def update_function(self, **kwargs):
 
 
 # logger = logging.getLogger(__name__)
-# logger.root.setLevel('DEBUG')
+# logging.root.setLevel('DEBUG')
 
 
 
