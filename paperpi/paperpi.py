@@ -254,7 +254,6 @@ def setup_splash(config, resolution):
             'update_function': splash_screen.update_function,
             'resolution': resolution
         } 
-        logging.debug(f'configuring splash screen: {splash_config}')
         splash = Plugin(**splash_config)
         splash.update(constants.app_name, constants.version, constants.url)
         logging.debug(f'splash screen image type: {type(splash.image)}')
@@ -346,6 +345,25 @@ def build_plugin_list(config, resolution, cache):
 
     plugins = []
 
+   # configure fall-back plugin with extremely low priority to display if all else fails
+    my_config = {}
+    logging.warning('no plugins were loaded! falling back to default plugin.')
+    my_config['name'] = 'default plugin'
+    my_config['resolution'] = resolution
+    my_config['cache'] = cache
+    try:
+        module = import_module(f'{constants.plugins}.default')
+    except ModuleNotFoundError as e:
+        msg = f'could not load {constants.plugins}.default'
+        logging.error(msg)
+        do_exit(1, msg)
+    my_config['update_function'] = module.update_function
+    my_config['layout'] = getattr(module.layout, 'default')
+    my_plugin = Plugin(**my_config)
+    plugins.append(my_plugin)    
+    
+    
+    
     for section, values in config.items():
         # ignore the other sections
         if section.startswith('Plugin:'):
@@ -393,24 +411,29 @@ def build_plugin_list(config, resolution, cache):
                 continue
             logging.info(f'appending plugin {my_plugin.name}')
             plugins.append(my_plugin)
+
             
             
-    if len(plugins) < 1:
-        my_config = {}
-        logging.warning('no plugins were loaded! falling back to default plugin.')
-        my_config['name'] = 'default plugin'
-        my_config['resolution'] = resolution
-        my_config['cache'] = cache
-        try:
-            module = import_module(f'{constants.plugins}.default')
-        except ModuleNotFoundError as e:
-            msg = f'could not load {constants.plugins}.default'
-            logging.error(msg)
-            do_exit(1, msg)
-        my_config['update_function'] = module.update_function
-        my_config['layout'] = getattr(module.layout, 'default')
-        my_plugin = Plugin(**my_config)
-        plugins.append(my_plugin)
+ 
+        
+            
+#     # fall back on default plugin if everything else fails
+#     if len(plugins) < 1:
+#         my_config = {}
+#         logging.warning('no plugins were loaded! falling back to default plugin.')
+#         my_config['name'] = 'default plugin'
+#         my_config['resolution'] = resolution
+#         my_config['cache'] = cache
+#         try:
+#             module = import_module(f'{constants.plugins}.default')
+#         except ModuleNotFoundError as e:
+#             msg = f'could not load {constants.plugins}.default'
+#             logging.error(msg)
+#             do_exit(1, msg)
+#         my_config['update_function'] = module.update_function
+#         my_config['layout'] = getattr(module.layout, 'default')
+#         my_plugin = Plugin(**my_config)
+#         plugins.append(my_plugin)
         
     return plugins
 
@@ -491,12 +514,14 @@ def update_loop(plugins, screen, max_refresh=5):
                         current_timer.update()
                         break
             
+            # check the unique data-hash for each plugin & only write when data has updated
             if current_hash != current_plugin.hash:
                 logging.debug('screen refresh required')
                 current_hash = current_plugin.hash
                 
-                if refresh_count > max_refresh:
-                    logging.debug('complete screen refresh required')
+                # do total wipe of HD Screens after max_refresh writes
+                if refresh_count > max_refresh and screen.HD:
+                    logging.debug(f'complete screen refresh required after {max_refresh}')
                     refresh_count = 0
                     screen.clearEPD()
                     

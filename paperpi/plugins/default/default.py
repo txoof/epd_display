@@ -52,7 +52,7 @@ def update_function(self, msg=None, high_priority=False):
     if high_priority:
         priority = -2**15
     else:
-        priority = 2**8
+        priority = 2**14
         
     is_updated = True
     return (is_updated, data, priority) 
