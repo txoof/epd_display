@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 from datetime import datetime
-def update_function(self, msg=None):
+def update_function(self, msg=None, high_priority=False):
     '''update function for default provides time string and message
     
     This plugin is designed to display if all other plugins fail to load
@@ -49,7 +49,11 @@ def update_function(self, msg=None):
         'digit_time': datetime.now().strftime("%H:%M:%S"),
         'msg': msg,
     }
-    priority = -1
+    if high_priority:
+        priority = -2**15
+    else:
+        priority = 2**8
+        
     is_updated = True
     return (is_updated, data, priority) 
 
