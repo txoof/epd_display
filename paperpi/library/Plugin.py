@@ -262,7 +262,20 @@ class Plugin:
         else:
             pass
         
-            
+        return self.hash
+        
+        
+    def force_update(self, *args, **kwargs):
+        '''force an immediate update'''
+        logging.info(f'forced update of plugin: {self.name}')
+        is_updated, data, priority = self.update_function(*args, **kwargs)
+        self.data = data
+        self.layout_obj.update_contents(data)
+        self.image = self.layout_obj.concat()
+        self.hash = self._generate_hash()
+        self.priority = priority
+        logging.debug(f'Data: {self.data}')
+        
         return self.hash
     
 
@@ -278,6 +291,7 @@ def main():
     from time import sleep
     bogus_layout = {
         'number': {
+            'type': 'TextBlock',
             'image': None,
             'max_lines': 1,
             'width': 1,
@@ -307,6 +321,13 @@ def main():
     
     logger.root.setLevel('DEBUG')
     print('this demo is best run from inside jupyter notebook')
+    p.force_update()
+    print('this is a forced update')
+    display(p.image)
+    p.force_update()
+    print('this is a forced update')
+    display(p.image)
+
     for i in range(5):
         print('trying to update plugin')
         p.update()
@@ -323,12 +344,5 @@ def main():
 
 if __name__ == '__main__':
     p = main()
-
-
-
-
-
-
-
 
 

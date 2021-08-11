@@ -256,6 +256,7 @@ def setup_splash(config, resolution):
         } 
         splash = Plugin(**splash_config)
         splash.update(constants.app_name, constants.version, constants.url)
+
         logging.debug(f'splash screen image type: {type(splash.image)}')
     return splash
 
@@ -408,8 +409,10 @@ def build_plugin_list(config, resolution, cache):
             except AttributeError as e:
                 logging.warning(f'ignoring plugin {my_plugin.name} due to missing update_function')
                 logging.warning(f'plugin threw error: {e}')
-                continue
+                continue    
             logging.info(f'appending plugin {my_plugin.name}')
+            
+            
             plugins.append(my_plugin)
 
             
@@ -443,21 +446,31 @@ def build_plugin_list(config, resolution, cache):
 
 
 def update_loop(plugins, screen, max_refresh=5):
-    def update_plugins():
+    def update_plugins(force_update=False):
         logging.info(f'[[..........UPDATING PLUGINS..........]]')
         logging.debug(f'{len(plugins)} plugins in list')
         my_priority_list = [2**15]
         for plugin in plugins:
             logging.info(f"{'_'*10}{plugin.name}{'_'*10}")
-            plugin.update()
+            if force_update:
+                logging.info('FORCING UPDATE')
+                plugin.force_update()
+            else:
+                plugin.update()
+                
             logging.info(f'PRIORTITY: {plugin.priority} of {plugin.max_priority}')
             my_priority_list.append(plugin.priority)
+            
+            logging.debug(f'DATA: {plugin.data}')
+            logging.debug(f'IMAGE: {plugin.image}')
+            logging.debug(f'IMAGE STRING: {str(plugin.image)}')
+
         return my_priority_list
     
     logging.info('starting update loop')
     exit_code = 1
     priority_list = []
-    priority_list = update_plugins()
+    priority_list = update_plugins(force_update=True)
     plugin_cycle = cycle(plugins)
     current_plugin = next(plugin_cycle)
     refresh_count = 0
@@ -487,7 +500,7 @@ def update_loop(plugins, screen, max_refresh=5):
                 break
                 
             logging.info(f'{current_plugin.name} time remaining: {current_plugin.min_display_time-current_timer.last_updated:.1f} of {current_plugin.min_display_time}')
-        
+            
             priority_list = update_plugins()
             last_priority = max_priority
             max_priority = min(priority_list)
@@ -530,6 +543,9 @@ def update_loop(plugins, screen, max_refresh=5):
                     refresh_count += 1
                 except ScreenError as e:
                     logging.critical(f'{current_plugin.name} returned invalid image data; screen update skipped')
+                    logging.debug(f'DATA: {current_plugin.data}')
+                    logging.debug(f'IMAGE: {current_plugin.image}')
+                    logging.debug(f'IMAGE STRING: {str(current_plugin.image)}')
                     current_plugin_active = False
             else:
                 logging.debug('plugin data not refreshed, skipping screen update')
@@ -793,6 +809,7 @@ def main():
     splash = setup_splash(config, screen.resolution)
     
     if splash:
+        splash.force_update(constants.app_name, constants.version, constants.url)
         logging.debug('displaying splash screen')
         logging.debug(f'image type: {type(splash.image)}')
         try:

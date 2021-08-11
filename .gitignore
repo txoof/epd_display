@@ -7,3 +7,4 @@ dist/*
 *.ignore
 *.tgz
 *.spec
+version.txt

@@ -18,7 +18,7 @@
 from paperpi.library import Plugin, CacheFiles, get_help
 from importlib import import_module
 from pathlib import Path
-import paperpi.constants as paperpi_constants
+import paperpi.my_constants as paperpi_constants
 import logging
 from IPython.display import Image 
 import argparse
@@ -206,6 +206,7 @@ def update_plugin_docs(plugin_docs, doc_path):
         for plugin, values in plugin_docs.items():
             file.write(f'### [{plugin}]({Path("..")/values["readme"]})\n')
             file.write(f'![{plugin} sample Image]({Path("..")/values["image"]})\n\n')
+            
         file.write(post)        
 
 

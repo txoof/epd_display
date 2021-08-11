@@ -139,8 +139,8 @@ install_unit()
 {
   if [ $INSTALL -eq 1 ]
   then
-    echo "installing daemon unit file to: $system_unit_path"
-    cp $system_unit_file_src $system_unit_path
+    echo "installing daemon unit file to: $systemd_unit_path"
+    cp $systemd_unit_file_src $systemd_unit_path
     if [ $? -ne 0 ]
     then
       echo "failed to copy unit file"
@@ -156,6 +156,19 @@ install_unit()
       echo "exiting"
       exit 1
     fi
+
+
+    echo "enabling systemd unit file"
+    /bin/systemctl enable $systemd_unit_file_name
+    if [ $? -ne 0 ]
+    then
+      echo "failed to enable systemd unit"
+      echo "try manually with:"
+      echo "sudo systemd enable $systemd_unit_fil_name"
+      ERRORS=$((ERRORS+1))
+
+    fi
+
   fi # end install
 
   if [ $UNINSTALL -eq 1 ] 
@@ -171,7 +184,7 @@ install_unit()
       exit 1
     fi
 
-    rm $system_unit_path
+    rm $systemd_unit_path
     if [ $? -ne 0 ]
     then
       echo "failed to remove unit file: $systemd_unit_path"
@@ -179,6 +192,9 @@ install_unit()
       echo "$ sudo rm $systemd_unit_path"
       ERRORS=$((ERRORS+1))
     fi
+
+    echo "reloading systemd unit files"
+    /bin/systemctl daemon-reload
   fi
 
 }
@@ -291,7 +307,7 @@ finish_install()
     * Configure modules
 
     When completed, run the following command or reboot to start
-    the $appname daemon
+    the $appname daemon will start automatcially
 
     $ sudo systemctl start $systemd_unit_file_name
     "
@@ -353,6 +369,8 @@ fi
 check_permissions
 
 install_bin
+
+install_unit
 
 add_user
 
