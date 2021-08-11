@@ -227,7 +227,7 @@ class Plugin:
             self._last_ask = time.monotonic()
             return True
         else:
-            logging.debug(f'throttling in effect -- wait for {self.refresh_rate - (time.monotonic() - self._last_ask)} seconds before requesting update')
+            logging.debug(f'throttling in effect -- wait for {self.refresh_rate - (time.monotonic() - self._last_ask):.1f} seconds before requesting update')
             return False
         
     def update(self, *args, **kwargs):
