@@ -347,7 +347,7 @@ def build_plugin_list(config, resolution, cache):
 
    # configure fall-back plugin with extremely low priority to display if all else fails
     my_config = {}
-    logging.warning('no plugins were loaded! falling back to default plugin.')
+    logging.info('adding default plugin to plugin loop')
     my_config['name'] = 'default plugin'
     my_config['resolution'] = resolution
     my_config['cache'] = cache
