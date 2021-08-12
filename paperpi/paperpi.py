@@ -298,6 +298,7 @@ def setup_display(config):
     vcom = config['main']['vcom']
     try:
         screen = Screen(epd=epd, vcom=vcom)
+        screen.clearEPD()
     except ScreenError as e:
         logging.critical('Error loading epd from configuration')
         return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(epd, e))
