@@ -6,6 +6,7 @@ contact = 'aaron.ciuffo@gmail.com'
 devel_name = f'com.txoof.{app_name.lower()}'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 version = '0.2.11'
 =======
 version = '0.2.10.2'
@@ -13,6 +14,9 @@ version = '0.2.10.2'
 =======
 version = '0.2.10.3'
 >>>>>>> de8663f... bump version
+=======
+version = '0.2.11.1'
+>>>>>>> 80437cf... detect disabled SPI
 #version = __version__
 url = 'https://github.com/ txoof/epd_display'
 

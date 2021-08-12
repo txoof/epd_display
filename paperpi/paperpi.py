@@ -541,6 +541,10 @@ def update_loop(plugins, screen, max_refresh=5):
                 try:
                     screen.writeEPD(current_plugin.image)
                     refresh_count += 1
+                except FileNotFoundError as e:
+                    msg = 'SPI does not appear to be enabled. Paperpi requires SPI access'
+                    logging.critical(msg)
+                    do_exit(1, msg)
                 except ScreenError as e:
                     logging.critical(f'{current_plugin.name} returned invalid image data; screen update skipped')
                     logging.debug(f'DATA: {current_plugin.data}')
@@ -814,6 +818,10 @@ def main():
         logging.debug(f'image type: {type(splash.image)}')
         try:
             screen.writeEPD(splash.image)
+        except FileNotFoundError as e:
+            msg = 'SPI does not appear to be enabled. Paperpi requires SPI access'
+            logging.critical(msg)
+            do_exit(1, msg)            
         except ScreenError as e:
             logging.critical(f'Could not write to EPD: {e}')
     
