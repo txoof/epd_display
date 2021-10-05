@@ -7,14 +7,14 @@ expire_cache = 3
 
 data = {
         'id': 0,
-        'title': 'Err: No Player',
-        'artist': 'Err: No Player',
-        'coverid': 'Err: No Player',
+        'title': 'No Player',
+        'artist': 'No Player',
+        'coverid': 'No Player',
         'duration': 0,
-        'album_id': 'Err: No Player',
-        'genre': 'Err: No Player',
-        'album': 'Err: No Player',
-        'artwork_url': 'Err: No Player',
+        'album_id': 'No Player',
+        'genre': 'No Player',
+        'album': 'No Player',
+        'artwork_url': 'No Player',
         'coverart': 'None',
         'mode': 'None'
     }
