@@ -122,8 +122,10 @@ def update_function(self):
         try:
             player_status = requests.get(constants.spot_player_url, headers=headers)
         except requests.exceptions.RequestException as e:
-            logging.info(f'failed to get player status: {e}')
-            player_stats = None
+            logging.warning(f'failed to get player status: {e}')
+            return failure
+            
+#             player_status = None
     else:
         logging.error(f'cannot proceed: no valid Authroization token found in response from librespot: {headers}')
         return failure    
@@ -206,11 +208,6 @@ def update_function(self):
 
 # logging.root.setLevel('DEBUG')
 
-
-
-
-
-
 # # use this for testing
 # from SelfDummy import SelfDummy
 # from CacheFiles import CacheFiles
@@ -220,11 +217,6 @@ def update_function(self):
 # self.config = {'player_name': 'Spocon-Spotify',
 #                'idle_timeout': 5}
 # self.cache = CacheFiles()
-
-
-
-
-
 
 # dir_path = '.'
 # my_l = {
@@ -267,11 +259,6 @@ def update_function(self):
 #         'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf'
 #     },     
 # }
-
-
-
-
-
 
 # l = Layout(resolution=(1200, 800))
 # l.layout = my_l
