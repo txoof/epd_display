@@ -99,19 +99,28 @@ def update_function(self):
     def build_lms():
         logging.debug(f'building LMS Query object for player: {player_name}')
 #         self.my_lms = lmsquery.LMSQuery(player_name=player_name)
-        self.my_lms = QueryLMS.QueryLMS(player_name=player_name, handle_requests_exceptions=True)
+        try:
+            self.my_lms = QueryLMS.QueryLMS(player_name=player_name, handle_requests_exceptions=True)
+        except OSError as e:
+            logging.warning(f'could not build LMS service due to error: {e}')
+            self.my_lms = None
+            return f'LMS Error: {e}'
+        return None
     
     logging.debug(f'update_function for plugin {self.name}, version {constants.version}')
     now_playing = None
+    player_name = self.config['player_name']    
     # make a shallow copy to make updates possible without impacting origonal obj.
     data = copy(constants.data)
+    for key, value in data.items():
+        data[key] = f'{value}: {player_name}'
     is_updated = False
     priority = 2**15    
  
     
     failure = (is_updated, data, priority)
     
-    player_name = self.config['player_name']
+
     
     if not hasattr(self, 'play_state'):
         self.play_state = 'None'
@@ -127,10 +136,18 @@ def update_function(self):
     
     # check if LMS Query object is initiated
     if not hasattr(self, 'my_lms'):
-        # add LMSQuery object to self
-#         logging.debug(f'building LMS Query object for player: {player_name}')
-#         self.my_lms = lmsquery.LMSQuery(player_name=player_name)
-        build_lms()
+        lms_status = build_lms()
+    elif not self.my_lms:
+        lms_status = build_lms()
+    else:
+        logging.debug('LMS Service created')
+        
+    if not self.my_lms:
+        logging.warning('cannot create LMS service')
+        for key in data:
+            data[key] = lms_status
+        return failure
+        
     try:
         # fetch the now playing data for the player
         now_playing = self.my_lms.get_now_playing()
@@ -229,11 +246,6 @@ def update_function(self):
 #                'layout': 'two_columns_album_art'}
 # self.cache = CacheFiles()
 
-
-
-
-
-
 # dir_path = '.'
 # my_l =  {
 #     'coverart': {
@@ -292,10 +304,6 @@ def update_function(self):
 #         'abs_coordinates': (0, None)
 #     },
 # }
-
-
-
-
 
 
 # l = Layout(resolution=(800, 600))
