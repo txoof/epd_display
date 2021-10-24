@@ -3,13 +3,15 @@
 
 |     |     |
 |:---:|:---:|
-|<img src=./paperpi/plugins/splash_screen/splash_screen_sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/paperpi_playing.jpg alt="PaperPi Playing" width=400 /> PaperPi LMS-Client Plugin|
+|<img src=./paperpi/plugins/splash_screen/splash_screen_sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/frame_completed.jpg alt="PaperPi Weather Plugin" width=400 /> PaperPi Weather Plugin|
 
 E-Paper display with multiple, rotating display plugins. 
 
 PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
 
 PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
+
+For information on building a frame, case and custom cable, see [these instructions](./documentation/Frame_Cable_Case.md).
 
 To get started, jump to the **[Setup Instructions](#setup)**
 
@@ -189,10 +191,8 @@ NN. Board        Supported:
 37. All IT8951 Based Panels
 
 <a name="knownIssues"> </a>
-## Known Isuses
-* When starting as a daemon process from systemd, PaperPi may fail to show the splash screen image and the first module. 
-    - After the first module's minimum display time elapses and it is refreshed, the problem appears to be rectified. 
-    - See [this issue](https://github.com/txoof/epd_display/issues/1#issue-765246248) on github for more details
+## Isuses
+Please [open tickets at GitHub](https://github.com/txoof/epd_display/issues).
 
 
 
