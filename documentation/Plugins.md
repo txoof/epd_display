@@ -41,7 +41,7 @@ Configure plugins using in the configuration files:
  
 Each plugin must have the following configuration at a minimum:
 
-*NB!: whitespace and comments are ignored*
+*NB: whitespace and comments are ignored*
 ```
 [Plugin: Human Friendly Name For Plugin]
 # layout to use
@@ -94,6 +94,7 @@ When PaperPi starts, all plugins that are configured and active are added as `se
 See the included [`demo_plugin`](../paperpi/plugins/demo_plugin) for a simple, well documented plugin that can be used as a template for building a plugin.
 
 **BUILTIN FUNCTIONS AVAILABLE TO PLUGINS**
+
 All plugins have the following functions and properties available. Call the builtin functions by using `self.[method]`.
 
 * resolution(`tuple` of `int`): resolution of the epd or similar screen: (Length, Width)
@@ -117,6 +118,7 @@ All plugins have the following functions and properties available. Call the buil
 
 Plugins are written in python 3 and should follow the following guidelines to function properly:
 **REQUIREMENTS**
+
 * Plugin modules must** be added to the `plugins` directory
 * Plugin modules must be named with exactly the same name as their module directory:
     - `plugins/my_new_plugin/my_new_plugin.py
@@ -138,6 +140,7 @@ Plugins are written in python 3 and should follow the following guidelines to fu
     - End all user-facing docstrings with `%U`; to ensure they are included in the auto-documenting build scripts
 
 **OPTIONAL**
+
 * Plugin modules may have user-facing helper functions that can help the user setup or configure the plugin
     - See the `lms_client` plugin and the `met_no` plugins for examples
 * Plugin modules should contain a `constants.py` file that contains:
@@ -161,6 +164,7 @@ Plugins are written in python 3 and should follow the following guidelines to fu
     - See the specificaiton below
     
 **`update_function` specifications**
+
 The update_function is added to a `library.Plugin()` object as a method. The update_function will have access to the `self` namespace of the Plugin object including the `max_priority` and `cache`. The `Plugin()` API is well documented.
 
 * `update_function` must accept `*args, **kwargs` even if they are not used
@@ -199,6 +203,7 @@ The update_function is added to a `library.Plugin()` object as a method. The upd
     ```
 
 **`sample.py` specifications**
+
 To provide a sample image and automatically create documentation provide a `sample.py` file with your module with the following information:
 ```
 config = {
