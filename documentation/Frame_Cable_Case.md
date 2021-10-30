@@ -100,9 +100,9 @@ The included JST to Dupont cable is quite short. Cables up to 40 cm have been te
    - See this (excellent short video)[https://www.youtube.com/watch?v=XvdePo12vIM]
 9. Slide the JST and Molex connectors into the housings 
    - See the pinouts below for HD and Non HD panels
-10. Use scisors to trim excess braided sheath   
+0. Use scisors to trim excess braided sheath   
    - Make sure there is enough slack that the cable sheath does not pull too tightly on the wires and connectors
-11. Slide the heat shrink tube over the end of the sheath and shrink in place
+1. Slide the heat shrink tube over the end of the sheath and shrink in place
 
 
 ### IT8951 HD Panel 
