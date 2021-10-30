@@ -82,7 +82,7 @@ The included JST to Dupont cable is quite short. Cables up to 40 cm have been te
 ### Construction
 |     |     |     | 
 |:---:|:---:|:---:|
-||||
+|Completed Cable|JST End|Molex End|
 |<img src=./images/Finshed_Cable.jpg alt="Completed Cable" width=200/>|<img src=./images/JST_end.jpg alt="JST End" width=200/>|<img src=./images/Molex_end.jpg alt="Molex End" width=200/>|
 
 
