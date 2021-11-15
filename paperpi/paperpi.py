@@ -7,7 +7,7 @@
 
 
 import os
-import logging 
+import logging
 import logging.config
 import shutil
 import sys
@@ -41,6 +41,10 @@ import my_constants as constants
 
 
 def do_exit(status=0, message=None, **kwargs):
+    '''exit with optional message
+    Args:
+        status(int): integers > 0 exit with optional message
+        message(str): optional message to print'''
     if message:
         if status > 0:
             logging.error(f'failure caused exit: {message}')
@@ -59,16 +63,26 @@ def do_exit(status=0, message=None, **kwargs):
 
 
 def clean_up(cache=None, screen=None):
+    '''clean up the screen and cache
+    
+    Args:
+        cache(cache obj): cache object to use for cleanup up
+        screen(Screen obj): screen to clear
+    '''
     logging.info('cleaning up cache and screen')
     try:
+        logging.debug('clearing cache')
         cache.cleanup()
     except AttributeError:
         logging.debug('no cache passed, skipping')
     try:
 #         screen.initEPD()
+        logging.debug('clearing screen')
         screen.clearEPD()
     except AttributeError:
         logging.debug('no screen passed, skipping')
+        
+    logging.debug('cleanup completed')
     return
 
 
@@ -77,6 +91,10 @@ def clean_up(cache=None, screen=None):
 
 
 def get_cmd_line_args():
+    '''get command line arguments
+    
+    Returns:
+        dict of parse config values'''
     cmd_args = ArgConfigParse.CmdArgs()
     cmd_args.add_argument('-c', '--config', ignore_none=True, metavar='CONFIG_FILE.ini',
                          type=str, dest='user_config',
@@ -105,7 +123,7 @@ def get_cmd_line_args():
                          dest='main__daemon', action='store_true', 
                          help='run in daemon mode (ignore user configuration if found)')
     
-    cmd_args.add_argument('-R', '--max_refresh', required=False, default=3, 
+    cmd_args.add_argument('-R', '--max_refresh', required=False, ignore_none=True, default=None,
                           dest='main__max_refresh',
                           help='maximum number of refreshes between complete screen refresh')    
     
@@ -187,8 +205,9 @@ Edit the configuration file with:
 
 
 def sanitize_vals(config):
-    '''attempt to convert all the strings into appropriate formats
-             integer/float like strings ('7', '100', '-1.3') -> int or float
+    '''attempt to convert all the strings in config into appropriate formats
+             float like strings ('7.1', '100.2', '-1.3') -> to float
+             int like strings ('1', '100', -12) -> int
              boolean like strings (yes, no, Y, t, f, on, off) -> 0 or 1
          Args:
              config(`dict`): nested config.ini style dictionary
@@ -196,7 +215,10 @@ def sanitize_vals(config):
          Returns:
              `dict`'''    
     def strtofloat(s):
-        '''strings to float if possible'''
+        '''convert strings to float if possible on failure return original value
+        
+        Args:
+            s(any type): if s is of type string attempt to conver to float'''
         retval = s
         if isinstance(s, str):
             if '.' in s:
@@ -208,6 +230,11 @@ def sanitize_vals(config):
         return retval
 
     def convert(d, new_type, exceptions):
+        '''convert value to new_type handling exceptions appropriately
+        
+        d(any type): if d is of type str attempt to convert to new_type
+        new_type(Type): type to convert d into
+        exceptions(tuple of Exceptions): tuple of exception types to expect'''
         for section, values in d.items():
             for key, value in values.items():
                 if isinstance(value, str):
@@ -220,10 +247,16 @@ def sanitize_vals(config):
                 else:
                     d[section][key] = value
         return d
-
+    
+    # first try to convert strings to float
     convert(config, strtofloat, ValueError)
+    # convert remaining strings to int
     convert(config, int, (ValueError))
+    # convert remaining strings into booleans (if possible)
+    # use the distuitls strtobool function
     convert(config, strtobool, (ValueError, AttributeError))
+    
+    # return converted values and original strings
     
     return config
 
@@ -271,28 +304,6 @@ def setup_display(config):
     keyError_fmt = 'configuration KeyError: section[{}], key: {}'
 
     moduleNotFoundError_fmt = 'could not load epd module: {} -- error: {}'
-    
-#     try:
-#         logging.debug('setting display type')
-#         epd_module = '.'.join([constants.waveshare_epd, config['main']['display_type']])
-#         epd = import_module(epd_module)
-#     except KeyError as e:
-#         return_val = ret_obj(obj=None, status=1, message=keyError_fmt.format('main', 'display_type'))
-#         logging.error(return_val['message'])
-#         return return_val
-#     except ModuleNotFoundError as e:
-#         logging.error('Check your config files and ensure a known waveshare_epd display is specified!')
-#         return_val = ret_obj(None, 1, moduleNotFoundError_fmt.format(config["main"]["display_type"], e))
-#         return return_val
-#     except FileNotFoundError as e:
-#         msg = f''''Error loading waveshare_epd module: {e}
-#         This is typically due to SPI not being enabled, or the current user is 
-#         not a member of the SPI group.
-#         "$ sudo raspi-config nonint get_spi" will return 0 if SPI is enabled
-#         Try enabling SPI and run this program again. '''
-#         logging.error(msg)
-#         return_val = ret_obj(obj=None, status=1, message=msg)
-#         return return_val
     
     epd = config['main']['display_type']
     vcom = config['main']['vcom']
@@ -415,29 +426,6 @@ def build_plugin_list(config, resolution, cache):
             
             
             plugins.append(my_plugin)
-
-            
-            
- 
-        
-            
-#     # fall back on default plugin if everything else fails
-#     if len(plugins) < 1:
-#         my_config = {}
-#         logging.warning('no plugins were loaded! falling back to default plugin.')
-#         my_config['name'] = 'default plugin'
-#         my_config['resolution'] = resolution
-#         my_config['cache'] = cache
-#         try:
-#             module = import_module(f'{constants.plugins}.default')
-#         except ModuleNotFoundError as e:
-#             msg = f'could not load {constants.plugins}.default'
-#             logging.error(msg)
-#             do_exit(1, msg)
-#         my_config['update_function'] = module.update_function
-#         my_config['layout'] = getattr(module.layout, 'default')
-#         my_plugin = Plugin(**my_config)
-#         plugins.append(my_plugin)
         
     return plugins
 
@@ -468,6 +456,8 @@ def update_loop(plugins, screen, max_refresh=5):
 
         return my_priority_list
     
+    logging.debug(f'max_refresh = {max_refresh}')
+    
     logging.info('starting update loop')
     exit_code = 1
     priority_list = []
@@ -493,28 +483,66 @@ def update_loop(plugins, screen, max_refresh=5):
         else:
             current_plugin = next(plugin_cycle)
     
-    with InterruptHandler() as h:
-        while True:
-            if h.interrupted:
-                logging.info('caught interrupt, stopping execution')
-                exit_code = 0
-                break
-                
-            logging.info(f'{current_plugin.name} time remaining: {current_plugin.min_display_time-current_timer.last_updated:.1f} of {current_plugin.min_display_time}')
-            
-            priority_list = update_plugins()
-            last_priority = max_priority
-            max_priority = min(priority_list)
+#     with InterruptHandler() as h:
+    interrupt_handler = InterruptHandler()
+    while not interrupt_handler.kill_now:
+#         if h.interrupted:
+#             logging.info('caught interrupt, stopping execution')
+#             exit_code = 0
+#             break
+        logging.info(f'{current_plugin.name} time remaining: {current_plugin.min_display_time-current_timer.last_updated:.1f} of {current_plugin.min_display_time}')
+
+        priority_list = update_plugins()
+        last_priority = max_priority
+        max_priority = min(priority_list)
 
 
-            # if the timer has expired or the priority has increased, display a different plugin
-            if current_timer.last_updated > current_plugin.min_display_time:
-                logging.info(f'display_time elapsed, cycling to next active plugin')
+        # if the timer has expired or the priority has increased, display a different plugin
+        if current_timer.last_updated > current_plugin.min_display_time:
+            logging.info(f'display_time elapsed, cycling to next active plugin')
+            current_plugin_active = False
+
+        if max_priority > last_priority:
+            logging.info(f'priority level has increased, cycling to higher priority plugin')
+            current_plugin_active = False
+
+        # cycle no more than once through plugins looking for next active plugin
+        if not current_plugin_active:
+            logging.debug('searching for next active plugin')
+            for attempt in range(0, len(plugins)):
+                current_plugin = next(plugin_cycle)
+                logging.debug(f'checking plugin: {current_plugin.name}')
+                if current_plugin.priority <= max_priority:
+                    current_plugin_active = True
+                    logging.debug(f'using pluign: {current_plugin.name}')
+                    current_timer.update()
+                    break
+
+        # check the unique data-hash for each plugin & only write when data has updated
+        if current_hash != current_plugin.hash:
+            logging.debug('screen refresh required')
+            current_hash = current_plugin.hash
+
+            # do total wipe of HD Screens after max_refresh writes
+            if refresh_count >= max_refresh-1 and screen.HD:
+                logging.debug(f'{refresh_count} reached of maximum {max_refresh}')
+                refresh_count = 0
+                screen.clearEPD()
+
+            try:
+                screen.writeEPD(current_plugin.image)
+                refresh_count += 1
+            except FileNotFoundError as e:
+                msg = 'SPI does not appear to be enabled. Paperpi requires SPI access'
+                logging.critical(msg)
+                do_exit(1, msg)
+            except ScreenError as e:
+                logging.critical(f'{current_plugin.name} returned invalid image data; screen update skipped')
+                logging.debug(f'DATA: {current_plugin.data}')
+                logging.debug(f'IMAGE: {current_plugin.image}')
+                logging.debug(f'IMAGE STRING: {str(current_plugin.image)}')
                 current_plugin_active = False
-    
-            if max_priority > last_priority:
-                logging.info(f'priority level has increased, cycling to higher priority plugin')
-                current_plugin_active = False
+<<<<<<< HEAD
             
             # cycle no more than once through plugins looking for next active plugin
             if not current_plugin_active:
@@ -534,8 +562,8 @@ def update_loop(plugins, screen, max_refresh=5):
                 current_hash = current_plugin.hash
                 
                 # do total wipe of HD Screens after max_refresh writes
-                if refresh_count > max_refresh and screen.HD:
-                    logging.debug(f'complete screen refresh required after {max_refresh}')
+                if refresh_count >= max_refresh-1 and screen.HD:
+                    logging.debug(f'{refresh_count} reached of maximum {max_refresh}')
                     refresh_count = 0
                     screen.clearEPD()
                     
@@ -558,190 +586,18 @@ def update_loop(plugins, screen, max_refresh=5):
 
             sleep(2)
     
+=======
+        else:
+            logging.debug('plugin data not refreshed, skipping screen update')
+
+
+        sleep(2)
+    # report the exit of main display loop
+    logging.info(f'Interrupt signal recieved: {interrupt_handler.kill_signal_name}')
+    exit_code = 0
+
+>>>>>>> daemon_issue#19
     return exit_code
-
-
-
-
-
-
-# update_loop(plugins, screen, 2)
-
-
-
-
-
-
-# def xupdate_loop(plugins, screen, max_refresh=2):
-#     exit_code = 1
-#     logging.info('starting update loop')
-    
-    
-#     def update_plugins(): 
-#         '''run through all active plugins and update while recording the priority'''
-#         my_list = []
-#         logging.info('*'*15)
-#         logging.info(f'My PID: {os.getppid()}')
-#         logging.info(f'updating {len(plugins)} plugins')
-#         for plugin in plugins:
-#             plugin.update()
-#             logging.info(f'update: [{plugin.name}]-p: {plugin.priority}')
-#             my_list.append(plugin.priority)
-#         logging.debug(f'priorities: {my_list}')
-#         return my_list
-    
-# #     def write_display(refresh_count):
-# #         logging.debug('writing image to screen')
-# #         try:
-# #             screen.writeEPD(this_plugin.image)
-# #             refresh_count += 1
-# #             this_plugin = next(plugin_cycle)
-# #             this_plugin_timer.update()
-# #         except ScreenError as e:
-# #             logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-    
-        
-#     # use itertools cycle to move between list elements
-#     plugin_cycle = cycle(plugins)
-#     plugin_is_active = False
-#     # current plugin for display
-#     this_plugin = next(plugin_cycle)
-#     # track time plugin is displayed for
-#     this_plugin_timer = Update()
-#     # each plugin generates a unique hash whenever it is updated
-#     this_hash = ''
-    
-#     # update all the plugins and record priority
-#     priority_list = update_plugins()
-#     # this var name is confusing -- it's actually the lowest number to indicate **maximum** priority
-#     max_priority = min(priority_list)
-#     # record for comparison
-#     last_priority = max_priority
-    
-#     # count the number of refreshes for HD Screens
-#     refresh_count = 0    
-    
-#     logging.info(f'max_priority: {max_priority}')
-    
-  
-
-    
-#     # find the first active plugin and update immediately
-#     update_plugins()
-#     logging.debug('#### Writing first plugin')
-#     for plugin in plugins:
-#         if plugin.priority <= max_priority:
-#             this_hash = plugin.hash
-#             this_plugin = plugin
-#             break
-            
-#         logging.debug('writing image to screen')
-#         try:
-#             screen.writeEPD(this_plugin.image)
-#             refresh_count += 1
-#             this_plugin = next(plugin_cycle)
-#             this_plugin_timer.update()
-#         except ScreenError as e:
-#             logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-    
-    
-# #             logging.info(f'**** displaying {plugin.name} ****')
-# # #             screen.initEPD()
-# #             try:
-# #                 screen.writeEPD(plugin.image)
-# #             except ScreenError as e:
-# #                 logging.critical(f'could not write to EPD: {e}')
-#     try:
-#         screen.writeEPD(this_plugin.image)
-#     except ScreenError as e:
-#         logging.critical('')
-    
-    
-
-#     # loop for updating plugins
-#     with InterruptHandler() as h:
-#         while True:    
-#             if h.interrupted:
-#                 logging.info('caught interrupt -- stoping execution')
-#                 exit_code = 0
-#                 break
-
-#             priority_list = update_plugins()
-
-#             # priority increases as it gets lower; 0 is considered the bottom,
-#             # but some modules may temporarily have a negative priority to indicate a critical
-#             # update 
-#             last_priority = max_priority
-#             max_priority = min(priority_list)
-            
-#             logging.debug(f'{this_plugin.name}: last updated: {this_plugin_timer.last_updated}, min_display_time: {this_plugin.min_display_time}')
-            
-            
-#             # if the timer has expired OR a module has changed the priority setting begin the update procedure
-#             if this_plugin_timer.last_updated > this_plugin.min_display_time or max_priority < last_priority:
-#                 logging.info(f'plugin expired -- switching plugin')
-#                 plugin_is_active = False
-                
-#                 # cycle through plugins, looking for the next plugin that has high priority
-#                 while not plugin_is_active:
-#                     this_plugin = next(plugin_cycle)
-#                     logging.debug(f'checking priority of {this_plugin.name}')
-#                     if this_plugin.priority <= max_priority:
-#                         plugin_is_active = True
-#                     else:
-#                         logging.debug('trying next plugin')
-#                         pluggin_is_active = False
-                        
-#                 logging.info(f'displaying {this_plugin.name} -- priority: {this_plugin.priority}/{max_priority}')
-                
-#                 if this_hash != this_plugin.hash:
-#                     logging.debug('data refreshed, refreshing screen')
-#                     this_hash = this_plugin.hash
-# #                     screen.initEPD()
-#                     logging.debug(f'image type: {type(this_plugin.image)}')
-    
-#                     # wipe screen if the max_refresh count is exceeded
-#                     if refresh_count > max_refresh:
-#                         refresh_count = 0
-#                         if screen.HD:
-#                             logging.info('max_refresh exceeded, wiping screen prior to next update')
-#                             screen.clearEPD()
-#                         else:
-#                             logging.debug(f'{max_refresh - refresh_count} refreshes remain before full wipe')
-                    
-# #                     write_display(refresh_count)
-#                     logging.debug('writing image to screen')
-#                     try:
-#                         screen.writeEPD(this_plugin.image)
-#                         refresh_count += 1
-#                         this_plugin = next(plugin_cycle)
-#                         this_plugin_timer.update()
-#                     except ScreenError as e:
-#                         logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-                    
-# #                     logging.debug('writing image to screen')
-# #                     try:
-# #                         screen.writeEPD(this_plugin.image)
-# #                         refresh_count += 1
-# #                     except ScreenError as e:
-# #                         logging.critical(f'"{this_plugin.name}" returned bad image data; could not update screen')
-
-# #                     if screen.writeEPD(this_plugin.image):
-# #                         logging.debug('successfully wrote image')
-# #                         refresh_count += 1
-# #                     else:
-# #                         logging.warning('#=#=# failed to write image #=#=#')
-# #                         logging.info('trying next plugin')
-# #                         plugin_is_active = False
-                        
-                    
-#                 else:
-#                     logging.debug('plugin data not refreshed -- skipping screen refresh')
-#                 this_plugin_timer.update()    
-                    
-        
-#             sleep(1)
-#     return exit_code
 
 
 
@@ -800,6 +656,8 @@ def main():
     
     logging.info(f'********** PaperPi {constants.version} Starting **********')
     
+    logging.debug(f'configuration:\n{config}')
+    
     # configure screen
     screen_return = setup_display(config)
 
@@ -839,7 +697,7 @@ def main():
 
 #     return plugins, screen, cache
     
-    exit_code = update_loop(plugins, screen, config['main']['max_refresh'])
+    exit_code = update_loop(plugins=plugins, screen=screen, max_refresh=config['main']['max_refresh'])
 
     logging.info('caught terminate signal -- cleaning up and exiting')
     clean_up(cache, screen)
