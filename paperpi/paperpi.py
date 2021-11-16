@@ -542,51 +542,6 @@ def update_loop(plugins, screen, max_refresh=5):
                 logging.debug(f'IMAGE: {current_plugin.image}')
                 logging.debug(f'IMAGE STRING: {str(current_plugin.image)}')
                 current_plugin_active = False
-<<<<<<< HEAD
-            
-            # cycle no more than once through plugins looking for next active plugin
-            if not current_plugin_active:
-                logging.debug('searching for next active plugin')
-                for attempt in range(0, len(plugins)):
-                    current_plugin = next(plugin_cycle)
-                    logging.debug(f'checking plugin: {current_plugin.name}')
-                    if current_plugin.priority <= max_priority:
-                        current_plugin_active = True
-                        logging.debug(f'using pluign: {current_plugin.name}')
-                        current_timer.update()
-                        break
-            
-            # check the unique data-hash for each plugin & only write when data has updated
-            if current_hash != current_plugin.hash:
-                logging.debug('screen refresh required')
-                current_hash = current_plugin.hash
-                
-                # do total wipe of HD Screens after max_refresh writes
-                if refresh_count >= max_refresh-1 and screen.HD:
-                    logging.debug(f'{refresh_count} reached of maximum {max_refresh}')
-                    refresh_count = 0
-                    screen.clearEPD()
-                    
-                try:
-                    screen.writeEPD(current_plugin.image)
-                    refresh_count += 1
-                except FileNotFoundError as e:
-                    msg = 'SPI does not appear to be enabled. Paperpi requires SPI access'
-                    logging.critical(msg)
-                    do_exit(1, msg)
-                except ScreenError as e:
-                    logging.critical(f'{current_plugin.name} returned invalid image data; screen update skipped')
-                    logging.debug(f'DATA: {current_plugin.data}')
-                    logging.debug(f'IMAGE: {current_plugin.image}')
-                    logging.debug(f'IMAGE STRING: {str(current_plugin.image)}')
-                    current_plugin_active = False
-            else:
-                logging.debug('plugin data not refreshed, skipping screen update')
-        
-
-            sleep(2)
-    
-=======
         else:
             logging.debug('plugin data not refreshed, skipping screen update')
 
@@ -596,7 +551,6 @@ def update_loop(plugins, screen, max_refresh=5):
     logging.info(f'Interrupt signal recieved: {interrupt_handler.kill_signal_name}')
     exit_code = 0
 
->>>>>>> daemon_issue#19
     return exit_code
 
 
@@ -724,7 +678,7 @@ if __name__ == "__main__":
 
 
 
-logger = logging.getLogger(__name__)
-logger.root.setLevel('DEBUG')
+# logger = logging.getLogger(__name__)
+# logger.root.setLevel('DEBUG')
 
 
