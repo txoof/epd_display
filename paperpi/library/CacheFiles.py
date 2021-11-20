@@ -81,6 +81,7 @@ class CacheFiles:
     
     def cleanup(self):
         '''recursively remove all cached files and cache path'''
+        logging.debug(f'attempting to clean temporary files: {self._path}')
         if isinstance(self._path, tempfile.TemporaryDirectory):
             self._path.cleanup()
         
