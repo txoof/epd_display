@@ -39,6 +39,7 @@ fi
 
 if [[ $package -eq 1 ]]; then
   echo "$version" > ./install/version.txt
+  echo "# this file is created by the packaging script" >> ./install/version.txt
   tar hcvzf $filename --transform 's,^,paperpi/,' -T manifest.txt
   cp $filename $latestName
 fi
