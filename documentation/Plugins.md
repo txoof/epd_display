@@ -9,6 +9,9 @@ All plugins are configured through the `paperpi.ini` files. For a single-user co
 ### [met_no](../paperpi/plugins/met_no/README.md)
 ![met_no sample Image](../paperpi/plugins/met_no/met_no_sample.png)
 
+### [moon_phase](../paperpi/plugins/moon_phase/README.md)
+![moon_phase sample Image](../paperpi/plugins/moon_phase/moon_phase_sample.png)
+
 ### [default](../paperpi/plugins/default/README.md)
 ![default sample Image](../paperpi/plugins/default/default_sample.png)
 
