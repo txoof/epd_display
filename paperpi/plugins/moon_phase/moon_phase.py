@@ -209,13 +209,6 @@ def _col_print(lines, term_width=None, indent=0, pad=2):
 
 
 
-
-
-
-
-
-
-
 def _process_data(data):
     
     def get_value(my_data, key, address, default=None):
@@ -260,7 +253,9 @@ def _process_data(data):
     except ValueError as e:
         logging.error(f'cannot obtain float for: {phase_float}')
         phase_float = 0
-    temp_data['phase_value'] = round(phase_float, 1)
+#     temp_data['phase_value'] = round(phase_float, 1)
+    # round to the nearest 0.5
+    temp_data['phase_value']  = 5 * round(10*phase_float/5)/10
     
     age = (29.5 * (phase_float/100))
     temp_data['age'] = round(age, 1)
@@ -446,9 +441,7 @@ def update_function(self, *args, **kwargs):
         
     else:
         logging.warning('all attempts to fetch API data has failed. No result.')
-        
-    
-    
+            
     
     return (is_updated, data, priority)
 
