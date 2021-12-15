@@ -108,20 +108,6 @@ def _process_quotes(raw_quotes):
 
 
 
-q = 'a'
-
-
-
-
-
-
-int(q)
-
-
-
-
-
-
 # make sure this function can accept *args and **kwargs even if you don't intend to use them
 def update_function(self, *args, **kwargs):
     '''update function for reddit_quote plugin
@@ -230,24 +216,22 @@ def update_function(self, *args, **kwargs):
 
 
 
-logging.root.setLevel('DEBUG')
+# logging.root.setLevel('DEBUG')
 
-# use this for testing
-from library.SelfDummy import SelfDummy
-from library.CacheFiles import CacheFiles
-from epdlib import Layout
-self = SelfDummy()
-self.max_priority = 1
-self.cache = CacheFiles()
-
-
+# # use this for testing
+# from library.SelfDummy import SelfDummy
+# from library.CacheFiles import CacheFiles
+# from epdlib import Layout
+# self = SelfDummy()
+# self.max_priority = 1
+# self.cache = CacheFiles()
 
 
 
 
-update_function(self)
 
 
+# update_function(self)
 
 
 
@@ -256,25 +240,27 @@ update_function(self)
 
 
 
-from library.CacheFiles import CacheFiles
-def test_plugin():
-    '''This code snip is useful for testing a plugin from within Jupyter Notebook'''
-    from library import Plugin
-    from IPython.display import display
-    # this is set by PaperPi based on the configured schreen
-    test_plugin = Plugin(resolution=(264, 176))
-    # this is pulled from the configuration file; the appropriate section is passed
-    # to this plugin by PaperPi during initial configuration
-    test_plugin.config = {'max_length': '88'}
-    test_plugin.layout = layout.quote_small_screen
+
+
+# from library.CacheFiles import CacheFiles
+# def test_plugin():
+#     '''This code snip is useful for testing a plugin from within Jupyter Notebook'''
+#     from library import Plugin
+#     from IPython.display import display
+#     # this is set by PaperPi based on the configured schreen
+#     test_plugin = Plugin(resolution=(264, 176))
+#     # this is pulled from the configuration file; the appropriate section is passed
+#     # to this plugin by PaperPi during initial configuration
+#     test_plugin.config = {'max_length': '88'}
+#     test_plugin.layout = layout.quote_small_screen
     
-    # this is done automatically by PaperPi when loading the plugin
-    test_plugin.cache = CacheFiles()
-    test_plugin.update_function = update_function
-    test_plugin.update()
-    display(test_plugin.image)
-    return test_plugin
-my_plugin = test_plugin
+#     # this is done automatically by PaperPi when loading the plugin
+#     test_plugin.cache = CacheFiles()
+#     test_plugin.update_function = update_function
+#     test_plugin.update()
+#     display(test_plugin.image)
+#     return test_plugin
+# my_plugin = test_plugin
 
 
 
@@ -288,8 +274,8 @@ my_plugin = test_plugin
 
 
 
-# this simulates calling the plugin from PaperPi
-d = my_plugin()
+# # this simulates calling the plugin from PaperPi
+# d = my_plugin()
 
 
 

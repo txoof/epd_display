@@ -30,6 +30,9 @@ All plugins are configured through the `paperpi.ini` files. For a single-user co
 ### [librespot_client](../paperpi/plugins/librespot_client/README.md)
 ![librespot_client sample Image](../paperpi/plugins/librespot_client/librespot_client_sample.png)
 
+### [reddit_quote](../paperpi/plugins/reddit_quote/README.md)
+![reddit_quote sample Image](../paperpi/plugins/reddit_quote/reddit_quote_sample.png)
+
 ### [lms_client](../paperpi/plugins/lms_client/README.md)
 ![lms_client sample Image](../paperpi/plugins/lms_client/lms_client_sample.png)
 
