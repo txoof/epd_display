@@ -1,13 +1,12 @@
 # PaperPi
-
+PaperPi is a quiet, internet connected display that shows a constant rotation of beautiful plugins.
 
 |     |     |
 |:---:|:---:|
 |<img src=./paperpi/plugins/splash_screen/splash_screen.layout-sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/frame_completed.jpg alt="PaperPi Weather Plugin" width=400 /> PaperPi Weather Plugin|
 
-E-Paper display with multiple, rotating display plugins. 
 
-PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
+PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with almost **every** [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
 
 PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
 
