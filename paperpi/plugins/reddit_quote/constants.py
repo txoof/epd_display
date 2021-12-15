@@ -44,5 +44,7 @@ plugin = reddit_quote
 min_display_time = 50
 # maximum priority in display loop
 max_priority = 2
+# maximum length of quote (in characters including spaces, a la Twitter
+max_length = 144
 '''
 

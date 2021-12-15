@@ -3,6 +3,46 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+quote_small_screen = {
+      'text': {
+          'mode': 'L',          
+          'type': 'TextBlock',
+          'image': False,
+          'max_lines': 5,
+          'width': 1,
+          'height': .7,
+          'random': False,
+          'font': dir_path+'/../../fonts/Josefin_Sans/JosefinSans-Light.ttf',
+          'hcenter': True,
+          'vcenter': True,
+          'align': 'left',
+          'padding': 5,
+          # absolute coordinates of the text block (top left is 0,0)
+          'abs_coordinates': (0, 0),
+          # coordinates are not calculated relative to another block
+          'relative': False
+      },
+      # this block will contain the string provided by  data['time']
+      'attribution': {
+          'mode': 'L',          
+          'type': 'TextBlock',
+          'image': False,
+          'max_lines': 2,
+          'width': 1,
+          'height': .3,
+          'random': False,
+          'font': dir_path+'/../../fonts/Josefin_Sans/JosefinSans-Regular.ttf',          
+          'hcenter': True,
+          'vcenter': True,
+          'align': 'center',
+          'padding': 5,
+#           'border_config': {'fill': 0, 'width': 3, 'sides': ['top']},
+          'abs_coordinates': (0, None),
+          'relative': ('attribution', 'text'),
+      },
+}
+
+
 
 quote = {
       'text': {
