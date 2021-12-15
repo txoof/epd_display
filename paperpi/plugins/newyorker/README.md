@@ -1,5 +1,6 @@
 # newyorker
-![sample image for plugin newyorker](./newyorker_sample.png)
+![sample image for plugin paperpi.plugins.newyorker](./newyorker.layout-sample.png) 
+
 ```
  
 PLUGIN: newyorker v:0.0.1
@@ -48,4 +49,16 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.newyorker.new
    text
    time
 ```
+
+## Provided Layouts:
+
+layout: **default**
+
+![sample image for plugin default](./newyorker.default-sample.png) 
+
+
+layout: **layout**
+
+![sample image for plugin layout](./newyorker.layout-sample.png) 
+
 

@@ -1,5 +1,6 @@
 # default
-![sample image for plugin default](./default_sample.png)
+![sample image for plugin paperpi.plugins.default](./default.layout-sample.png) 
+
 ```
  
 PLUGIN: default v:0.1.0
@@ -30,4 +31,16 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.default.defau
    digit_time
    msg
 ```
+
+## Provided Layouts:
+
+layout: **default**
+
+![sample image for plugin default](./default.default-sample.png) 
+
+
+layout: **layout**
+
+![sample image for plugin layout](./default.layout-sample.png) 
+
 

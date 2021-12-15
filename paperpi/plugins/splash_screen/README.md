@@ -1,5 +1,6 @@
 # splash_screen
-![sample image for plugin splash_screen](./splash_screen_sample.png)
+![sample image for plugin paperpi.plugins.splash_screen](./splash_screen.layout-sample.png) 
+
 ```
  
 PLUGIN: splash_screen v:0.1.0
@@ -39,4 +40,11 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.splash_screen
    version
    url
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./splash_screen.layout-sample.png) 
+
 
