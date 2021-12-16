@@ -1,5 +1,6 @@
 # reddit_quote
-![sample image for plugin reddit_quote](./reddit_quote_sample.png)
+![sample image for plugin paperpi.plugins.reddit_quote](./reddit_quote.layout-sample.png) 
+
 ```
  
 PLUGIN: reddit_quote v:0.1.0
@@ -53,5 +54,27 @@ LAYOUTS AVAILABLE:
 
 DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.reddit_quote.reddit_quote:
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./reddit_quote.layout-sample.png) 
+
+
+layout: **quote**
+
+![sample image for plugin quote](./reddit_quote.quote-sample.png) 
+
+
+layout: **quote_inverse**
+
+![sample image for plugin quote_inverse](./reddit_quote.quote_inverse-sample.png) 
+
+
+layout: **quote_small_screen**
+
+![sample image for plugin quote_small_screen](./reddit_quote.quote_small_screen-sample.png) 
+
 
 ## Additional Plugin Information
