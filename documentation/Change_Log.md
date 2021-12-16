@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.2.14.2
+* Add option to add plugin configuration to user or daemon configuration files:
+   - `paperip --add_config plugin_name user|daemon`
+
+## 0.2.14.1
+* Add reddit_quote pulgin
+
 ## 0.2.14.0
 * Add moon_phase plugin
 
