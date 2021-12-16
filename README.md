@@ -1,18 +1,20 @@
 # PaperPi
-PaperPi is a quiet, internet connected display that shows a constant rotation of beautiful plugins.
+
 
 |     |     |
 |:---:|:---:|
 |<img src=./paperpi/plugins/splash_screen/splash_screen.layout-sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/frame_completed.jpg alt="PaperPi Weather Plugin" width=400 /> PaperPi Weather Plugin|
 
+PaperPi is an e-Paper display with multiple rotating display plugins that contain dynamic content.
 
-PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with almost **every** [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
+PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
 
 PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
 
 For information on building a frame, case and custom cable, see [these instructions](./documentation/Frame_Cable_Case.md).
 
 To get started, jump to the **[Setup Instructions](#setup)**
+
 
 ## Plugins
 PaperPi supports many different plugins and layouts for each plugin. The plugin structure is open and documented to allow building your own plugins or customizing existing plugins.
@@ -25,6 +27,10 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src=./paperpi/plugins/librespot_client/librespot_client.layout-sample.png alt="librespot plugin" width=300 />[LibreSpot (spotify) Plugin](./paperpi/plugins/librespot_client/README.md)|<img src=./paperpi/plugins/word_clock/word_clock.layout-sample.png alt="word clock plugin" width=300 />[Word Clock](./paperpi/plugins/word_clock/README.md)|<img src=./paperpi/plugins/lms_client/lms_client.layout-sample.png alt="lms client plugin" width=300 />[Logitech Media Server Plugin](./paperpi/plugins/lms_client/README.md)|
 |<img src=./paperpi/plugins/moon_phase/moon_phase.layout-sample.png alt="decimal binary clock" width=300 />[Moon Phase](./paperpi/plugins/moon_phase/README.md)|<img src=./paperpi/plugins/met_no/met_no.layout-sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock.layout-sample.png alt="Basic Clock" width=300 />[Basic Clock](./paperpi/plugins/basic_clock/README.md)|
+
+
+## Changes
+See the [Change Log](./documentation/Change_Log.md) for a complete list of updates
 
 <a name="requirements"></a>
 ## Requirements
@@ -111,7 +117,7 @@ PaperPi is designed to run as an unattended daemon process that starts at system
     - See the list of [supported screens](#supportedScreens) for more information
 5. Start PaperPi: `$ sudo systemctl restart paperpi` 
     - PaperPi will now start and restart at boot as a systemd service
-    - PaperPi may fail to display the splash screen after boot -- see the [Known Issues](#knownIssues) section for more details
+    - PaperPi may fail to clear the screen when the daemon is stopped. This a known [issue](https://github.com/txoof/epd_display/issues/19).
 
 
 ## Building PaperPi
