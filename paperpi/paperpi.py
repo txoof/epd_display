@@ -18,6 +18,7 @@ from time import sleep
 from pathlib import Path
 from distutils.util import strtobool
 import waveshare_epd
+from configparser import DuplicateSectionError
 
 
 
@@ -109,6 +110,12 @@ def get_cmd_line_args():
                          ignore_none=True,
                          help='get information for plugins and user-facing functions provided by a plugin')
     
+    cmd_args.add_argument('--add_config', 
+                         required=False, default=None, nargs=2,
+                         metavar=('plugin', 'user|daemon'),
+                         ignore_none = True,
+                         help='copy sample config to the user or daemon configuration file')
+    
     cmd_args.add_argument('--list_plugins', required=False,
                          default=False, action='store_true', 
                          help='list all available plugins')
@@ -193,7 +200,11 @@ Edit the configuration file with:
             
     logging.info(f'using configuration files to configure PaperPi: {config_files_list}')
     config_files = ArgConfigParse.ConfigFile(config_files_list, ignore_missing=True)
-    config_files.parse_config()
+    try:
+        config_files.parse_config()
+    except DuplicateSectionError as e:
+        logging.error(f'{e}')
+        config_files = None
 
     return config_files
         
@@ -580,6 +591,9 @@ def main():
         
     
     config_files = get_config_files(cmd_args)
+    if not config_files:
+        print('Fatal Error collecting config files! See the logs!')
+        return
     
     # merge file and commandline (right-most over-writes left)
     config = ArgConfigParse.merge_dict(config_files.config_dict, cmd_args.nested_opts_dict)
@@ -598,6 +612,24 @@ def main():
     
     if cmd_args.options.run_plugin_func:
         run_module.run_module(cmd_args.options.run_plugin_func)
+        return
+    
+    if cmd_args.options.add_config:
+        try:
+            my_plugin = cmd_args.options.add_config[0]
+            config_opt = cmd_args.options.add_config[1]
+        except IndexError:
+            my_plugin = None
+            config_opt = None
+            
+        if config_opt == 'user':
+            config_opt = constants.config_user
+        elif config_opt == 'daemon':
+            config_opt = constants.config_system
+        else:
+            config_opt = None
+        
+        run_module.add_config(module=my_plugin, config_file=config_opt)
         return
     
     # make sure all the integer-like strings are converted into integers
@@ -663,11 +695,37 @@ def main():
 
 
 
+# s = [i for i in sys.argv]
+
+
+
+
+
+
+# sys.argv = [i for i in s]
+# sys.argv
+
+
+
+
+
+
+# sys.argv.extend(['--add_config', 'reddit_quote', 'daemon'])
+
+
+
+
+
+
 if __name__ == "__main__":
     # remove jupyter runtime junk for testing
     if len(sys.argv) >= 2 and 'ipykernel' in sys.argv[0]:
-        sys.argv = [sys.argv[0]]
-        sys.argv.extend(sys.argv[3:])
+        t = 'foo'
+        r = sys.argv[3:]
+        sys.argv = [t]
+        sys.argv.extend(r)
+#         sys.argv = [sys.argv[0]]
+#         sys.argv.extend(sys.argv[2:])
     exit_code = main()
     sys.exit(exit_code)
 
