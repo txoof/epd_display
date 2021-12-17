@@ -1,4 +1,7 @@
 # Change Log
+## 0.2.14.3
+* update model paperpi.ini with latest configurations
+* automatically update model paperpi.ini on build/release
 
 ## 0.2.14.2
 * Add option to add plugin configuration to user or daemon configuration files:
