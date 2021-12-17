@@ -23,6 +23,7 @@ import logging
 from IPython.display import Image 
 import argparse
 import sys
+import re
 
 
 
@@ -36,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 
 
-def setup_plugins(project_root, plugin_list=None, resolution=(640, 400)):
+def setup_plugins(project_root, plugin_list=None, resolution=(640, 400), skip_layouts=False):
     '''create dictionary of plugins using sample configurations provided in each plugin directory
     
     Args:
@@ -44,6 +45,7 @@ def setup_plugins(project_root, plugin_list=None, resolution=(640, 400)):
         use_all_layouts(`Bool`): use all discovered layouts
         plugin_list(`list`): list of plugins to update; when None all discovered plugins will be updated
         resolution(`tuple` of `int`): screen resolution to use when generating images
+        load_layouts(`bool`): when True, create a full Plugin object with a layout and an image
         
     Returns:
         `dict` of Plugin objects and layout name used to generate the Plugin
@@ -106,24 +108,29 @@ def setup_plugins(project_root, plugin_list=None, resolution=(640, 400)):
             continue
         
         # setup plugin
+        if skip_layouts:
+            print('skipping creating full layouts and creating images due to command line switch (-s)')
         for name, layout in all_layouts.items():
-            print(f'adding layout: {name}')           
-            my_plugin = Plugin(resolution=resolution,
-                               cache=cache,
-                               layout=layout,
-                               update_function=module.update_function,
-                               config=config
-                              )
-            my_plugin.refresh_rate = 1
-        
-            try:
-                if 'kwargs' in config:
-                    my_plugin.update(**config['kwargs'])
+            print(f'adding layout: {name}')
+            if not skip_layouts:
+                my_plugin = Plugin(resolution=resolution,
+                                   cache=cache,
+                                   layout=layout,
+                                   update_function=module.update_function,
+                                   config=config
+                                  )
+                my_plugin.refresh_rate = 1
 
-                else:
-                    my_plugin.update()
-            except Exception as e:
-                print(f'plugin "{plugin}" could not be configured due to errors: {e}')
+                try:
+                    if 'kwargs' in config:
+                        my_plugin.update(**config['kwargs'])
+
+                    else:
+                        my_plugin.update()
+                except Exception as e:
+                    print(f'plugin "{plugin}" could not be configured due to errors: {e}')
+            else:
+                my_plugin = None
             plugin_dict[plugin].append({
                                    'plugin': plugin,
                                    'module': module, 
@@ -131,6 +138,55 @@ def setup_plugins(project_root, plugin_list=None, resolution=(640, 400)):
                                    'doc_path': plugin_path/plugin,
                                    'layout': name})
     return plugin_dict
+
+
+
+
+
+
+def update_ini_file(plugin_dict):
+    '''append sample configurations for each module to the default paperpi.ini file
+    distributed at install'''
+    
+    base_ini_file = './install/paperpi_base.ini'
+    output_ini_file = './paperpi/config/paperpi.ini'
+    
+    config_sections = []
+    
+    print(f'updating {output_ini_file} using sample configs from plugins')
+    
+    for plugin, data in plugin_dict.items():
+        try:
+            sample_config = data[0]['module'].constants.sample_config
+        except (IndexError, AttributeError):
+            logging.info(f'no valid data for plugin {plugin}')
+            continue
+            
+        # check that it matches the format
+        match = re.match('^\s{0,}\[Plugin', sample_config)
+        try:
+            if match.string:
+                sample_config = re.sub('^\s{0,}\[Plugin', '[xPlugin', sample_config)
+            else:
+                print(f'plugin {plugin} does not have a standard sample_config string. Please check formatting.')
+                continue
+        except AttributeError:
+            print(f'plugin {plugin} has no valid sample_config string: {sample_config}')
+            continue
+        
+        config_sections.append(sample_config)
+        config_sections.append('\n')
+    
+    output_ini_list = []
+    with open(base_ini_file, 'r') as base_f:
+        for i in base_f:
+            output_ini_list.append(i)
+    
+    output_ini_list.extend(config_sections)
+    
+    with open(output_ini_file, 'w') as out_f:
+        for i in output_ini_list:
+            out_f.write(i)
 
 
 
@@ -269,13 +325,22 @@ def main():
     parser.add_argument('-d', '--documentation_path', default='./documentation',
                        help='path to documentation directory')
     
+# this breaks README creation
+#     parser.add_argument('-s', '--skip_layouts', default=False, action='store_true',
+#                         help='skip loading layouts and do not create images')
+    
+    
     args = parser.parse_args()
+    
 #     args = parser.parse_known_args()
     plugin_dict = setup_plugins(args.project_root, args.plugin_list)
     plugin_docs = create_readme(plugin_dict, 
                                 project_root=args.project_root,
-                                overwrite_images=args.overwrite_images)
+                                overwrite_images=args.overwrite_images,
+                                )
+    update_ini_file(plugin_dict)
     update_plugin_docs(plugin_docs, doc_path=args.documentation_path)
+    
     
 
 
@@ -291,7 +356,7 @@ if __name__ == "__main__":
     logger.setLevel('DEBUG')
     logging.root.setLevel('DEBUG')
     print('updating documents...')
-    main()
+    r = main()
 
 
 

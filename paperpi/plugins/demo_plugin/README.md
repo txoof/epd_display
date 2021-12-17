@@ -45,9 +45,9 @@ ___________________________________________________________________________
  
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.demo_plugin.demo_plugin
-`
-# this is a sample config users can use to help setup the plugin
+
 [Plugin: A Demo Plugin]
+# this is a sample config users can use to help setup the plugin
 # default layout
 layout = layout
 # the literal name of your module

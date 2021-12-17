@@ -88,15 +88,12 @@ ___________________________________________________________________________
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.moon_phase.moon_phase
 
-# this is a sample config users can use to help setup the plugin
 [Plugin: Moon Phase]
 # default layout
 layout = layout
 plugin = moon_phase
-# recommended display time
 min_display_time = 30
-# maximum priority in display loop
-max_priority = 1
+max_priority = 2
 # your email address for MET.no API access -- failure to specify may lead to a perma-ban
 email = you@host.diamond
 # Timezone locale name in Region/City format (see --run_plugin_func moon_phase.list_country_locales)

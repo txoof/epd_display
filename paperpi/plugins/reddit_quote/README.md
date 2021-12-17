@@ -31,17 +31,13 @@ ___________________________________________________________________________
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.reddit_quote.reddit_quote
 
-# this is a sample config users can use to help setup the plugin
 [Plugin: Reddit Quotes]
-# default layout
 layout = layout
-# the literal name of your module
 plugin = reddit_quote
-# recommended display time
+refresh_rate = 100
 min_display_time = 50
-# maximum priority in display loop
 max_priority = 2
-# maximum length of quote (in characters including spaces, a la Twitter
+# maximum length of quote (in characters) including spaces, a la Twitter
 max_length = 144
 
  
