@@ -56,7 +56,7 @@ fi
 
 if [[ $release -eq 1 ]]; then
 #  git add $filename
-  pipenv run python create_docs.pydd
+  pipenv run python create_docs.py
   git commit -m "update documentation" ./paperpi/plugins/*.md ./documentation/*.md
   git commit -m "update build" $latestName
   git tag -a "v$version" -m "release version: $version"
