@@ -24,6 +24,9 @@ All plugins are configured through the `paperpi.ini` files. For a single-user co
 ### [basic_clock](../paperpi/plugins/basic_clock/README.md)
 ![basic_clock sample Image](../paperpi/plugins/basic_clock/basic_clock.layout-sample.png)
 
+### [xkcd_comic](../paperpi/plugins/xkcd_comic/README.md)
+![xkcd_comic sample Image](../paperpi/plugins/xkcd_comic/xkcd_comic.layout-sample.png)
+
 ### [newyorker](../paperpi/plugins/newyorker/README.md)
 ![newyorker sample Image](../paperpi/plugins/newyorker/newyorker.layout-sample.png)
 
