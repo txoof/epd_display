@@ -20,6 +20,9 @@ feedparser = "*"
 pillow = "*"
 epdlib = "*"
 pytz = "*"
+numpy = "*"
+matplotlib = "*"
+pycoingecko = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3"
