@@ -1,8 +1,13 @@
 #!/usr/bin/bash
 PROJECT="PaperPi"
 ABOUT="$0 creates the pipenv virtual environment for developing $PROJECT"
-REQUIRED_DEB=( "libtiff5" "libopenjp2-7" )
+
+# Source external file for apt packages
+source cd_apt_packages # provides REQUIRED_DEB 
+
 REQUIRED_PY=( "pipenv" )
+
+# Python version to use for venv
 PYTHON_VERSION="python 3"
 # extra options to issue when creating pipenv
 PIPENV_EXTRAS=""
