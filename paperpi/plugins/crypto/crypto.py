@@ -56,14 +56,6 @@ logger = logging.getLogger(__name__)
 
 
 
-logging.basicConfig(level=logging.DEBUG)
-logger.setLevel('DEBUG')
-
-
-
-
-
-
 def _generate_sparkline(data, cache_path='./', ratio=(10, 3), generate_keys=[constants.CG_PRICE_KEY]):
     '''convert dictionary of list of two-tuples into multiple sparkline graphs
     
@@ -619,6 +611,15 @@ def update_function(self, *args, **kwargs):
 
 
 
+# logging.basicConfig(level=logging.DEBUG)
+# logger.setLevel('WARNING')
+# logging.root.setLevel('WARNING')
+
+
+
+
+
+
 # from library.CacheFiles import CacheFiles
 # from library.Plugin import Plugin
 # test_plugin = 0
@@ -627,7 +628,7 @@ def update_function(self, *args, **kwargs):
 #     from library import Plugin
 #     from IPython.display import display
 #     # this is set by PaperPi based on the configured screen
-#     test_plugin = Plugin(resolution=(400, 300))
+#     test_plugin = Plugin(resolution=(1200, 825))
 #     # this is pulled from the configuration file; the appropriate section is passed
 #     # to this plugin by PaperPi during initial configuration
 #     test_plugin.config = {
@@ -637,7 +638,7 @@ def update_function(self, *args, **kwargs):
 #     'interval': 'hourly'
 # }
 # #     test_plugin.layout = layout.layout
-#     test_plugin.layout = layout.ticker_simple
+#     test_plugin.layout = layout.ticker_hd
 #     # this is done automatically by PaperPi when loading the plugin
 #     test_plugin.cache = CacheFiles()
 #     test_plugin.update_function = update_function
