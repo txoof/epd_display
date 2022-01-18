@@ -181,7 +181,7 @@ def update_function(self, *args, **kwargs):
         json_data = _process_quotes(raw_quotes)
         
         if fetch_error:
-            logging.warnign('failed to fetch data due to previous errors. skipping cache.')
+            logging.warning('failed to fetch data due to previous errors. skipping cache.')
         else:
             logging.info('caching data')
             try:
