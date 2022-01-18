@@ -1,93 +1,150 @@
-# demo_plugin
-![sample image for plugin paperpi.plugins.demo_plugin](./demo_plugin.layout-sample.png) 
+# crypto
+![sample image for plugin paperpi.plugins.crypto](./crypto.layout-sample.png) 
 
 ```
  
-PLUGIN: demo_plugin v:0.1.0
+PLUGIN: crypto v:0.1.0
 
- 
-FUNCTION: demo_function
-demo function that prints a docstring
-    
-    This function prints the __doc__ string for this function as a 
-    demonstration of a Plugin "user-facing" function.
-    
-    Args:
-        None
-        
-    Returns:
-        None
-    
-___________________________________________________________________________
  
 FUNCTION: update_function
-update function for demo plugin providing some silly information and a picture
+update function for crypto plugin provides: value of crypto token versus fiat currency
+    along with sparkline, volume and 24 hour change as well as rss feed and qr code
+    for related article (if available)
     
-    This plugin provides a message generated for the user and 
-    a static image that floats around
+    During each update the current price is pulled from CoinGecko. Each hour the sparkline
+    data is updated.
     
-    Requirments:
-        self.config(dict): {
-            'your_name': 'user name',
-            'your_color': 'user color',
-        }
-        
-    Args: 
+    This plugin can be specified multiple times in the configuration file
+    to display multiple currencies:
+    
+    [Plugin: Crypto Bitcoin v USD]
+    layout = layout
+    # fiat currency to use for comparison
+    fiat = usd
+    # crypto currency to track
+    coin = bitcoin
+    # days of data to display
+    days = 14
+    # interval to show on sparkline
+    interval = hourly
+    # rss news feed to display
+    rss_feed = https://bitcoinmagazine.com/.rss/full/
+    
+    [Plugin: Crypto Dogecoin v GBP]
+    layout = layout
+    # fiat currency to use for comparison
+    fiat = gbp
+    # crypto currency to track
+    coin = dogecoin
+    # days of data to display
+    days = 14
+    # interval to show on sparkline
+    interval = hourly
+    # rss news feed to display
+    rss_feed = https://bitcoinmagazine.com/.rss/full/
+    
+    
+    Configuration Requirements:
+        self.config(`dict`):
+                'fiat': ticker value for national currencey, e.g. usd, jpy, gbp
+                'coin': CoinGecko ticker value for crypto token
+                'days': number of days of historical value to pull
+                'interval': interval for sparkline ('hourly' or 'daily')
+                'rss_feed': RSS feed to display
+                
+    Args:
         self(namespace): namespace from plugin object
-    
+        
     Returns:
         tuple: (is_updated(bool), data(dict), priority(int))
-
-    # Don't forget to end your docstring with a "" so it is displayed
     
 ___________________________________________________________________________
  
  
 
-SAMPLE CONFIGURATION FOR paperpi.plugins.demo_plugin.demo_plugin
+SAMPLE CONFIGURATION FOR paperpi.plugins.crypto.crypto
 
-[Plugin: A Demo Plugin]
-# this is a sample config users can use to help setup the plugin
-# default layout
+[Plugin: Crypto Bitcoin v USD]
+plugin = crypto
 layout = layout
-# the literal name of your module
-plugin = demo_plugin
-# recommended display time
+# fiat currency to use for comparison
+fiat = usd
+# crypto currency to track
+coin = bitcoin
+# days of data to display
+days = 14
+# interval to show on sparkline
+interval = hourly
+# rss news feed to display
+rss_feed = https://bitcoinmagazine.com/.rss/full/
 min_display_time = 30
-# maximum priority in display loop
-max_priority = 1
-# your name
-your_name = Slartybartfast
-# your favorite color
-your_color = chartreuse
+# refresh data every 5 minutes
+refresh_rate = 300
+max_priority = 2
 
  
 LAYOUTS AVAILABLE:
   layout
-  my_layout_one
+  ticker_hd
+  ticker_simple
  
 
-DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.demo_plugin.demo_plugin:
-   welcome_str
-   time
-   extra
-   image
+DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.crypto.crypto:
 ```
 
 ## Provided Layouts:
 
 layout: **layout**
 
-![sample image for plugin layout](./demo_plugin.layout-sample.png) 
+![sample image for plugin layout](./crypto.layout-sample.png) 
 
 
-layout: **my_layout_one**
+layout: **ticker_hd**
 
-![sample image for plugin my_layout_one](./demo_plugin.my_layout_one-sample.png) 
+![sample image for plugin ticker_hd](./crypto.ticker_hd-sample.png) 
+
+
+layout: **ticker_simple**
+
+![sample image for plugin ticker_simple](./crypto.ticker_simple-sample.png) 
 
 
 ## Additional Plugin Information
-Additional plugin information can be appended to the README by adding a file called `README_additional.md` in the root of the plugin directory. This will be directly appened at the end of the README.md file.
+This plugin can track multiple crypto currencies by adding multiple entries in the configuration file:
 
+```
+[Plugin: Crypto Dogecoin v EUR]
+plugin = crypto
+layout = layout
+# fiat currency to use for comparison
+fiat = eur
+# crypto currency to track
+coin = dogecoin
+# days of data to display
+days = 14
+# interval to show on sparkline
+interval = hourly
+# rss news feed to display
+rss_feed = https://bitcoinmagazine.com/.rss/full/
+min_display_time = 60
+refresh_rate = 240
+max_priority = 2
 
-Included image was sourced from the [Wikimedia Project](https://commons.wikimedia.org/wiki/File:Acuminate_Leaf_\(PSF\).jpg)
+[Plugin: Crypto Bitcoin v USD]
+plugin = crypto
+layout = layout
+# fiat currency to use for comparison
+fiat = usd
+# crypto currency to track
+coin = bitcoin
+# days of data to display
+days = 14
+# interval to show on sparkline
+interval = hourly
+# rss news feed to display
+rss_feed = https://http://feeds.bbci.co.uk/news/world/rss.xml
+min_display_time = 60
+refresh_rate = 240
+max_priority = 2
+
+```
