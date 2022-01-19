@@ -171,7 +171,8 @@ def _pygal_sparkline(data, cache_path='./', width=1000, height=300,
                    margin=0,            
                    style=constants.CHART_STYLE)
         chart.add('', price)
-        chart.add('', average_line, stroke_style={'dasharray': '5, 2'})
+#         chart.add('', average_line, stroke_style={'dasharray': '5, 2'})
+        chart.add('', average_line)        
         try:
             logger.debug(f'writing sparkline to file: {cache_path/output_file}')
             chart.render_to_png(str(output_file))

@@ -4,7 +4,7 @@ from pygal.style import Style
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-version = '0.1.0'
+version = '0.2.0'
 name = 'crypto'
 data = {}
 
@@ -33,7 +33,7 @@ FEED_JSON_MAX_AGE = 60*60*2
 
 QR_FILE = 'qr.png'
 
-CHART_STYLE = Style(colors=['#000000', '#808080'])
+CHART_STYLE = Style(colors=['#000000', '#000000'])
 
 sample_config = '''
 [Plugin: Crypto Bitcoin v USD]
