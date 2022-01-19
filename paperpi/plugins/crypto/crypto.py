@@ -37,12 +37,14 @@ import logging
 import feedparser
 import qrcode
 import requests
-import numpy as np
-import matplotlib.pyplot as plt
+# import numpy as np
+# import matplotlib.pyplot as plt
 from dictor import dictor
 from requests.exceptions import RequestException
 from currency_symbols import CurrencySymbols
 from pycoingecko import CoinGeckoAPI
+import pygal
+from pygal.style import Style
 
 
 
@@ -56,87 +58,132 @@ logger = logging.getLogger(__name__)
 
 
 
-logging.basicConfig(level=logging.DEBUG)
-logger.setLevel('DEBUG')
-
-
-
-
-
-
-def _generate_sparkline(data, cache_path='./', ratio=(10, 3), generate_keys=[constants.CG_PRICE_KEY]):
-    '''convert dictionary of list of two-tuples into multiple sparkline graphs
+# def _generate_sparkline(data, cache_path='./', ratio=(10, 3), generate_keys=[constants.CG_PRICE_KEY]):
+#     '''convert dictionary of list of two-tuples into multiple sparkline graphs
     
-    Args:
-        data(dict): {'key'[[v1, v2], [v1, v2]...], 'key2': [[v1, v2]]}
-        cache_path(string): location to output sparkline images
-        ratio(2 tuple): (height, width) of sparkline image in inches
-        generate_keys(list): list of CoinGeco data keys to use when generating sparkline
+#     Args:
+#         data(dict): {'key'[[v1, v2], [v1, v2]...], 'key2': [[v1, v2]]}
+#         cache_path(string): location to output sparkline images
+#         ratio(2 tuple): (height, width) of sparkline image in inches
+#         generate_keys(list): list of CoinGeco data keys to use when generating sparkline
         
-    Returns:
-        dict  : {'coingeco key': path to sparkline file}
+#     Returns:
+#         dict  : {'coingeco key': path to sparkline file}
         
-    Coingeco returns the following keys for a typical coin: prices, market_caps, volumes. 
-    Only 'prices' is used by default.
-    '''
+#     Coingeco returns the following keys for a typical coin: prices, market_caps, volumes. 
+#     Only 'prices' is used by default.
+#     '''
     
     
-    # TO DO: 
-    # - [ ] set figsize -- this should match the block ratio in the layout to ensure proper scaling
+#     # TO DO: 
+#     # - [ ] set figsize -- this should match the block ratio in the layout to ensure proper scaling
 
     
-    logger.debug(f'sparkline ratio: {ratio}')
+#     logger.debug(f'sparkline ratio: {ratio}')
+    
+#     sparklines = {}
+    
+#     for i, v in enumerate(ratio):
+#         ratio[i] = v/100
+    
+#     logger.debug(f'sparkline ratio: {ratio}')
+    
+#     for key in data.keys():
+#         if key in generate_keys:
+#             output_file = Path(cache_path)/f'{key}_sparkline.png'
+#             # cull just the 1th value from each pair
+#             x = [i[1] for i in data[key]]
+#             # calculate the mean for the set
+#             mean = np.mean(x)
+
+#             # plot the data
+#             fig, ax = plt.subplots(1, 1, figsize=ratio)
+# #             fig, ax = plt.subplots(1, 1)
+# #             fig, ax = plt.subplots(1, 1, gridspec_kw={'width_ratios': [ratio[0]], 
+# #                                                       'height_ratios': [ratio[1]]})            
+#             plt.plot(x, color='k', linewidth=1)
+
+#             # add a marker to the last value
+#             plt.plot(len(x)-1, x[len(x)-1], color='k', marker='o')
+
+#             # Remove the Y axis
+#             for k,v in ax.spines.items():
+#                 v.set_visible(False)
+#             ax.set_xticks([])
+#             ax.set_yticks([])
+
+#             # add the mean value line (blue, width 2, style -.-.-)
+#             ax.axhline(y=mean, c='gray', linewidth=2, linestyle='-.')
+
+#             try:
+#                 logger.debug(f'writing sparkline to file: {cache_path/output_file}')
+#                 plt.savefig(cache_path/output_file, dpi=100)
+#                 sparklines[key] = output_file
+#             except Exception as e:
+#                 logging.error(f'failed to write sparkline file: {output_file}: {e}')
+#                 pass
+            
+# #             plt.show()
+#             plt.close()
+    
+#     return sparklines
+
+#     # Save the resulting bmp file to the images directory
+# #     plt.savefig(os.path.join(picdir, key+'spark.png'), dpi=72)
+# #     plt.close('all') # Close plot to prevent memory error
+
+
+
+
+
+
+
+# $ apt install libcairo2 -- need to make sure this is installed -- add this to the install scripts
+# update install scripts to check for SPI configurtation and stuff too
+
+
+
+
+
+
+def _pygal_sparkline(data, cache_path='./', width=1000, height=300, 
+                     generate_keys=[constants.CG_PRICE_KEY]):
     
     sparklines = {}
     
-    for i, v in enumerate(ratio):
-        ratio[i] = v/100
-    
-    logger.debug(f'sparkline ratio: {ratio}')
-    
-    for key in data.keys():
-        if key in generate_keys:
-            output_file = Path(cache_path)/f'{key}_sparkline.png'
-            # cull just the 1th value from each pair
-            x = [i[1] for i in data[key]]
-            # calculate the mean for the set
-            mean = np.mean(x)
+    for key in generate_keys:
+        output_file = Path(cache_path)/f'{key}_sparkline.png'
+        my_data = data.get(key, None)
+        if not my_data:
+            logger.warning(f'expected key "{key}" not found in data')
+            continue
+        
+        # cull just the price value
+        price = [i[1] for i in my_data]
+        average = sum(price)/len(price)
+        average_line = [average for i in price]
+        
+        chart = pygal.Line(include_x_axis=False, 
+                   show_y_labels=False, 
+                   show_dots=False,
+                   show_legend=False,
+                   width=width, height=height,
+                   margin=0,            
+                   style=constants.CHART_STYLE)
+        chart.add('', price)
+        chart.add('', average_line, stroke_style={'dasharray': '5, 2'})
+        try:
+            logger.debug(f'writing sparkline to file: {cache_path/output_file}')
+            chart.render_to_png(str(output_file))
+            sparklines[key] = output_file
+        except OSError as e:
+            logger.error(f'failed to write sparkline file: {output_file}: {e}')
+            continue
 
-            # plot the data
-            fig, ax = plt.subplots(1, 1, figsize=ratio)
-#             fig, ax = plt.subplots(1, 1)
-#             fig, ax = plt.subplots(1, 1, gridspec_kw={'width_ratios': [ratio[0]], 
-#                                                       'height_ratios': [ratio[1]]})            
-            plt.plot(x, color='k', linewidth=1)
-
-            # add a marker to the last value
-            plt.plot(len(x)-1, x[len(x)-1], color='k', marker='o')
-
-            # Remove the Y axis
-            for k,v in ax.spines.items():
-                v.set_visible(False)
-            ax.set_xticks([])
-            ax.set_yticks([])
-
-            # add the mean value line (blue, width 2, style -.-.-)
-            ax.axhline(y=mean, c='gray', linewidth=2, linestyle='-.')
-
-            try:
-                logger.debug(f'writing sparkline to file: {cache_path/output_file}')
-                plt.savefig(cache_path/output_file, dpi=100)
-                sparklines[key] = output_file
-            except Exception as e:
-                logging.error(f'failed to write sparkline file: {output_file}: {e}')
-                pass
             
-#             plt.show()
-            plt.close()
-    
     return sparklines
-
-    # Save the resulting bmp file to the images directory
-#     plt.savefig(os.path.join(picdir, key+'spark.png'), dpi=72)
-#     plt.close('all') # Close plot to prevent memory error
+        
+#     price = [i[1] for i in r['prices']]
 
 
 
@@ -148,7 +195,7 @@ def _fetch_token_data(cg, config, json_file):
     
     Args:
         cg(obj): pycoingeko object
-        config(dict) {'coin': 'name', 'fiat': 'fiat symbol', 'interval': 'daily|hourly'}
+        config(dict) {'coin': 'name', 'fiat': 'fiat symbol', 'interval': 'daily|hourly', 'days': 14}
         json_file(str): path to json file for storing CG data'''
     
     
@@ -474,7 +521,8 @@ def update_function(self, *args, **kwargs):
     json_data = _fetch_token_data(cg, config, json_file)
 
     if json_data:
-        sparklines = _generate_sparkline(json_data, cache_dir, ratio=config['spark_ratio'])
+#         sparklines = _generate_sparkline(json_data, cache_dir, ratio=config['spark_ratio'])
+        sparklines = _pygal_sparkline(json_data, cache_dir, width=config['spark_ratio'][0], height=config['spark_ratio'][1])
     else:
         general_failure = True
         logger.error('no JSON data returned. see previous errors')
@@ -619,6 +667,15 @@ def update_function(self, *args, **kwargs):
 
 
 
+logging.basicConfig(level=logging.DEBUG)
+logger.setLevel('WARNING')
+logging.root.setLevel('WARNING')
+
+
+
+
+
+
 # from library.CacheFiles import CacheFiles
 # from library.Plugin import Plugin
 # test_plugin = 0
@@ -627,7 +684,7 @@ def update_function(self, *args, **kwargs):
 #     from library import Plugin
 #     from IPython.display import display
 #     # this is set by PaperPi based on the configured screen
-#     test_plugin = Plugin(resolution=(400, 300))
+#     test_plugin = Plugin(resolution=(1200, 825))
 #     # this is pulled from the configuration file; the appropriate section is passed
 #     # to this plugin by PaperPi during initial configuration
 #     test_plugin.config = {
@@ -637,7 +694,7 @@ def update_function(self, *args, **kwargs):
 #     'interval': 'hourly'
 # }
 # #     test_plugin.layout = layout.layout
-#     test_plugin.layout = layout.ticker_simple
+#     test_plugin.layout = layout.ticker_hd
 #     # this is done automatically by PaperPi when loading the plugin
 #     test_plugin.cache = CacheFiles()
 #     test_plugin.update_function = update_function
@@ -646,12 +703,5 @@ def update_function(self, *args, **kwargs):
 #     return test_plugin
 # my_plugin = test_plugin
 # my_plugin()
-
-
-
-
-
-
-
 
 

@@ -25,6 +25,10 @@ matplotlib = "*"
 pycoingecko = "*"
 currency-symbols = "*"
 qrcode = "*"
+pygal = "*"
+cairosvg = "*"
+cairocffi = "*"
+pycairo = "*"
 
 [requires]
 python_version = "3"
