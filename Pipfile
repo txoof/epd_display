@@ -20,11 +20,14 @@ feedparser = "*"
 pillow = "*"
 epdlib = {editable = true, path = "/home/pi/src/epdlib"}
 pytz = "*"
-numpy = "*"
-matplotlib = "*"
 pycoingecko = "*"
 currency-symbols = "*"
 qrcode = "*"
+pygal = "*"
+cairosvg = "*"
+cairocffi = "*"
+pycairo = "*"
+cffi = "*"
 
 [requires]
 python_version = "3"
