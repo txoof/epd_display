@@ -607,7 +607,7 @@ def update_function(self, *args, **kwargs):
         change_vol_string = f'{values["change"]}% vol:{symbol}{values["volume"]}'
         
 
-        try
+        try:
             data = {
                 'update_time': update_time,
                 'coin_file': coin_file,
