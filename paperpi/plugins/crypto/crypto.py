@@ -606,16 +606,23 @@ def update_function(self, *args, **kwargs):
         price_string = f'{symbol}{values["coin_price"]}'
         change_vol_string = f'{values["change"]}% vol:{symbol}{values["volume"]}'
         
-        is_updated = True
-        data = {
-            'update_time': update_time,
-            'coin_file': coin_file,
-            'price_string': price_string,
-            'change_vol_string': change_vol_string,
-            'sparkline': sparklines['prices'],
-            'rss_feed': rss_data['title'],
-            'qr_code': qr_file
-        }
+
+        try
+            data = {
+                'update_time': update_time,
+                'coin_file': coin_file,
+                'price_string': price_string,
+                'change_vol_string': change_vol_string,
+                'sparkline': sparklines['prices'],
+                'rss_feed': rss_data['title'],
+                'qr_code': qr_file
+            }
+            is_updated = True            
+        except KeyError as e:
+            logger.error(f'KeyError: {e}')
+            data = {}
+            is_updated = False
+            
         priority = self.max_priority
     else:
         logging.error('general failure - see errors above')
