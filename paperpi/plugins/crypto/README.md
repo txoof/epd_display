@@ -3,7 +3,7 @@
 
 ```
  
-PLUGIN: crypto v:0.1.0
+PLUGIN: crypto v:0.2.0
 
  
 FUNCTION: update_function

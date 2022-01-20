@@ -1,5 +1,5 @@
 config = {
-    'layout': 'layout'
+    'layout': 'layout',
     'fiat': 'usd',
     'coin': 'bitcoin',
     'days': '14',
