@@ -58,7 +58,9 @@ logger = logging.getLogger(__name__)
 
 
 
-   
+# def _generate_sparkline(data, cache_path='./', ratio=(10, 3), generate_keys=[constants.CG_PRICE_KEY]):
+#     '''convert dictionary of list of two-tuples into multiple sparkline graphs
+    
 #     Args:
 #         data(dict): {'key'[[v1, v2], [v1, v2]...], 'key2': [[v1, v2]]}
 #         cache_path(string): location to output sparkline images
@@ -666,15 +668,9 @@ def update_function(self, *args, **kwargs):
 
 
 
-<<<<<<< HEAD
 # logging.basicConfig(level=logging.DEBUG)
 # logger.setLevel('WARNING')
 # logging.root.setLevel('WARNING')
-=======
-logging.basicConfig(level=logging.DEBUG)
-logger.setLevel('WARNING')
-logging.root.setLevel('WARNING')
->>>>>>> crypto
 
 
 
