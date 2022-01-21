@@ -26,7 +26,8 @@ PaperPi supports many different plugins and layouts for each plugin. The plugin 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img src=./paperpi/plugins/librespot_client/librespot_client.layout-sample.png alt="librespot plugin" width=300 />[LibreSpot (spotify) Plugin](./paperpi/plugins/librespot_client/README.md)|<img src=./paperpi/plugins/word_clock/word_clock.layout-sample.png alt="word clock plugin" width=300 />[Word Clock](./paperpi/plugins/word_clock/README.md)|<img src=./paperpi/plugins/lms_client/lms_client.layout-sample.png alt="lms client plugin" width=300 />[Logitech Media Server Plugin](./paperpi/plugins/lms_client/README.md)|
-|<img src=./paperpi/plugins/moon_phase/moon_phase.layout-sample.png alt="decimal binary clock" width=300 />[Moon Phase](./paperpi/plugins/moon_phase/README.md)|<img src=./paperpi/plugins/met_no/met_no.layout-sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock.layout-sample.png alt="Basic Clock" width=300 />[Basic Clock](./paperpi/plugins/basic_clock/README.md)|
+|<img src=./paperpi/plugins/moon_phase/moon_phase.layout-sample.png alt="decimal binary clock" width=300 />[Moon Phase](./paperpi/plugins/moon_phase/README.md)|<img src=./paperpi/plugins/met_no/met_no.layout-sample.png alt="met_no plugin" width=300 />[Met.no Weather](./paperpi/plugins/met_no/README.md)|<img src=./paperpi/plugins/crypto/crypto.layout-sample.png alt="Crypto Currency Ticker" width=300 />[Crypto Currency](./paperpi/plugins/crypto/README.md)|
+|<img src=./paperpi/plugins/reddit_quote/reddit_quote.layout-sample.png alt="reddit/r/quotes" width=300 />[Reddit Quotes](./paperpi/plugins/reddit_quote/README.md)|<img src=./paperpi/plugins/xkcd_comic/xkcd_comic.layout-sample.png alt="XKCD Comic" width=300 />[XKCD Comic](./paperpi/plugins/xkcd_comic/README.md)|<img src=./paperpi/plugins/basic_clock/basic_clock.layout-sample.png alt="Basic Clock" width=300 />[Basic Clock](./paperpi/plugins/basic_clock/README.md)| |
 
 
 ## Changes
@@ -75,8 +76,9 @@ The WaveShare displays require the SPI interface. SPI can be enabled through the
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
 
-**IT8951 HD Screens**
-*  Install the Broadcom BCM 2835 library ccording to the directions found on [Mike McCauley's site](http://www.airspayce.com/mikem/bcm2835/)
+~~**IT8951 HD Screens**~~
+*  ~~Install the Broadcom BCM 2835 library ccording to the directions found on [Mike McCauley's site](http://www.airspayce.com/mikem/bcm2835/)~~ 
+Not needed
 
 ### Userland Setup
 PaperPi can be run directly on-demand from a user account such as the default "pi" user. Any other user will work as well, but the user must be a member of the spi group.
@@ -120,19 +122,27 @@ PaperPi is designed to run as an unattended daemon process that starts at system
     - PaperPi may fail to clear the screen when the daemon is stopped. This a known [issue](https://github.com/txoof/epd_display/issues/19).
 
 
-## Building PaperPi
+## Developing PaperPi
 If you would like to develop [plugins](./documentation/Plugins.md) for PaperPi, you will likely need a working build environment. 
 
 ### Requirements:
-* python 3.7
+* python 3.7+
 * pipenv
 
+**Create a Build Environment**
+
 1. Clone the repo: `https://github.com/txoof/epd_display.git`
-2. Run `build.sh` to create a build environment
-    - The build script will create a pipenv environment and prompt you to install necessary libraries
-    - if pipenv fails to install Pillow, try deleting Pipenv.lock and manually install pillow with `pipenv install Pillow`
+2. Run `$ create_devel_venv.sh` to create a build environment
+    - This will check for all necessary libraries and python modules
 3. The build script will then attempt to build a binary of PaperPi using pyintsaller 
     - executables are stored in `./dist/`
+    
+**Build Paperpi**
+
+1. Create a build environment (see above)
+2. Run `$ build.sh` to create a pyinstaller one-file distributable
+3. If you've updated documentation in any plugins, be sure to rebuild the documentation with `$ pipenv run python3 create_docs.py`
+4. Submit a PR if you'd like your changes included in the official distribution
 
 ## Contributing
 PaperPi's core is written and maintained in Jupyter Notebook. If you'd like to contribute, please make pull requests in the Jupyter notebooks. Making PRs to the `.py` files means manually moving the changes into the Jupyter Notebook and adds considerable work to the build/test process.

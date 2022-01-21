@@ -1,4 +1,9 @@
 # Change Log
+## 0.2.14.5
+* add crypto currency plugin
+* add xkcd comic plugin
+* adjust build and packaging scripts to handle external datas better
+
 ## 0.2.14.3
 * update model paperpi.ini with latest configurations
 * automatically update model paperpi.ini on build/release
