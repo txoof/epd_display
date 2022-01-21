@@ -10,7 +10,7 @@ plugin_path = './paperpi/plugins'
 
 # command additional options
 options = [
-  '-D',
+  '-F',
   '--noconfirm',
   '--clean',
   '--additional-hooks-dir=.',
