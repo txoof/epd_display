@@ -9,26 +9,27 @@ verify_ssl = true
 ipykernel = "*"
 requests = "*"
 dictor = "*"
-pyinstaller = "*"
-argconfigparse = "*"
+ArgConfigParse = "*"
 gpiozero = "*"
 python-dateutil = "*"
-querylms = "*"
-"rpi.gpio" = "*"
-it8951 = {git = "https://github.com/GregDMeyer/IT8951.git"}
+QueryLMS = "*"
+"RPi.GPIO" = "*"
 feedparser = "*"
-pillow = "*"
-#epdlib = {editable = true, path = "/home/pi/src/epdlib"}
+Pillow = "*"
 epdlib = "*"
 pytz = "*"
 pycoingecko = "*"
 currency-symbols = "*"
 qrcode = "*"
 pygal = "*"
-cairosvg = "*"
+CairoSVG = "*"
 cairocffi = "*"
 pycairo = "*"
 cffi = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3"
+
+[packages.it8951]
+git = "https://github.com/GregDMeyer/IT8951.git"
