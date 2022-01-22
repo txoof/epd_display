@@ -18,7 +18,8 @@ querylms = "*"
 it8951 = {git = "https://github.com/GregDMeyer/IT8951.git"}
 feedparser = "*"
 pillow = "*"
-epdlib = {editable = true, path = "/home/pi/src/epdlib"}
+#epdlib = {editable = true, path = "/home/pi/src/epdlib"}
+epdlib = "*"
 pytz = "*"
 pycoingecko = "*"
 currency-symbols = "*"
