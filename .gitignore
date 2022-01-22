@@ -4,6 +4,7 @@ Pipfile.lock
 */dist/*
 build/*
 dist/*
+tmp/*
 *.ignore
 *.tgz
 *.spec
