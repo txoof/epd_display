@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 PROJECT="PaperPi"
 ABOUT="$0 creates the pipenv virtual environment for developing $PROJECT"
 
@@ -150,3 +150,5 @@ done
 check_packages
 check_env
 build_pipenv
+echo "adding bootloader for PyInstaller (if needed)"
+./add_bootloader.sh
