@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+BOOTLOADER_ARCH="Linux-32bit-arm"
 
-echo "This script adds the Linux0-32bit-arm bootloader (if needed)"
+echo "This script adds the $BOOTLOADER_ARCH bootloader (if needed)"
 
 if [ -z $PIPENV_ACTIVE  ];
 then
@@ -11,7 +12,7 @@ then
 fi
 
 VENV=$(pipenv --venv)
-BOOTLOADER=$(find $VENV -path "*bootloader")
+BOOTLOADER=$(find $VENV -path "*/PyInstaller/bootloader")
 
 
 if [[ -d $BOOTLOADER/Linux-32bit-arm ]]; 
@@ -25,7 +26,7 @@ else
   git clone  https://github.com/pyinstaller/pyinstaller
   cd pyinstaller/bootloader
   python3 ./waf distclean all
-  cp -R ../PyInstaller/bootloader/Linux-32bit-arm "$BOOTLOADER/Linux-32bit-arm"
+  cp -R ../PyInstaller/bootloader/Linux-32bit-arm "$BOOTLOADER/$BOOTLOADER_ARCH"
 
 
 

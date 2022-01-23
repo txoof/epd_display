@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
-PROJECT="PaperPi"
-ABOUT="$0 creates the pipenv virtual environment for developing $PROJECT"
-
-# Source external file for apt packages
-source cd_apt_packages # provides REQUIRED_DEB 
+PYVERSION="3.7.3"
+INSTALL_JUP_KERNEL=0
+PIPENV_EXTRAS=''
+BOOTLOADER_ARCH="Linux-32bit-arm"
 
 REQUIRED_PY=( "pipenv" )
-
-# Python version to use for venv
-PYTHON_VERSION="python 3"
-# extra options to issue when creating pipenv
-PIPENV_EXTRAS=""
-# install jupyter kernel == false
-INSTALL_JUP_KERNEL=0
-
-# Environment flags needed for building pip venv
 
 # GCC Flags required for building RPi.GPIO v0.7.0 wheels
 # see: https://askubuntu.com/a/1330210/903142
 export CFLAGS=-fcommon
 
+# Source external file for apt packages
+source cd_apt_packages # provides REQUIRED_DEB
+
+
+function do_exit {
+  echo "exiting script $0"
+  echo "reason: $1"
+  exit 1
+}
+
 function check_env {
+# check that base python packages are installed
   halt=0
   echo "checking python environment"
   echo ""
@@ -40,8 +41,7 @@ function check_env {
   if [[ $halt -gt 0 ]]
   then
     echo "$halt required python packages missing. See messages above."
-    echo "stopping."
-    exit 1
+    do_exit "stopping."
   fi
 }
 
@@ -67,53 +67,78 @@ function check_packages {
   if [[ $halt -gt 0 ]]
   then
     echo "$halt critical pakcages missing. See previous messages above."
-    echo "stopping."
-    exit 1
+    do_exit "stopping."
   fi
 
 }
 
-function exit_error {
-  echo "$1 Exiting."
-  exit 1
+
+function check_pyenv {
+  # make sure local python version matches PYVERSION
+
+  # currently set python version
+  PYENV=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+
+  echo "checking local python version"
+  echo "local: $PYENV; required: $PYVERSION"
+
+  if [[ $PYENV != $PYVERSION ]];
+  then
+    echo "setting pyenv version to $PYVERSION"
+    pyenv local $PYVERSION || do_exit "could not set pyenv to $PYVERSION"
+  else
+    echo "pyenv set to: $PYVERSION"
+  fi
+
 }
 
 function build_pipenv {
   echo ""
-  echo "creating virtual environment"
-  # check if venv already exists
-  pipenv --venv && 
-  if [ $? -lt 1 ]; 
+  echo "checking pipenv virtual environment"
+
+  PIPVENV=$(pipenv --venv)
+
+  if [[ -z $PIPVENV ]];
   then
-    echo "pipenv already exists! To remove use $ pipenv --rm"
-    exit_error "aborting virtual environment creation"
+    echo "creating pip virtual environment"
+    pipenv --python $PYVERSION || do_exit "failed to create pipenv"
+    PIPVENV=$(pipenv --venv)
+  else
+    echo "virtual env: $PIPVENV"
+    #do_exit "virtual environment already exists"
   fi
 
-  # create the pipenv; skip locking
-  # pillow gives all sorts of headaches when locking
-  pipenv --$PYTHON_VERSION $PIPENV_EXTRAS --skip-lock
-  if [ $? -ne 0 ];
+  pipenv install --skip-lock || do_exit "failed to install modules"
+
+  if [[ $INSTALL_JUP_KERNEL -gt 0 ]];
   then
-    exit_error "creating virtual environment failed due to errors."
+    echo "installing jupyter kernel"
+    PROJECT_DIR=$(basename $PIPVENV)
+    pipenv run python -m ipykernel install --user --name=${PROJECT_DIR} || do_exit "failed to install jupyter kernel" 
+
+    MY_IP=$(hostname -I | cut -d " " -f 1)
+    echo "to start a remotely accessible jupyter notebook use:"
+    echo "$ jupyter notebook --ip=$MY_IP --no-browser"
   fi
 
-  if [ $INSTALL_JUP_KERNEL -gt 0 ];
-  then
-    echo "Installing Jupyter kernel"
-    venv_dir=$(pipenv --venv)
-    project_dir=$(basename $venv_dir)
-    pipenv run python -m ipykernel install --user --name="${project_dir}"
-    if [ $? -ne 0 ];
-    then
-      exit_error "installing Jupyter kernel failed due to errors."
-    else
-      my_ip=$(hostname -I | cut -d " " -f 1)
-      echo "To start a remotely accesible Jupyter notebook use:"
-      echo "$ jupyter notebook --ip=$my_ip --no-browser"
-    fi
+}
 
+function check_bootloader {
+  VENV=$(pipenv --venv)
+  BOOTLOADER=$(find $VENV -path "*/PyInstaller/bootloader")
+  echo "checking for PyInstaller bootloader: $BOOTLOADER_ARCH"
+
+  if [[ -d $BOOTLOADER/$BOOTLOADER_ARCH ]];
+  then
+    echo "PyInstaller bootloader found -- no action needed"
+  else
+    echo "PyInstaller bootloader not found for $BOOTLOADER_ARCH"
+    echo "to create build PyInstaller files you must run the following commands:"
+    echo "$ pipenv shell"
+    echo "$ ./add_bootloader.sh"
   fi
 }
+
 
 POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]
@@ -146,9 +171,8 @@ do
   esac
 done
 
-
 check_packages
 check_env
+check_pyenv
 build_pipenv
-echo "adding bootloader for PyInstaller (if needed)"
-./add_bootloader.sh
+check_bootloader
