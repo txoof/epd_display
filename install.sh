@@ -288,6 +288,34 @@ install_config() {
   fi # end purge config files
 } # end install_config
 
+
+function check_packages {
+  halt=0
+  source ./cd_apt_packages
+  echo "checking for required debian packages"
+  echo ""
+  for i in "${REQUIRED_DEB[@]}"
+  do
+    echo "VERIFYING DEB PACKAGE: $i"
+    if [ $(dpkg-query -W -f='${Status}' $i | grep -c "ok installed") -eq 0 ]
+    then
+      echo "PACKAGE $i NOT INSTALLED. Install with:"
+      echo "$ sudo apt install $i"
+      echo ""
+      halt=$((halt+1))
+    else
+      echo "$i ... OK"
+      echo ""
+    fi
+  done
+
+  if [[ $halt -gt 0 ]]
+  then
+    echo "$halt critical pakcages missing. See previous messages above."
+    do_exit "stopping."
+  fi
+}
+
 finish_install()
 {
   if [ $INSTALL -eq 1 ]
@@ -366,6 +394,8 @@ then
   fi
 fi
 
+check_packages
+
 check_permissions
 
 install_bin
@@ -377,3 +407,4 @@ add_user
 install_config
 
 finish_install
+
