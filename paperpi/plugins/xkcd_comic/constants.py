@@ -2,7 +2,7 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-version = '0.1.0'
+version = '0.1.1'
 name = 'xkcd_comic'
 data = {
     'image_file': 'path to downloaded comic image',
