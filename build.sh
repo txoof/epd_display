@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 project_path="./paperpi/"
 
@@ -9,9 +9,8 @@ function check_env {
   echo "checking build environment"
   if ! command -v pipenv &> /dev/null
   then
-    echo "pipenv could not be found"
-    echo "install with: $ apt install pipenv"
-    echo "exiting"
+    echo "development environment not configured"
+    echo "try running `devel/create_devel_venf.sh`"
     exit 1
   else
     echo "pipenv OK"
@@ -21,7 +20,7 @@ function check_env {
   if ! pipenv --venv
   then
     echo "missing pipenv virtual environment"
-    echo "please run: $ create_devel_venv.sh"
+    echo "try running `devel/create_devel_venv.sh`"
     exit 1
   fi
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PYVERSION="3.7.3"
+PYVERSION="3"
 INSTALL_JUP_KERNEL=0
 PIPENV_EXTRAS=''
 BOOTLOADER_ARCH="Linux-32bit-arm"
@@ -25,6 +25,8 @@ function check_env {
   halt=0
   echo "checking python environment"
   echo ""
+
+
   for i in "${REQUIRED_PY[@]}"
   do
     echo "VERIFYING PYTHON PACKAGE: $i"
@@ -73,24 +75,6 @@ function check_packages {
 }
 
 
-function check_pyenv {
-  # make sure local python version matches PYVERSION
-
-  # currently set python version
-  PYENV=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
-
-  echo "checking local python version"
-  echo "local: $PYENV; required: $PYVERSION"
-
-  if [[ $PYENV != $PYVERSION ]];
-  then
-    echo "setting pyenv version to $PYVERSION"
-    pyenv local $PYVERSION || do_exit "could not set pyenv to $PYVERSION"
-  else
-    echo "pyenv set to: $PYVERSION"
-  fi
-
-}
 
 function build_pipenv {
   echo ""
@@ -173,6 +157,5 @@ done
 
 check_packages
 check_env
-check_pyenv
 build_pipenv
 check_bootloader

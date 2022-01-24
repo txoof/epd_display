@@ -3,7 +3,7 @@ CORE=( "libtiff5" "libopenjp2-7" )
 
 # required for plugin/crypto 
 # libatalas-base-dev required for numpy
-PLUGIN_CRYPTO=("libatlas-base-dev")
+PLUGIN_CRYPTO=( )
 
 # add any additional sets to REQUIRED_DEB
 REQUIRED_DEB=("${CORE[@]}" "${PLUGIN_CRYPTO[@]}")
