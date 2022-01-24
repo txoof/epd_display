@@ -29,7 +29,7 @@ cffi = "*"
 pyinstaller = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3"
 
 [packages.it8951]
 git = "https://github.com/GregDMeyer/IT8951.git"

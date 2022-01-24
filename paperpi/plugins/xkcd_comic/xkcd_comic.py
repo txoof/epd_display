@@ -108,6 +108,7 @@ def update_function(self, *args, **kwargs):
     is_updated = False
     data = {}
     priority = 2 ** 16
+    general_failure = False
 
     config = self.config
     # set required values if they aren't specified
@@ -140,41 +141,51 @@ def update_function(self, *args, **kwargs):
         random_comic = str(random_comic)
         random_url = str.join('/', [constants.xkcd_url, random_comic, constants.xkcd_json_doc])
         comic_json = get_comic_json(random_url)
-        filename = comic_json['img'].split('/')[-1]
+#         filename = comic_json['img'].split('/')[-1]
+        filename = comic_json.get('img', None)
+        if filename:
+            try:
+                filename = filename.split('/')[-1]
+                image_file = self.cache.cache_file(comic_json['img'], image_path/filename)
+            except Exception as e:
+                logging.error(f'failed to parse JSON: {comic_json}: {e}')
+        else:
+            logging.error(f'general failure due to bad JSON data returned by XKCD: {comic_json}')
+            general_failure = True
+            is_updated = False
+            data = {}
 
-        image_file = self.cache.cache_file(comic_json['img'], image_path/filename)
         
-        
-        
-        try:
-            image = PILImage.open(image_file)
-            # reject images that are too large
-            if image.size[0] < max_x and image.size[1] < max_y:
-                logging.debug(f'image size for comic {comic_json["num"]}: {image.size}')
-                comic_json['image_file'] = image_file
-                is_updated = True
-                priority = self.max_priority
-                data = comic_json
-                
-                # resize images that are a bit too small to maximize the used space on larger displays
-                if config['resize'] == 1:
-                    logging.info(f'resizing XKCD image to maximum: {max_x}, {max_y}')
-                    try:
-                        resized_img = resize_image(image, (max_x, max_y))
-                        resized_img.save(image_file)
-                        logging.debug(f'image resized to {resized_img.size}')
-                    except Exception as e:
-                        logging.error(f'error in resizing: {e}')
-                        is_updated = False
+        if not general_failure:
+            try:
+                image = PILImage.open(image_file)
+                # reject images that are too large
+                if image.size[0] < max_x and image.size[1] < max_y:
+                    logging.debug(f'image size for comic {comic_json["num"]}: {image.size}')
+                    comic_json['image_file'] = image_file
+                    is_updated = True
+                    priority = self.max_priority
+                    data = comic_json
 
-                
-                break
-            else:
-                logging.info(f'image for comic {comic_json["num"]} size too large: {image.size}, trying again')
+                    # resize images that are a bit too small to maximize the used space on larger displays
+                    if config['resize'] == 1:
+                        logging.info(f'resizing XKCD image to maximum: {max_x}, {max_y}')
+                        try:
+                            resized_img = resize_image(image, (max_x, max_y))
+                            resized_img.save(image_file)
+                            logging.debug(f'image resized to {resized_img.size}')
+                        except Exception as e:
+                            logging.error(f'error in resizing: {e}')
+                            is_updated = False
+
+
+                    break
+                else:
+                    logging.info(f'image for comic {comic_json["num"]} size too large: {image.size}, trying again')
+                    continue
+            except Exception as e:
+                logging.error(f'failed to open downloaded image file: {e}')
                 continue
-        except Exception as e:
-            logging.error(f'failed to open downloaded image file: {e}')
-            continue
     
     
     return (is_updated, data, priority)
