@@ -1,15 +1,15 @@
 # PaperPi
-
-
 |     |     |
 |:---:|:---:|
-|<img src=./paperpi/plugins/splash_screen/splash_screen.layout-sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/frame_completed.jpg alt="PaperPi Weather Plugin" width=400 /> PaperPi Weather Plugin|
+|<img src=./paperpi/plugins/splash_screen/splash_screen.layout-sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/PaperPi_Demo_frame.gif alt="PaperPi" width=400 /> PaperPi Weather Plugin|
 
 PaperPi is an e-Paper display with multiple rotating display plugins that contain dynamic content.
 
-PaperPi is designed run as a daemon process to display a vairety of plugins to SPI based e-paper/e-ink displays with long refresh delays. It has been specifically written to work with the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays.
+PaperPi is a quiet and clean portal to the internet. No loud colors, no busy animations, just a lovely selection of the information you want without buzz and distraction. PaperPi rotates through your choice of plugin screens at the pace you choose. 
 
-PaperPi rotates through a user-configured selection of plugins each represented by a single static "screen." After the plugin screen has "expired", the next plugin with the highest priority (lowest value) will be displayed, eventually cycling through all the plugins.
+
+PaperPi is written to work with almost all of the [WaveShare](https://www.waveshare.com/product/displays/e-paper.htm) SPI displays out of the box. PaperPi will work with the tiny 2" displays all the way up to the 10" HD displays with minimal configuration. Check the complete list of [supported screens](#supportedScreens)
+
 
 For information on building a frame, case and custom cable, see [these instructions](./documentation/Frame_Cable_Case.md).
 
@@ -17,9 +17,8 @@ To get started, jump to the **[Setup Instructions](#setup)**
 
 
 ## Plugins
-PaperPi supports many different plugins and layouts for each plugin. The plugin structure is open and documented to allow building your own plugins or customizing existing plugins.
+PaperPi supports many different plugins and layouts for each plugin.
 
-![PaperPi Demo](./documentation/images/PaperPi_Demo_fast.gif)
  
 ### [Complete Plugins List](./documentation/Plugins.md)
 
@@ -39,6 +38,7 @@ See the [Change Log](./documentation/Change_Log.md) for a complete list of updat
 ### Required Hardware
 * Raspberry Pi 4B, Pi3
     - A Pi Zero is likely sufficient, but is untested at this time (Nov 2020)
+* Raspberry Pi OS Buster or later
 * [WaveShare EPD SPI-only Screen](https://www.waveshare.com/product/displays/e-paper.htm) with PiHat
     - see the full list of currently [supported screens](#supportedScreens)
     - UART, SPI/USB/I80 screens are **not supported** as there is no python library for diving these boards
@@ -47,7 +47,7 @@ See the [Change Log](./documentation/Change_Log.md) for a complete list of updat
 ### Optional Hardware
 * [HiFiBerry hat](https://www.hifiberry.com/shop/#boards) (*optional*) 
     * The HiFiBerry DAC+ PRO and similar boards add high-quality audio output to the Pi so it can act as a display and also work as a LMS client player using squeezelite
-    * GPIO 2x20 headers **must be added** to the board to support WaveShare HAT
+    * GPIO 2x20 headers **must be added** to the HiFiBerry HAT to provide an interface for the WaveShare HAT.
     * HiFiBerry's [DAC+ Bundle](https://www.hifiberry.com/shop/bundles/hifiberry-dac-bundle-4/) with the following configuraiton is a good choice:
         * DAC+ Pro 
         * Acrylic Case for (RCA) AND DIGI+
@@ -61,6 +61,7 @@ PaperPi plugins work with a variety of other software such as Logitech Media Ser
 
 <a name="setup"> </a>
 ## Setup
+PaperPi requires only small amount of setup. 
 
 ### Hardware/OS Setup
 **All Waveshare Screens**
@@ -70,15 +71,13 @@ The WaveShare displays require the SPI interface. SPI can be enabled through the
     - `$ sudo raspi-config` > Interface Options > SPI > Yes
 2. Reboot
     - `$ sudo shutdown -r now`
+    
 | |
 |:-------------------------:|
 |<img src=./documentation/images/raspi_config_00_iface_opts.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_01_spi.png alt="librespot plugin" width=500 />|
 |<img src=./documentation/images/raspi_config_02_spi_enabled.png alt="librespot plugin" width=500 />|
 
-~~**IT8951 HD Screens**~~
-*  ~~Install the Broadcom BCM 2835 library ccording to the directions found on [Mike McCauley's site](http://www.airspayce.com/mikem/bcm2835/)~~ 
-Not needed
 
 ### Userland Setup
 PaperPi can be run directly on-demand from a user account such as the default "pi" user. Any other user will work as well, but the user must be a member of the spi group.
