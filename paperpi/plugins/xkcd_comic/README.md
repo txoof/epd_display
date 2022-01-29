@@ -3,7 +3,7 @@
 
 ```
  
-PLUGIN: xkcd_comic v:0.1.0
+PLUGIN: xkcd_comic v:0.1.1
 
  
 FUNCTION: update_function
