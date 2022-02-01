@@ -15,7 +15,7 @@ required_config_options = {
 images = dir_path+'./images/'
 tag_image = images+'rabbitsq.png'
 
-quotes_base_url = 'https://www.reddit.com/r/quotes/top/.json?t=week&limi'
+quotes_base_url = 'https://www.reddit.com/r/quotes/top/.json?t=week&limit='
 quotes_limit = 100
 headers = {'User-agent': 'Chrome'}
 
