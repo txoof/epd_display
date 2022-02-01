@@ -99,6 +99,7 @@ def _process_quotes(raw_quotes):
                 attribution = None
         else:
             text = q.strip()
+            attribution = None
 
         # append quotes to dictionary
         
