@@ -97,6 +97,8 @@ def _process_quotes(raw_quotes):
             else:
                 text = match.group(1).strip()
                 attribution = None
+        else:
+            text = q.strip()
 
         # append quotes to dictionary
         
