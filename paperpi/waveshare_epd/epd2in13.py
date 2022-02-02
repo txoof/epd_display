@@ -30,11 +30,13 @@
 
 import logging
 from . import epdconfig
-import numpy as np
+#import numpy as np
 
 # Display resolution
 EPD_WIDTH       = 122
 EPD_HEIGHT      = 250
+
+logger = logging.getLogger(__name__)
 
 class EPD:
     def __init__(self):
@@ -90,9 +92,9 @@ class EPD:
         self.send_command(0x20) # MASTER_ACTIVATION
         self.send_command(0xFF) # TERMINATE_FRAME_READ_WRITE
         
-        logging.debug("e-Paper busy")
+        logger.debug("e-Paper busy")
         self.ReadBusy()
-        logging.debug("e-Paper busy release")
+        logger.debug("e-Paper busy release")
 
     def init(self, lut):
         if (epdconfig.module_init() != 0):
@@ -168,14 +170,14 @@ class EPD:
         pixels = image_monocolor.load()
         
         if(imwidth == self.width and imheight == self.height):
-            logging.debug("Vertical")
+            logger.debug("Vertical")
             for y in range(imheight):
                 for x in range(imwidth):                    
                     if pixels[x, y] == 0:
                         # x = imwidth - x
                         buf[int(x / 8) + y * linewidth] &= ~(0x80 >> (x % 8))
         elif(imwidth == self.height and imheight == self.width):
-            logging.debug("Horizontal")
+            logger.debug("Horizontal")
             for y in range(imheight):
                 for x in range(imwidth):
                     newx = y
