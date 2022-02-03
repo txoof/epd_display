@@ -96,7 +96,9 @@ class EPD:
         self.ReadBusy()
         logger.debug("e-Paper busy release")
 
-    def init(self, lut):
+    def init(self, lut=None):
+        if not lut:
+            lut = self.lut_full_update
         if (epdconfig.module_init() != 0):
             return -1
         # EPD hardware init start
@@ -202,7 +204,7 @@ class EPD:
                 self.send_data(image[i + j * linewidth])   
         self.TurnOnDisplay()
     
-    def Clear(self, color):
+    def Clear(self, color=0xFF):
         if self.width%8 == 0:
             linewidth = int(self.width/8)
         else:

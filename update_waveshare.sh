@@ -1,52 +1,46 @@
 #!/bin/bash
-# waveshare repo
-ws_epd_git="https://github.com/waveshare/e-Paper.git"
+# wavehsare repo
+WS_REPO="https://github.com/waveshare/e-Paper.git"
+WS_ROOT="e-Paper"
+WS_LIB_PATH="RaspberryPi_JetsonNano/python/lib/waveshare_epd"
 
-ws_root="e-Paper"
-ws_library_path="e-Paper/RaspberryPi_JetsonNano/python/lib/waveshare_epd"
+PROJECT="./paperpi/"
+WS_LOCAL="$PROJECT/waveshare_epd"
 
-# project waveshare_epd path
-project="./paperpi/"
-ws_local="$project/waveshare_epd"
+# git clone into temporary directory
+WS_TEMP=$(mktemp -d -t waveshare_XXXXX)
 
-# create temporary directory
-ws_tmp=$(mktemp -d -t waveshare_XXXXX)
-pushd $ws_tmp
-git clone $ws_epd_git
-if [ $? -ne 0 ]; then
-  echo "failed to clone $ws_epd_git"
-  echo "see $ws_tmp"
-  echo "exiting"
+git clone $WS_REPO $WS_TEMP
+if [[ $? -ne 0 ]]; 
+then
+  echo "failed to clone $WS_REPO"
+  echo "see $WS_TEMP"
   exit 1
-else
-  pushd $ws_root
 fi
 
-echo ws_temp = $ws_tmp
+WS_VERSION=$(git --git-dir $WS_TEMP/.git log -1 --format=%h\ %ci)
+echo "this verison is: $WS_VERSION"
 
-# get the latest commit and store it
-ws_version=$(git log -1 --format=%h\ %ci)
-echo "this version is: $ws_version"
-popd
-popd
+rm -r $WS_LOCAL.ignore
+mv $WS_LOCAL $WS_LOCAL.ignore
+cp -r $WS_TEMP/$WS_LIB_PATH $PROJECT
 
-# backup the current version of the library
-rm -r $ws_local.ignore
-mv $ws_local $ws_local.ignore
-cp -r $ws_tmp/$ws_library_path $project
-# add the latest commit to the constants file for record keeping (?)
-sed -i "s#\(ws_version\s\?=\).*#\1 '$ws_version'#g" $project/my_constants.py
+# add the latest commit to the constants file for record keeping
+sed -i "s#\(ws_version\s\?=\).*#\1 '$WS_VERSION'#g" $PROJECT/my_constants.py
 
 
-# Patch issues with WaveShare Modules
+### Patch issues with WaveShare Modules ###
 # remove uneeded numpy imports in waveshare modules
-find $ws_local -type f -exec sed -i 's/^import numpy/#&/' {} \;
+## Patch issues with WaveShare Modules ##
+# remove unneeded numpy imports in waveshare modules
+find $WS_LOCAL -type f -exec sed -i 's/^import numpy/#&/' {} \;
+
 # add default value to `update` arg in init() method
-find $ws_local -type f -exec sed -i -E 's/(^\W+def init\(self,\W+update)/\1=False/g' {} \;
+find $WS_LOCAL -type f -exec sed -i -E 's/(^\W+def init\(self,\W+update)/\1=False/g' {} \;
+
 # add default value to `color` arg in Clear() method (see epd2in7 for example)
-find $ws_local -type f -exec sed -i -E 's/(^\W+def Clear\(self,\W+color)/\1=0xFF/g' {} \; 
+find $WS_LOCAL -type f -exec sed -i -E 's/(\W+def Clear\(self,\W+color)\)/\1=0xFF)/' {} \;
 
-echo "cleaning up temporary directories"
-#rm -rf $ws_temp
-
-exit 0
+# default to full update in def init() for screens that support partial update
+echo "set default lut value in init()"
+find $WS_LOCAL -type f -exec sed -i -E 's/(def init\(self, lut)(.*)/\1=None\2\n        if not lut:\n            lut = self.lut_full_update/' {} \;
