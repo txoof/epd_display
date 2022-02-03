@@ -38,7 +38,7 @@ esac
 
 echo $filename
 
-if [[ $document ]]; then
+if [[ $document -eq 1 ]]; then
   pipenv run python create_docs.py
 fi
 
