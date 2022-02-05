@@ -34,6 +34,8 @@ function check_env {
     then
       echo "PYTHON PACKAGE $i NOT INSTALLED. Install with:"
       echo "$ pip3 install $i"
+      echo "or"
+      echo "$ sudo pip3 install $i"
       halt=$((halt+1))
     else
       echo "$i ... OK"
