@@ -1,5 +1,6 @@
 # librespot_client
-![sample image for plugin librespot_client](./librespot_client_sample.png)
+![sample image for plugin paperpi.plugins.librespot_client](./librespot_client.layout-sample.png) 
+
 ```
  
 PLUGIN: librespot_client v:0.2.1
@@ -75,6 +76,28 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.librespot_cli
    player
    mode
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./librespot_client.layout-sample.png) 
+
+
+layout: **three_rows_text_only**
+
+![sample image for plugin three_rows_text_only](./librespot_client.three_rows_text_only-sample.png) 
+
+
+layout: **two_column_three_row**
+
+![sample image for plugin two_column_three_row](./librespot_client.two_column_three_row-sample.png) 
+
+
+layout: **two_rows_text_only**
+
+![sample image for plugin two_rows_text_only](./librespot_client.two_rows_text_only-sample.png) 
+
 
 ## Additional librespot_client information
 ### HiFiBerry Sound Card

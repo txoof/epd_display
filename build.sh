@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 project_path="./paperpi/"
 
-required_deb=("libtiff5" "libopenjp2-7")
+#required_deb=("libtiff5" "libopenjp2-7")
+source cd_apt_packages # Provides REQUIRED_DEB
 
 function check_env {
   echo "checking build environment"
   if ! command -v pipenv &> /dev/null
   then
-    echo "pipenv could not be found"
-    echo "install with: $ apt install pipenv"
-    echo "exiting"
+    echo "development environment not configured"
+    echo "try running `devel/create_devel_venf.sh`"
     exit 1
   else
     echo "pipenv OK"
@@ -19,13 +19,9 @@ function check_env {
 
   if ! pipenv --venv
   then
-    echo "setting up pipenv for this project"
-    if ! pipenv update
-    then
-      echo "failed to build pipenv"
-      exit 1
-    fi
-
+    echo "missing pipenv virtual environment"
+    echo "try running `devel/create_devel_venv.sh`"
+    exit 1
   fi
 }
 
@@ -45,7 +41,7 @@ function update_waveshare {
 function check_packages {
   halt=0
   echo "checking for required debian packages"
-  for i in "${required_deb[@]}"
+  for i in "${REQUIRED_DEB[@]}"
   do
     echo checking package $i
     if [ $(dpkg-query -W -f='${Status}' $i | grep -c "ok installed") -eq 0 ]

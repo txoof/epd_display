@@ -10,9 +10,9 @@ data = {
     'extra': 'extra text under "special" conditions',
     'image': 'a static image',
 }
-sample_config = '''`
-# this is a sample config users can use to help setup the plugin
+sample_config = '''
 [Plugin: A Demo Plugin]
+# this is a sample config users can use to help setup the plugin
 # default layout
 layout = layout
 # the literal name of your module

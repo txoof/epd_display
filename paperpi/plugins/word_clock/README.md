@@ -1,5 +1,6 @@
 # word_clock
-![sample image for plugin word_clock](./word_clock_sample.png)
+![sample image for plugin paperpi.plugins.word_clock](./word_clock.layout-sample.png) 
+
 ```
  
 PLUGIN: word_clock v:0.1.1
@@ -43,4 +44,21 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.word_clock.wo
    word_time
    time
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./word_clock.layout-sample.png) 
+
+
+layout: **word_clock**
+
+![sample image for plugin word_clock](./word_clock.word_clock-sample.png) 
+
+
+layout: **word_clock_lg**
+
+![sample image for plugin word_clock_lg](./word_clock.word_clock_lg-sample.png) 
+
 

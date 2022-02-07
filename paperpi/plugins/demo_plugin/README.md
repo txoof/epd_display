@@ -1,5 +1,6 @@
 # demo_plugin
-![sample image for plugin demo_plugin](./demo_plugin_sample.png)
+![sample image for plugin paperpi.plugins.demo_plugin](./demo_plugin.layout-sample.png) 
+
 ```
  
 PLUGIN: demo_plugin v:0.1.0
@@ -44,9 +45,9 @@ ___________________________________________________________________________
  
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.demo_plugin.demo_plugin
-`
-# this is a sample config users can use to help setup the plugin
+
 [Plugin: A Demo Plugin]
+# this is a sample config users can use to help setup the plugin
 # default layout
 layout = layout
 # the literal name of your module
@@ -72,6 +73,18 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.demo_plugin.d
    extra
    image
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./demo_plugin.layout-sample.png) 
+
+
+layout: **my_layout_one**
+
+![sample image for plugin my_layout_one](./demo_plugin.my_layout_one-sample.png) 
+
 
 ## Additional Plugin Information
 Additional plugin information can be appended to the README by adding a file called `README_additional.md` in the root of the plugin directory. This will be directly appened at the end of the README.md file.

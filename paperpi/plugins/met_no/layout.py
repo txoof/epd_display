@@ -1,26 +1,6 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-test = {
-    'text' : {
-        'type': 'TextBlock',
-        'image': None,
-        'inverse': False,
-        'padding': 0,
-        'width': 1,
-        'height': 1,
-        'max_lines': 3,
-        'rand': True,
-        'hcenter': False,
-        'vcenter': True,
-        'abs_coordinates': (0, 0),
-        'relative': False,
-        'max_lines': 1,
-        'font': dir_path+'/../../fonts/Montserrat/Montserrat-SemiBold.ttf',
-        'mode': 'L'
-    }, 
-}
-
 three_row_icon_wind_temp = {
     'forecast_location' : { 
         'type': 'TextBlock',

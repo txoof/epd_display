@@ -1,7 +1,8 @@
 ## Troubleshooting
 ### **Issue:** Streaks, and poor quality text
-    - <img src=./images/trouble_streaks.jpg alt="streaks" width=500 />
-    - <img src=./images/trouble_bad_text.jpg alt="bad text" width=500 />
+<img src=./images/trouble_streaks.jpg alt="streaks" width=500 />
+<img src=./images/trouble_bad_text.jpg alt="bad text" width=500 />
+
 **Possible Solution:** 
 
 - Use JST connector instead of plugging the waveshare HAT directly into the raspberry pi (see table below)

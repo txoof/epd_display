@@ -1,5 +1,6 @@
 # met_no
-![sample image for plugin met_no](./met_no_sample.png)
+![sample image for plugin paperpi.plugins.met_no](./met_no.layout-sample.png) 
+
 ```
  
 PLUGIN: met_no v:0.1.5
@@ -73,7 +74,6 @@ email = you@host.diamond
  
 LAYOUTS AVAILABLE:
   layout
-  test
   three_column_icon_wind_temp_precip
   three_row_icon_wind_temp
   two_column_icon_wind_temp_precip
@@ -82,4 +82,26 @@ LAYOUTS AVAILABLE:
 DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.met_no.met_no:
    no keys available
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./met_no.layout-sample.png) 
+
+
+layout: **three_column_icon_wind_temp_precip**
+
+![sample image for plugin three_column_icon_wind_temp_precip](./met_no.three_column_icon_wind_temp_precip-sample.png) 
+
+
+layout: **three_row_icon_wind_temp**
+
+![sample image for plugin three_row_icon_wind_temp](./met_no.three_row_icon_wind_temp-sample.png) 
+
+
+layout: **two_column_icon_wind_temp_precip**
+
+![sample image for plugin two_column_icon_wind_temp_precip](./met_no.two_column_icon_wind_temp_precip-sample.png) 
+
 

@@ -1,9 +1,11 @@
 *.pyo
+.python-version
 Pipfile.lock
 */build/*
 */dist/*
 build/*
 dist/*
+tmp/*
 *.ignore
 *.tgz
 *.spec

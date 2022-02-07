@@ -1,5 +1,6 @@
 # lms_client
-![sample image for plugin lms_client](./lms_client_sample.png)
+![sample image for plugin paperpi.plugins.lms_client](./lms_client.layout-sample.png) 
+
 ```
  
 PLUGIN: lms_client v:0.1.2
@@ -105,6 +106,28 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.lms_client.lm
    coverart
    mode
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./lms_client.layout-sample.png) 
+
+
+layout: **three_rows_text_only**
+
+![sample image for plugin three_rows_text_only](./lms_client.three_rows_text_only-sample.png) 
+
+
+layout: **two_column_three_row**
+
+![sample image for plugin two_column_three_row](./lms_client.two_column_three_row-sample.png) 
+
+
+layout: **two_rows_text_only**
+
+![sample image for plugin two_rows_text_only](./lms_client.two_rows_text_only-sample.png) 
+
 
 ## Additional lms_client information
 ### HiFiBerry Sound Card

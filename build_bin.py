@@ -73,9 +73,15 @@ def build_pyinstaller_command():
     for h in pyinstaller_cfg.hidden_imports:
         cmd_list.extend(['--hidden-import', h])
     
+    # add specified datas that are internal to the project
     for d in pyinstaller_cfg.datas:
         if len(d) > 0:
             cmd_list.extend(['--add-data', f'{pyinstaller_cfg.base_path}/{d[0]}:{d[1]}'])
+    
+    # add datas that are external to the project (e.g. datas that should be covered by hook-foo.py files)
+    for d in pyinstaller_cfg.external_datas:
+        if len(d) > 0:
+            cmd_list.extend(['--add-data', f'{d[0]}:{d[1]}'])
 
     for e in pyinstaller_cfg.exclude:
         if len(e) > 0:
@@ -132,6 +138,7 @@ def main():
 #     print(pyinstaller_command)
     proc = subprocess.Popen(pyinstaller_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print(f'starting build -- will timeout after {timeout} seconds')
+    print(f'$ {pyinstaller_command}')
     try:
         outs, errs = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired:

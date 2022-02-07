@@ -1,5 +1,6 @@
 # moon_phase
-![sample image for plugin moon_phase](./moon_phase_sample.png)
+![sample image for plugin paperpi.plugins.moon_phase](./moon_phase.layout-sample.png) 
+
 ```
  
 PLUGIN: moon_phase v:0.1.0
@@ -87,15 +88,12 @@ ___________________________________________________________________________
 
 SAMPLE CONFIGURATION FOR paperpi.plugins.moon_phase.moon_phase
 
-# this is a sample config users can use to help setup the plugin
 [Plugin: Moon Phase]
 # default layout
 layout = layout
 plugin = moon_phase
-# recommended display time
 min_display_time = 30
-# maximum priority in display loop
-max_priority = 1
+max_priority = 2
 # your email address for MET.no API access -- failure to specify may lead to a perma-ban
 email = you@host.diamond
 # Timezone locale name in Region/City format (see --run_plugin_func moon_phase.list_country_locales)
@@ -119,6 +117,23 @@ DATA KEYS AVAILABLE FOR USE IN LAYOUTS PROVIDED BY paperpi.plugins.moon_phase.mo
    image_file
    phase_desc
 ```
+
+## Provided Layouts:
+
+layout: **layout**
+
+![sample image for plugin layout](./moon_phase.layout-sample.png) 
+
+
+layout: **moon_data**
+
+![sample image for plugin moon_data](./moon_phase.moon_data-sample.png) 
+
+
+layout: **moon_only**
+
+![sample image for plugin moon_only](./moon_phase.moon_only-sample.png) 
+
 
 ## Additional Plugin Information
 ### Configuration Notes
