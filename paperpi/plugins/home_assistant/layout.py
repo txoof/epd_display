@@ -4,6 +4,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 four_sensors_and_media_player = {
       'entity1': {
           'type': 'TextBlock',
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'width': 1/2,
@@ -15,6 +16,7 @@ four_sensors_and_media_player = {
       },
       'entity3': {
           'type': 'TextBlock',
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'width': 1/2,
@@ -26,6 +28,7 @@ four_sensors_and_media_player = {
       },
       'entity2': {
           'type': 'TextBlock',
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'width': 1/2,
@@ -40,6 +43,7 @@ four_sensors_and_media_player = {
       },
       'entity4': {
           'type': 'TextBlock',
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'width': 1/2,
@@ -55,6 +59,7 @@ four_sensors_and_media_player = {
       },
       'media': {
           'type': 'TextBlock',          
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'padding': 20,
@@ -66,6 +71,7 @@ four_sensors_and_media_player = {
       },
       'title': {
           'type': 'TextBlock',          
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'padding': 20,
@@ -77,6 +83,7 @@ four_sensors_and_media_player = {
       },
       'artist': {
           'type': 'TextBlock',          
+          'mode': 'L',
           'image': False,
           'max_lines': 1,
           'padding': 20,
@@ -88,6 +95,7 @@ four_sensors_and_media_player = {
       },
       'image': {
           'type': 'ImageBlock',         
+          'mode': 'L',
           'image': True,
           'width': 1,
           'height': 0.6,

@@ -20,27 +20,52 @@ def callHome(url, apiToken):
         "content-type": "application/json",
     }
 
-    logging.debug(f'calling: {url}')
     response = get(url, headers=headers)
-    logging.debug(f'response: {response.text}')
-    
-    try:
-        entity_json = response.json()
-    except JSONDecodeError as e:
-        logging.error(f'cannot proceed: failed to decode entity JSON object: {e}')
-        return failure
-    
+    entity_json = response.json()
     return entity_json
 
 
 def updateSensor(self, sensorId):
-    sensorConfigId = self.config[f'entity{sensorId}_id']
-    entityJson = callHome(f'{self.config["home_assistant_basepath"]}/api/states/{sensorConfigId}', self.config['home_assistant_token'])
-    entity_name = self.config[f'entity{sensorId}_name']
-    entity_value = entityJson['state']
-    entity_unit = entityJson['attributes']['unit_of_measurement']
-    sensorText = f'{entity_name} : {entity_value}{entity_unit}'
+    sensorText = 'Sensor failure'
+    try:
+        sensorConfigId = self.config[f'entity{sensorId}_id']
+        entityJson = callHome(f'{self.config["home_assistant_basepath"]}/api/states/{sensorConfigId}', self.config['home_assistant_token'])
+        entity_name = self.config[f'entity{sensorId}_name']
+        entity_value = entityJson['state']
+        entity_unit = entityJson['attributes']['unit_of_measurement']
+        sensorText = f'{entity_name} : {entity_value}{entity_unit}'
+    except Exception as e:
+        logging.error(f'Failed to fetch sensor values: {e}')
+
     return sensorText
+
+def updatePlayer(self):
+    player = {
+        'media_title': ' ',
+        'media_artist': ' ',
+        'image': Path(constants.img_file).resolve(),
+        'media': 'Nothing is playing...',
+        'priority': self.max_priority
+    }
+
+    try:
+        mediaJson = callHome(f'{self.config["home_assistant_basepath"]}/api/states/{self.config["media_id"]}', self.config['home_assistant_token'])
+        if mediaJson['state'] == 'playing':
+            media_content_id = mediaJson["attributes"]["media_content_id"]
+            media_picture = mediaJson['attributes']['entity_picture_local']
+            file_id = f'{constants.private_cache}/{media_content_id}'
+            player['image'] = self.cache.cache_file(url=f'{self.config["home_assistant_basepath"]}{media_picture}', file_id=file_id)
+            player['media_title'] = mediaJson['attributes']['media_title']
+            player['media_artist'] = mediaJson['attributes']['media_artist']
+            player['media'] = 'Currently playing...'
+            if self.media_content_id != media_content_id:
+                player['priority'] = self.max_priority - 1
+                self.media_content_id = media_content_id
+    except Exception as e:
+        logging.error(f'Failed to fetch media player: {e}')
+        player['media'] = 'Failed to fetch data'
+
+    return player
 
 
 def update_function(self, *args, **kwargs):
@@ -72,27 +97,14 @@ def update_function(self, *args, **kwargs):
 
     %U'''   
    
-
+    if not hasattr(self, 'media_content_id'):
+        self.media_content_id = ''
+   
     entity1 = updateSensor(self, '1')
     entity2 = updateSensor(self, '2')
     entity3 = updateSensor(self, '3')
     entity4 = updateSensor(self, '4')
-
-    mediaJson = callHome(f'{self.config["home_assistant_basepath"]}/api/states/{self.config["media_id"]}', self.config['home_assistant_token'])
-    if mediaJson['state'] == 'playing':    
-        media_content_id = mediaJson["attributes"]["media_content_id"]
-        media_picture = mediaJson['attributes']['entity_picture_local']
-        file_id = f'{constants.private_cache}/{media_content_id}'
-        image = self.cache.cache_file(url=f'{self.config["home_assistant_basepath"]}{media_picture}', file_id=file_id)
-        media_title = mediaJson['attributes']['media_title']
-        media_artist = mediaJson['attributes']['media_artist']
-        media = 'Currently playing...'
-    else:
-        media_title = ' '
-        media_artist = ' '
-        image = Path(constants.img_file).resolve()
-        media = 'Nothing is playing...'
-        
+    player  = updatePlayer(self)
     
     # build the output
     is_updated = True
@@ -101,20 +113,13 @@ def update_function(self, *args, **kwargs):
         'entity3': entity3,
         'entity2': entity2,
         'entity4': entity4,
-        'media': media,
-        'title': media_title,
-        'artist': media_artist,
-        'image': image
+        'media': player['media'],
+        'title': player['media_title'],
+        'artist': player['media_artist'],
+        'image': player['image']
     }
-    
-    if self.data == data:
-        logging.debug('data matches')
-        priority = self.max_priority
-    else:
-        logging.debug('data does not match')
-        priority = self.max_priority - 1
     
     self.cache.remove_stale(d=constants.expire_cache, path=constants.private_cache)
     
-    return (is_updated, data, priority)
+    return (is_updated, data, player['priority'])
 
