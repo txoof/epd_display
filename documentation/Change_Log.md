@@ -1,4 +1,8 @@
 # Change Log
+## 0.2.15.0
+* add home assistant plugin
+* fix minor issue with new_yorker plugin
+
 ## 0.2.14.5
 * add crypto currency plugin
 * add xkcd comic plugin
