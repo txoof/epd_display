@@ -3,7 +3,7 @@
 
 ```
  
-PLUGIN: newyorker v:0.0.1
+PLUGIN: newyorker v:0.0.2
 
  
 FUNCTION: update_function
@@ -33,7 +33,8 @@ SAMPLE CONFIGURATION FOR paperpi.plugins.newyorker.newyorker
 [Plugin: New Yorker Comic]
 layout = layout
 plugin = newyorker
-day_range = 5 # number of past days to choose from
+# number of past days to choose from
+day_range = 5
 refresh_rate = 120
 min_display_time = 60
 max_priority = 2
