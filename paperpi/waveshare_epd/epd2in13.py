@@ -96,7 +96,7 @@ class EPD:
         self.ReadBusy()
         logger.debug("e-Paper busy release")
 
-    def init(self, lut):
+    def init(self, lut=self.lut_full_update):
         if (epdconfig.module_init() != 0):
             return -1
         # EPD hardware init start
