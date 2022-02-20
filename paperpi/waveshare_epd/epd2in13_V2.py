@@ -122,7 +122,7 @@ class EPD:
         self.send_command(0x20)        
         self.ReadBusy()
         
-    def init(self, update):
+    def init(self, update=False):
         if (epdconfig.module_init() != 0):
             return -1
         # EPD hardware init start
@@ -290,7 +290,7 @@ class EPD:
                 self.send_data(image[i + j * linewidth])  
         self.TurnOnDisplay()
     
-    def Clear(self, color):
+    def Clear(self, color=0xFF):
         if self.width%8 == 0:
             linewidth = int(self.width/8)
         else:
