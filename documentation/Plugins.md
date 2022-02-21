@@ -30,6 +30,9 @@ All plugins are configured through the `paperpi.ini` files. For a single-user co
 ### [xkcd_comic](../paperpi/plugins/xkcd_comic/README.md)
 ![xkcd_comic sample Image](../paperpi/plugins/xkcd_comic/xkcd_comic.layout-sample.png)
 
+### [home_assistant](../paperpi/plugins/home_assistant/README.md)
+![home_assistant sample Image](../paperpi/plugins/home_assistant/home_assistant.layout-sample.png)
+
 ### [newyorker](../paperpi/plugins/newyorker/README.md)
 ![newyorker sample Image](../paperpi/plugins/newyorker/newyorker.layout-sample.png)
 
