@@ -28,10 +28,7 @@ cp -r $WS_TEMP/$WS_LIB_PATH $PROJECT
 # add the latest commit to the constants file for record keeping
 sed -i "s#\(ws_version\s\?=\).*#\1 '$WS_VERSION'#g" $PROJECT/my_constants.py
 
-
 ### Patch issues with WaveShare Modules ###
-# remove uneeded numpy imports in waveshare modules
-## Patch issues with WaveShare Modules ##
 # remove unneeded numpy imports in waveshare modules
 find $WS_LOCAL -type f -exec sed -i 's/^import numpy/#&/' {} \;
 
