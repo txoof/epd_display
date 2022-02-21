@@ -1,8 +1,14 @@
 # Change Log
+## 0.2.16.0
+* add patches to WaveShare drivers for several screens including:
+  - epd1in45
+  - epd2in13
+  - epd2in7
+
 ## 0.2.15.0
 * add home assistant plugin
 * fix minor issue with new_yorker plugin
-
+ 
 ## 0.2.14.5
 * add crypto currency plugin
 * add xkcd comic plugin
