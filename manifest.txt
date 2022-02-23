@@ -3,4 +3,4 @@
 ./install
 ./LICENSE
 ./README.md
-./cd_apt_apt_packages
+./cd_apt_packages
