@@ -476,7 +476,7 @@ def update_function(self, *args, **kwargs):
 
 
 
-d = update_function(self)
+# d = update_function(self)
 
 
 
@@ -511,15 +511,6 @@ d = update_function(self)
 
 # this simulates calling the plugin from PaperPi
 # q = my_plugin()
-
-
-
-
-
-
-
-
-
 
 
 
