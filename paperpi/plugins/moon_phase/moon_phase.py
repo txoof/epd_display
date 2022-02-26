@@ -329,7 +329,7 @@ def update_function(self, *args, **kwargs):
     
     is_updated = False
     data = {}
-    priority = self.max_priority +1
+    priority = 2**15
     
     failure = (is_updated, data, priority)
 
@@ -419,19 +419,19 @@ def update_function(self, *args, **kwargs):
         try:
             logging.debug('downloading fresh data from met.no API')
             sunrise = requests.get(constants.met_endpoint, param, headers=headers)
-        except RequestException as e:
+        except requests.RequestException as e:
             logging.warning(f'failed to download JSON data: {e}')
-
-        # check there is valid data
-        if sunrise.status_code == 200:
-            try:
-                with open(json_file, 'w')  as jf:
-                    json.dump(sunrise.json(), jf)
-            except OSError as e:
-                logging.warning(f'failed to cache {json_file}: {e}')
-            json_data = sunrise.json()
-        else: 
-            json_data = None
+        else:
+            # check there is valid data
+            if sunrise.status_code == 200:
+                try:
+                    with open(json_file, 'w')  as jf:
+                        json.dump(sunrise.json(), jf)
+                except OSError as e:
+                    logging.warning(f'failed to cache {json_file}: {e}')
+                json_data = sunrise.json()
+            else: 
+                json_data = None
     
 
     if json_data:
@@ -444,6 +444,14 @@ def update_function(self, *args, **kwargs):
             
     
     return (is_updated, data, priority)
+
+
+
+
+
+
+# import sys
+# sys.path.append("../../")
 
 
 
@@ -503,15 +511,6 @@ def update_function(self, *args, **kwargs):
 
 # this simulates calling the plugin from PaperPi
 # q = my_plugin()
-
-
-
-
-
-
-
-
-
 
 
 
