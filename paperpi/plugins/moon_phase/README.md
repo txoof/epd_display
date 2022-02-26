@@ -3,7 +3,7 @@
 
 ```
  
-PLUGIN: moon_phase v:0.1.0
+PLUGIN: moon_phase v:0.2.0
 
  
 FUNCTION: get_coord
