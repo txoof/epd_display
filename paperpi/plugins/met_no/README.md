@@ -3,7 +3,7 @@
 
 ```
  
-PLUGIN: met_no v:0.1.5
+PLUGIN: met_no v:0.1.6
 
  
 FUNCTION: get_coord
@@ -65,6 +65,8 @@ plugin = met_no
 refresh_rate = 300
 min_display_time = 40
 max_priority = 2
+temp_units = celsius
+rain_units = mm 
 location_name = Adis Ababa
 lat = 9.000
 lon = 38.750
