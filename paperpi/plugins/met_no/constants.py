@@ -1,7 +1,7 @@
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-version = "0.1.5"
+version = "0.1.6"
 name = "PaperPi Met No Weather plugin"
 
 # open street maps location lookup
@@ -45,6 +45,8 @@ plugin = met_no
 refresh_rate = 300
 min_display_time = 40
 max_priority = 2
+temp_units = celsius
+rain_units = mm 
 location_name = Adis Ababa
 lat = 9.000
 lon = 38.750
