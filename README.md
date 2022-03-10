@@ -36,15 +36,15 @@ See the [Change Log](./documentation/Change_Log.md) for a complete list of updat
 ## Requirements
 
 ### Required Hardware
-* Raspberry Pi 4B, Pi3
-    - A Pi Zero is likely sufficient, but is untested at this time (Nov 2020)
-* Raspberry Pi OS Buster or later
-* [WaveShare EPD SPI-only Screen](https://www.waveshare.com/product/displays/e-paper.htm) with PiHat
-    - see the full list of currently [supported screens](#supportedScreens)
-    - UART, SPI/USB/I80 screens are **not supported** as there is no python library for diving these boards
-    
+
+* Raspberry Pi (Pi 4, Pi 3, and Pi Zero)
+* Raspberry Pi OS Buster or later (64-bit supported)
+* [WaveShare EPD Screen](https://www.waveshare.com/product/displays/e-paper.htm) with PiHat
+  * see the full list of currently [supported screens](#supportedScreens)
+  * Note: HDMI screens are not supported
      
 ### Optional Hardware
+
 * [HiFiBerry hat](https://www.hifiberry.com/shop/#boards) (*optional*) 
     * The HiFiBerry DAC+ PRO and similar boards add high-quality audio output to the Pi so it can act as a display and also work as a LMS client player using squeezelite
     * GPIO 2x20 headers **must be added** to the HiFiBerry HAT to provide an interface for the WaveShare HAT.
