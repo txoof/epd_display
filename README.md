@@ -1,4 +1,11 @@
-# PaperPi
+# epd_display/PaperPi
+
+# NOTE: Project Archived 
+
+This project has been migrated to [PaperPi](https://github.com/txoof/PaperPi) and is no longer maintained. PaperPi offers all of the same functionality, but a cleaner install process, a more open and flexible plugin structure and removes the need for a frozen binary.
+
+This repository is maintained only for hitorical purposes. Check the new version for updates!
+
 |     |     |
 |:---:|:---:|
 |<img src=./paperpi/plugins/splash_screen/splash_screen.layout-sample.png alt="Splash Screen" width=400/> Splash Screen| <img src=./documentation/images/PaperPi_Demo_frame.gif alt="PaperPi" width=400 /> PaperPi Weather Plugin|
